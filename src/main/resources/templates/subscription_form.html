@@ -1,0 +1,88 @@
+{{#layout}}
+
+<div class="row">
+    <div class="col-lg-offset-2 col-lg-8">
+
+        <form method="POST" action="/subscriptions">
+            <fieldset class="form-category">
+                <span class="form-category-title">Informations de l'équipe</span>
+                <div class="form-category-content mat-card">
+
+                    <div class="form-group">
+                        <label for="name">Nom</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Niveau</label>
+                        <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-info">
+                                <input type="radio" name="level" value="National"> National
+                            </label>
+                            <label class="btn btn-info">
+                                <input type="radio" name="level" value="Régional"> Régional
+                            </label>
+                            <label class="btn btn-info">
+                                <input type="radio" name="level" value="Départemental"> Départemental
+                            </label>
+                            <label class="btn btn-info">
+                                <input type="radio" name="level" value="Loisirs"> Loisirs
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-category">
+                <span class="form-category-title">Capitaine</span>
+                <div class="form-category-content mat-card">
+                    <div class="form-group">
+                        <label for="captainName">Nom complet</label>
+                        <input type="text" class="form-control" id="captainName" name="captainName">
+                    </div>
+                    <div class="form-group">
+                        <label for="captainPhone">Téléphone</label>
+                        <input type="text" class="form-control" id="captainPhone" name="captainPhone">
+                    </div>
+                    <div class="form-group">
+                        <label for="captainEmail">Email</label>
+                        <input type="text" class="form-control" id="captainEmail" name="captainEmail">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-category">
+                <span class="form-category-title">Joueur 2</span>
+                <div class="form-category-content mat-card">
+                    <div class="form-group">
+                        <label for="player2Name">Nom complet</label>
+                        <input type="text" class="form-control" id="player2Name" name="player2Name">
+                    </div>
+                    <div class="form-group">
+                    <label for="player2Email">Email</label>
+                    <input type="text" class="form-control" id="player2Email" name="player2Email">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-category">
+                <span class="form-category-title">Joueur 3</span>
+                <div class="form-category-content mat-card">
+                    <div class="form-group">
+                        <label for="player3Name">Nom complet</label>
+                        <input type="text" class="form-control" id="player3Name" name="player3Name">
+                    </div>
+                    <div class="form-group">
+                    <label for="player3Email">Email</label>
+                    <input type="text" class="form-control" id="player3Email" name="player3Email">
+                    </div>
+                </div>
+            </fieldset>
+
+            <button type="submit" class="btn btn-lg btn-primary">Valider l'inscription</button>
+        </form>
+
+    </div>
+</div>
+{{/layout}}
+{{>layout}}
