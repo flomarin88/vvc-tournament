@@ -8,11 +8,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/subscriptions")
 public class SubscriptionController {
 
-    private final TeamRepository repository;
+    private final SubscriptionService service;
 
     @Autowired
-    public SubscriptionController(TeamRepository repository) {
-        this.repository = repository;
+    public SubscriptionController(SubscriptionService service) {
+        this.service = service;
     }
 
     @GetMapping("/new")
@@ -21,8 +21,8 @@ public class SubscriptionController {
     }
 
     @PostMapping
-    public ModelAndView subscribe(@ModelAttribute Team team) {
-        repository.save(team);
-        return new ModelAndView("subscription_form");
+    public ModelAndView subscribe(@ModelAttribute Subscription subscription) {
+        boolean result = service.subscribe(subscription);
+        return null;
     }
 }

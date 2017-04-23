@@ -1,15 +1,10 @@
 package org.fmarin.admintournoi.subscription;
 
-import javax.persistence.*;
+public class Subscription {
 
-@Entity
-public class Team {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long tournamentId;
     private String name;
-    private Integer level;
+    private int level;
     private String captainName;
     private String captainEmail;
     private String captainPhone;
@@ -17,17 +12,13 @@ public class Team {
     private String player2Email;
     private String player3Name;
     private String player3Email;
-    @ManyToOne
-    private Tournament tournament;
 
-    public Team() {}
-
-    public Long getId() {
-        return id;
+    public Long getTournamentId() {
+        return tournamentId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
     public String getName() {
@@ -38,11 +29,11 @@ public class Team {
         this.name = name;
     }
 
-    public Integer getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(Integer level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 
@@ -100,13 +91,5 @@ public class Team {
 
     public void setPlayer3Email(String player3Email) {
         this.player3Email = player3Email;
-    }
-
-    public Tournament getTournament() {
-        return tournament;
-    }
-
-    public void setTournament(Tournament tournament) {
-        this.tournament = tournament;
     }
 }
