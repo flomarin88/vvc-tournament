@@ -8,11 +8,14 @@ import java.util.List;
 public class Tournament {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "team_limit")
     private int teamLimit;
-    @OneToMany
+    @OneToMany(mappedBy = "tournament")
     private List<Team> teams = new ArrayList<>();
 
     public Long getId() {

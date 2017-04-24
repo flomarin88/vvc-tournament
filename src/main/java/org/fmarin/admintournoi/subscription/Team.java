@@ -6,18 +6,29 @@ import javax.persistence.*;
 public class Team {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "level")
     private Integer level;
+    @Column(name = "captain_name")
     private String captainName;
+    @Column(name = "captain_email")
     private String captainEmail;
+    @Column(name = "captain_phone")
     private String captainPhone;
+    @Column(name = "player_2_name")
     private String player2Name;
+    @Column(name = "player_2_email")
     private String player2Email;
+    @Column(name = "player_3_name")
     private String player3Name;
+    @Column(name = "player_3_email")
     private String player3Email;
     @ManyToOne
+    @JoinColumn(name = "tournament_id")
     private Tournament tournament;
 
     public Team() {}
