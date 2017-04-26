@@ -10,7 +10,6 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,19 +28,19 @@ public class SubscriptionServiceUTest {
     }
 
     @Test
-    public void subscribe_should_return_false_when_tournament_does_not_exist() {
+    public void subscribe_should_return_null_when_tournament_does_not_exist() {
         // Given
         Subscription subscriptionWithUnknownTournament = new Subscription();
 
         // When
-        boolean result = service.subscribe(subscriptionWithUnknownTournament);
+        Long result = service.subscribe(subscriptionWithUnknownTournament);
 
         // Then
-        assertThat(result).isFalse();
+        assertThat(result).isNull();
     }
 
     @Test
-    public void subscribe_should_return_false_when_tournament_limit_is_reached() {
+    public void subscribe_should_return_null_when_tournament_limit_is_reached() {
         // Given
         Tournament tournament = new Tournament();
         tournament.setTeamLimit(2);
@@ -52,14 +51,14 @@ public class SubscriptionServiceUTest {
         when(mockedTournamentRepository.findOne(1L)).thenReturn(tournament);
 
         // When
-        boolean result = service.subscribe(subscriptionWithLimitReached);
+        Long result = service.subscribe(subscriptionWithLimitReached);
 
         // Then
-        assertThat(result).isFalse();
+        assertThat(result).isNull();
     }
 
     @Test
-    public void subscribe_should_return_true() {
+    public void subscribe_should_return_new_team_id() {
         // Given
         Tournament tournament = new Tournament();
         tournament.setTeamLimit(20);
@@ -68,13 +67,15 @@ public class SubscriptionServiceUTest {
         subscription.setTournamentId(1L);
 
         when(mockedTournamentRepository.findOne(1L)).thenReturn(tournament);
+        Team team = new Team();
+        team.setId(100L);
+        when(mockedTeamRepository.save(any(Team.class))).thenReturn(team);
 
         // When
-        boolean result = service.subscribe(subscription);
+        Long result = service.subscribe(subscription);
 
         // Then
-        assertThat(result).isTrue();
-        verify(mockedTeamRepository).save(any(Team.class));
+        assertThat(result).isEqualTo(100L);
     }
 
     @Test

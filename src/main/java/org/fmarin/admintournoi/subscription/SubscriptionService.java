@@ -15,16 +15,16 @@ public class SubscriptionService {
         this.tournamentRepository = tournamentRepository;
     }
 
-    boolean subscribe(Subscription subscription) {
+    Long subscribe(Subscription subscription) {
         Tournament tournament = tournamentRepository.findOne(subscription.getTournamentId());
         if (tournament != null) {
             if (tournament.getTeamLimit() > tournament.getTeams().size()) {
                 Team team = create(subscription, tournament);
-                teamRepository.save(team);
-                return true;
+                team = teamRepository.save(team);
+                return team.getId();
             }
         }
-        return false;
+        return null;
     }
 
     Team create(Subscription subscription, Tournament tournament) {
