@@ -37,6 +37,7 @@ dependencies {
     compile group: 'org.postgresql', name: 'postgresql', version: '42.0.0'
     compile("org.flywaydb:flyway-core:4.1.2")
 
+    compile group: 'com.benfante.paypal', name: 'ipnAssistant', version: '1.0'
 
     // tag::actuator[]
     compile("org.springframework.boot:spring-boot-starter-actuator")
@@ -45,4 +46,8 @@ dependencies {
     // tag::tests[]
     testCompile("org.springframework.boot:spring-boot-starter-test")
     // end::tests[]
+}
+
+tasks.withType(org.springframework.boot.gradle.run.BootRunTask) {
+    bootRun.systemProperties = System.properties
 }
