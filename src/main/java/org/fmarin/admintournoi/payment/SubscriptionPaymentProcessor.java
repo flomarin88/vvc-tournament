@@ -1,4 +1,4 @@
-package org.fmarin.admintournoi.subscription;
+package org.fmarin.admintournoi.payment;
 
 import com.benfante.paypal.ipnassistant.DefaultIpnAssistant;
 import com.benfante.paypal.ipnassistant.IpnData;
@@ -12,6 +12,7 @@ public class SubscriptionPaymentProcessor implements PaymentProcessor {
 
     @Override
     public void process(IpnData ipnData) {
+        logger.info("I'm here");
         Long subscriptionId = Long.valueOf(ipnData.getParameter("custom"));
         logger.info("SubscriptionId {}", subscriptionId.toString());
     }

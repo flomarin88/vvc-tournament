@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.subscription;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Team {
@@ -30,8 +31,15 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
+    @Column(name = "created_at")
+    private Date createdAt;
 
-    public Team() {}
+    @Column(name = "payment_transaction_id")
+    private String paymentTransactionId;
+    @Column(name = "payment_status")
+    private String paymentStatus;
+    @Column(name = "payment_processed_at")
+    private Date paymentProcessedAt;
 
     public Long getId() {
         return id;
@@ -119,5 +127,37 @@ public class Team {
 
     public void setTournament(Tournament tournament) {
         this.tournament = tournament;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getPaymentTransactionId() {
+        return paymentTransactionId;
+    }
+
+    public void setPaymentTransactionId(String paymentTransactionId) {
+        this.paymentTransactionId = paymentTransactionId;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public Date getPaymentProcessedAt() {
+        return paymentProcessedAt;
+    }
+
+    public void setPaymentProcessedAt(Date paymentProcessedAt) {
+        this.paymentProcessedAt = paymentProcessedAt;
     }
 }

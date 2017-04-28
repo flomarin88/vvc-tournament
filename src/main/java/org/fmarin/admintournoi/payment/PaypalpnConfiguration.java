@@ -1,11 +1,15 @@
-package org.fmarin.admintournoi.subscription;
+package org.fmarin.admintournoi.payment;
 
 import com.benfante.paypal.ipnassistant.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class PaypalIPNConfiguration {
+public class PaypalpnConfiguration {
+
+    @Autowired
+    private IpnMessageRepository ipnMessageRepository;
 
     @Bean
     public IpnConfiguration configuration() {
@@ -17,7 +21,7 @@ public class PaypalIPNConfiguration {
 
     @Bean
     public IpnMessageBinder messageBinder() {
-        return new InMemoryIpnMessageBinder();
+        return new IpnMessageInfoBinder(ipnMessageRepository);
     }
 
     @Bean
