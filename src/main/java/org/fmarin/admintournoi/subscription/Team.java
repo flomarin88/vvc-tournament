@@ -1,7 +1,7 @@
 package org.fmarin.admintournoi.subscription;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 public class Team {
@@ -32,14 +32,14 @@ public class Team {
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "payment_transaction_id")
     private String paymentTransactionId;
     @Column(name = "payment_status")
     private String paymentStatus;
     @Column(name = "payment_processed_at")
-    private Date paymentProcessedAt;
+    private LocalDateTime paymentProcessedAt;
 
     public Long getId() {
         return id;
@@ -129,11 +129,11 @@ public class Team {
         this.tournament = tournament;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -153,11 +153,11 @@ public class Team {
         this.paymentStatus = paymentStatus;
     }
 
-    public Date getPaymentProcessedAt() {
+    public LocalDateTime getPaymentProcessedAt() {
         return paymentProcessedAt;
     }
 
-    public void setPaymentProcessedAt(Date paymentProcessedAt) {
+    public void setPaymentProcessedAt(LocalDateTime paymentProcessedAt) {
         this.paymentProcessedAt = paymentProcessedAt;
     }
 }
