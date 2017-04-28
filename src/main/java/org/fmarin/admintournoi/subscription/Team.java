@@ -40,6 +40,8 @@ public class Team {
     private String paymentStatus;
     @Column(name = "payment_processed_at")
     private LocalDateTime paymentProcessedAt;
+    @Column(name = "payment_verification_code")
+    private Integer paymentVerficationCode;
 
     public Long getId() {
         return id;
@@ -159,5 +161,13 @@ public class Team {
 
     public void setPaymentProcessedAt(LocalDateTime paymentProcessedAt) {
         this.paymentProcessedAt = paymentProcessedAt;
+    }
+
+    public Integer getPaymentVerficationCode() {
+        return paymentVerficationCode;
+    }
+
+    public void setPaymentVerficationCode(Integer paymentVerficationCode) {
+        this.paymentVerficationCode = paymentVerficationCode;
     }
 }

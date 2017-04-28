@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Random;
+
 public class SubscriptionPaymentProcessor implements PaymentProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(SubscriptionPaymentProcessor.class);
@@ -29,8 +31,10 @@ public class SubscriptionPaymentProcessor implements PaymentProcessor {
         team.setPaymentProcessedAt(TimeMachine.now());
         team.setPaymentTransactionId(ipnData.getTransactionId());
         team.setPaymentStatus(ipnData.getPaymentStatus());
+        Random rnd = new Random();
+        int code = 100000 + rnd.nextInt(900000);
+        team.setPaymentVerficationCode(code);
         teamRepository.save(team);
-        // val code= (100000 + ran.nextInt(900000)).toString()
 
     }
 }
