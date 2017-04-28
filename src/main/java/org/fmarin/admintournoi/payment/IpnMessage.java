@@ -19,8 +19,8 @@ public class IpnMessage {
     private String paymentStatus;
     @Column(name = "payer_email")
     private String payerEmail;
-    @Column(name = "timestamp")
-    private LocalDateTime timestamp;
+    @Column(name = "received_at")
+    private LocalDateTime receivedAt;
 
     public Long getId() {
         return id;
@@ -62,11 +62,11 @@ public class IpnMessage {
         this.payerEmail = payerEmail;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getReceivedAt() {
+        return receivedAt;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setReceivedAt(LocalDateTime receivedAt) {
+        this.receivedAt = receivedAt;
     }
 }

@@ -27,7 +27,7 @@ public class IpnMessageInfoBinder implements IpnMessageBinder {
         message.setSubscriptionId(ipnData.getParameter("custom"));
         message.setPayerEmail(ipnData.getParameter("payer_email"));
         message.setPaymentStatus(ipnData.getPaymentStatus());
-        message.setTimestamp(TimeMachine.now());
+        message.setReceivedAt(TimeMachine.now());
         repository.save(message);
     }
 }

@@ -84,7 +84,7 @@ public class IpnMessageInfoBinderUTest {
         assertThat(result.getSubscriptionId()).isEqualTo("12345");
         assertThat(result.getPayerEmail()).isEqualTo("flomarin@gmail.com");
         assertThat(result.getPaymentStatus()).isEqualTo("Completed");
-        assertThat(result.getTimestamp()).isEqualTo(now);
+        assertThat(result.getReceivedAt()).isEqualTo(now);
     }
 
 }

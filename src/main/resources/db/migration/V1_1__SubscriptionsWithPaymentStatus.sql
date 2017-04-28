@@ -17,7 +17,7 @@ CREATE TABLE PAYPAL_MESSAGE
   subscription_id VARCHAR(255),
   payment_status  VARCHAR(255),
   payer_email     VARCHAR(255),
-  timestamp       TIMESTAMP
+  received_at     TIMESTAMP
 );
 CREATE UNIQUE INDEX PAYPAL_MESSAGE_ID_UINDEX
   ON PAYPAL_MESSAGE (id);
