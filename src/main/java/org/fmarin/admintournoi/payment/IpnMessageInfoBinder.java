@@ -2,9 +2,8 @@ package org.fmarin.admintournoi.payment;
 
 import com.benfante.paypal.ipnassistant.IpnData;
 import com.benfante.paypal.ipnassistant.IpnMessageBinder;
+import org.fmarin.admintournoi.helper.TimeMachine;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Date;
 
 public class IpnMessageInfoBinder implements IpnMessageBinder {
 
@@ -18,7 +17,7 @@ public class IpnMessageInfoBinder implements IpnMessageBinder {
     @Override
     public boolean messageAlreadyExists(String transactionId, String paymentStatus) {
         IpnMessage message = repository.findByTransactionIdAndPaymentStatus(transactionId, paymentStatus);
-        return (message != null);
+        return message != null;
     }
 
     @Override
@@ -28,7 +27,7 @@ public class IpnMessageInfoBinder implements IpnMessageBinder {
         message.setSubscriptionId(ipnData.getParameter("custom"));
         message.setPayerEmail(ipnData.getParameter("payer_email"));
         message.setPaymentStatus(ipnData.getPaymentStatus());
-        message.setTimestamp(new Date());
+        message.setTimestamp(TimeMachine.now());
         repository.save(message);
     }
 }

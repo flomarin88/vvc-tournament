@@ -1,7 +1,7 @@
 package org.fmarin.admintournoi.payment;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "PAYPAL_MESSAGE")
@@ -20,7 +20,7 @@ public class IpnMessage {
     @Column(name = "payer_email")
     private String payerEmail;
     @Column(name = "timestamp")
-    private Date timestamp;
+    private LocalDateTime timestamp;
 
     public Long getId() {
         return id;
@@ -62,11 +62,11 @@ public class IpnMessage {
         this.payerEmail = payerEmail;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 }

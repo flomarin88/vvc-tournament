@@ -12,7 +12,6 @@ public class SubscriptionPaymentProcessor implements PaymentProcessor {
 
     @Override
     public void process(IpnData ipnData) {
-        logger.info("I'm here");
         Long subscriptionId = Long.valueOf(ipnData.getParameter("custom"));
         logger.info("SubscriptionId {}", subscriptionId.toString());
     }
