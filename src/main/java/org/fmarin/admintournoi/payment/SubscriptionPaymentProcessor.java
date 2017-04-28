@@ -25,7 +25,7 @@ public class SubscriptionPaymentProcessor implements PaymentProcessor {
     @Override
     public void process(IpnData ipnData) {
         String customData = ipnData.getParameter("custom");
-        logger.info("Custom Data : {}", customData);
+        logger.info("Subscription Id : {}", customData);
         Long subscriptionId = Long.valueOf(customData);
         Team team = teamRepository.findOne(subscriptionId);
         team.setPaymentProcessedAt(TimeMachine.now());
@@ -34,7 +34,7 @@ public class SubscriptionPaymentProcessor implements PaymentProcessor {
         Random rnd = new Random();
         int code = 100000 + rnd.nextInt(900000);
         team.setPaymentVerficationCode(code);
+        logger.info("{} updated and subscription validated", team.toString());
         teamRepository.save(team);
-
     }
 }

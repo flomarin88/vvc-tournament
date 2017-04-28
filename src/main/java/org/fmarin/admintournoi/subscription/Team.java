@@ -170,4 +170,26 @@ public class Team {
     public void setPaymentVerficationCode(Integer paymentVerficationCode) {
         this.paymentVerficationCode = paymentVerficationCode;
     }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", level=" + level +
+                ", captainName='" + captainName + '\'' +
+                ", captainEmail='" + captainEmail + '\'' +
+                ", captainPhone='" + captainPhone + '\'' +
+                ", player2Name='" + player2Name + '\'' +
+                ", player2Email='" + player2Email + '\'' +
+                ", player3Name='" + player3Name + '\'' +
+                ", player3Email='" + player3Email + '\'' +
+                ", tournament=" + tournament +
+                ", createdAt=" + createdAt +
+                ", paymentTransactionId='" + paymentTransactionId + '\'' +
+                ", paymentStatus='" + paymentStatus + '\'' +
+                ", paymentProcessedAt=" + paymentProcessedAt +
+                ", paymentVerficationCode=" + paymentVerficationCode +
+                '}';
+    }
 }
