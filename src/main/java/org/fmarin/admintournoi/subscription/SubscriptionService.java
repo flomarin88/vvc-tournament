@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.subscription;
 
+import org.fmarin.admintournoi.helper.TimeMachine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,7 @@ public class SubscriptionService {
         team.setPlayer2Email(subscription.getPlayer2Email());
         team.setPlayer3Name(subscription.getPlayer3Name());
         team.setPlayer3Email(subscription.getPlayer3Email());
+        team.setCreatedAt(TimeMachine.now());
         return team;
     }
 }
