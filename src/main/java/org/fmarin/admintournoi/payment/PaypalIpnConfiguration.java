@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.payment;
 
 import com.benfante.paypal.ipnassistant.*;
+import org.fmarin.admintournoi.mailing.MailChimpService;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,8 @@ public class PaypalIpnConfiguration {
     private IpnMessageRepository ipnMessageRepository;
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private MailChimpService mailChimpService;
 
     @Bean
     public IpnConfiguration configuration() {
@@ -34,7 +37,7 @@ public class PaypalIpnConfiguration {
 
     @Bean
     public PaymentProcessor paymentProcessor() {
-        return new SubscriptionPaymentProcessor(teamRepository);
+        return new SubscriptionPaymentProcessor(teamRepository, mailChimpService);
     }
 
     @Bean

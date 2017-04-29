@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.payment;
 
 import com.benfante.paypal.ipnassistant.IpnData;
 import org.fmarin.admintournoi.helper.TimeMachine;
+import org.fmarin.admintournoi.mailing.MailChimpService;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.junit.Before;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,10 +28,12 @@ public class SubscriptionPaymentProcessorUTest {
 
     @Mock
     private TeamRepository mockedTeamRepository;
+    @Mock
+    private MailChimpService mockedMailChimpService;
 
     @Before
     public void setUp() throws Exception {
-        processor = new SubscriptionPaymentProcessor(mockedTeamRepository);
+        processor = new SubscriptionPaymentProcessor(mockedTeamRepository, mockedMailChimpService);
     }
 
     @Test
@@ -45,6 +49,7 @@ public class SubscriptionPaymentProcessorUTest {
         LocalDateTime now = LocalDateTime.of(2017, 4, 28, 19, 52, 20);
         TimeMachine.useFixedClockAt(now);
         when(mockedTeamRepository.findOne(12345L)).thenReturn(new Team());
+        when(mockedTeamRepository.save(any(Team.class))).thenReturn(new Team());
 
         // When
         processor.process(ipnData);

@@ -39,6 +39,8 @@ dependencies {
 
     compile group: 'com.benfante.paypal', name: 'ipnAssistant', version: '1.0'
 
+    compile 'com.ecwid:maleorang:3.0-0.9.6'
+
     // tag::actuator[]
     compile("org.springframework.boot:spring-boot-starter-actuator")
     // end::actuator[]
