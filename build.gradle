@@ -4,11 +4,13 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
+        classpath 'com.bertramlabs.plugins:less-asset-pipeline:2.14.1'
     }
 }
 
 plugins {
     id "org.flywaydb.flyway" version "4.1.2"
+    id "com.bertramlabs.asset-pipeline" version "2.13.1"
 }
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -16,7 +18,7 @@ apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'admin_tournoi'
-    version =  '0.1.0'
+    version = '0.1.0'
 }
 
 repositories {
@@ -41,6 +43,9 @@ dependencies {
 
     compile 'com.ecwid:maleorang:3.0-0.9.6'
 
+    compile 'com.bertramlabs.plugins:asset-pipeline-spring-boot:2.14.1'
+    compile 'com.bertramlabs.plugins:less-asset-pipeline:2.14.1'
+
     // tag::actuator[]
     compile("org.springframework.boot:spring-boot-starter-actuator")
     // end::actuator[]
@@ -52,4 +57,8 @@ dependencies {
 
 tasks.withType(org.springframework.boot.gradle.run.BootRunTask) {
     bootRun.systemProperties = System.properties
+}
+
+assets {
+    excludes = ['**/*.less'] //Example Exclude GLOB pattern
 }
