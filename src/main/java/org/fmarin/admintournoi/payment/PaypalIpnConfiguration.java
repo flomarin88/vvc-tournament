@@ -20,8 +20,8 @@ public class PaypalIpnConfiguration {
     @Bean
     public IpnConfiguration configuration() {
         IpnConfiguration configuration = new IpnConfiguration();
-        configuration.setPaypalIpnUrl("https://ipnpb.sandbox.paypal.com/cgi-bin/webscr");
-        configuration.setReceiverEmail("flomarin88+buyer@gmail.com");
+        configuration.setPaypalIpnUrl("https://ipnpb.paypal.com/cgi-bin/webscr");
+        configuration.setReceiverEmail("vvctournoi@gmail.com");
         return configuration;
     }
 
