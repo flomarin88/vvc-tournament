@@ -38,9 +38,33 @@
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand page-scroll" href="/">
+            <a class="navbar-brand page-scroll" href="/#page-top">
                 <i class="fa icon-vvc"></i> <span class="light">VVC Tournament</span> édition 2017
             </a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+            <ul class="nav navbar-nav">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a href="#page-top"></a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#subscriptions">Inscriptions</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#contact">Nous contacter</a>
+                </li>
+                <li>
+                    <a href="https://www.facebook.com/events/1357708144309034"><i class="fa fa-facebook"></i></a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/VvcTournament"><i class="fa fa-twitter"></i></a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/vvctournament2017/"><i class="fa fa-instagram"></i></a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -50,26 +74,45 @@
         <div class="container">
             <div class="row">
                 <h1 class="brand-heading">Tournoi 3x3</h1>
-                <p class="intro-text">Après une <i>trop longue</i> pause, il est de retour avec de nouvelles ambitions
+                <p class="intro-text">Après une <i>trop longue</i> pause, il est de retour avec de <strong>nouvelles
+                    ambitions</strong>
                     <br/>Un tout <strong>nouveau staff</strong> pour vous préparer une belle journée
-                    <br/>Aidez nous à faire de ce tournoi une référence, parlez en autour de vous
+                    <br/>Aidez nous à faire de ce tournoi une référence, <strong>parlez en autour de vous</strong>
                     <br/>Restez informés</p>
-                <a href="https://www.facebook.com/vincennes.volleyclub" class="btn btn-default btn-lg"><i class="fa fa-facebook"></i> Page</a>
-                <a href="https://www.facebook.com/events/1357708144309034" class="btn btn-default btn-lg"><i class="fa fa-facebook"></i> Évènement</a>
-                <a href="https://twitter.com/VvcTournament" class="btn btn-default btn-lg"><i class="fa fa-twitter"></i> Twitter</a>
-                <a href="https://www.instagram.com/vvctournament2017/" class="btn btn-default btn-lg"><i class="fa fa-instagram"></i> Instagram</a>
+                <a href="https://www.facebook.com/vincennes.volleyclub" class="btn btn-default btn-lg"><i
+                        class="fa fa-facebook"></i> Page</a>
+                <a href="https://www.facebook.com/events/1357708144309034" class="btn btn-default btn-lg"><i
+                        class="fa fa-facebook"></i> Évènement</a>
+                <a href="https://twitter.com/VvcTournament" class="btn btn-default btn-lg"><i class="fa fa-twitter"></i>
+                    Twitter</a>
+                <a href="https://www.instagram.com/vvctournament2017/" class="btn btn-default btn-lg"><i
+                        class="fa fa-instagram"></i> Instagram</a>
             </div>
         </div>
     </div>
 </header>
 
-<section id="about" class="container content-section text-center">
+<section id="subscriptions" class="container content-section text-center subscriptions-section">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
-            <h2>About Grayscale</h2>
-            <p>Grayscale is a free Bootstrap 3 theme created by Start Bootstrap. It can be yours right now, simply download the template on <a href="http://startbootstrap.com/template-overviews/grayscale/">the preview page</a>. The theme is open source, and you can use it for any purpose, personal or commercial.</p>
-            <p>This theme features stock photos by <a href="http://gratisography.com/">Gratisography</a> along with a custom Google Maps skin courtesy of <a href="http://snazzymaps.com/">Snazzy Maps</a>.</p>
-            <p>Grayscale includes full HTML, CSS, and custom JavaScript files along with LESS files for easy customization.</p>
+            <h2>Inscriptions</h2>
+            <p>Le tournoi accueillera <strong>33 équipes féminines et 48 équipes masculines</strong>.</p>
+            <p>Les inscriptions et le paiement se font en ligne au tarif de 33€ par équipe.</p>
+            <a href="/subscriptions/new" class="btn btn-default btn-lg" {{^subscriptionsEnable}}disabled{{/subscriptionsEnable}}><i class="fa fa-sign-in"></i> Je
+                m'inscris</a>
+            {{^subscriptionsEnable}}
+            <p><i>Le système d'inscriptions est momentanément désactivé, le temps pour nous de vérifier son bon fonctionnement</i></p>
+            {{/subscriptionsEnable}}
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="container content-section text-center contact-section">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <h2>Nous contacter</h2>
+            <p>Nous sommes disponibles pour répondre à toutes vos questions, remarques et suggestions ou juste pour dire bonjour</p>
+            <p><a href="mailto:vvctournoi@gmail.com" class="btn btn-primary btn-lg">Staff VVC Tournament - 2017</a></p>
         </div>
     </div>
 </section>

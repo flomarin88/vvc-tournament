@@ -40,7 +40,7 @@ public class SubscriptionController {
             }
             return new ModelAndView("subscription_form");
         }
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/#subscriptions");
     }
 
     @PostMapping("/new")

@@ -256,7 +256,17 @@ a:focus {
 }
 
 .content-section {
-    padding-top: 100px;
+    padding: 100px 0;
+}
+
+.subscriptions-section {
+    width: 100%;
+    background: #1C3F6F;
+}
+
+.contact-section {
+    width: 100%;
+    background: #1B1E38;
 }
 
 .download-section {
@@ -303,17 +313,17 @@ a:focus {
 }
 
 .btn-default {
-    border: 2px solid #deb501;
-    color: #deb501;
+    border: 2px solid #DEB501;
+    color: #DEB501;
     background-color: transparent;
 }
 
 .btn-default:hover,
 .btn-default:focus {
-    border: 2px solid #deb501;
+    border: 2px solid #DEB501;
     outline: none;
     color: black;
-    background-color: #deb501;
+    background-color: #DEB501;
 }
 
 ul.banner-social-buttons {
