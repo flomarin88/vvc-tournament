@@ -10,7 +10,6 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
     basePackageClasses = {Application.class, Jsr310JpaConverters.class}
 )
 @SpringBootApplication
-//@ComponentScan(basePackages = {"asset.pipeline.springboot"})
 @EnableAutoConfiguration
 public class Application {
 

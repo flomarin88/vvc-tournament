@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-lg-offset-2 col-lg-8">
 
-        <form method="POST" action="/subscriptions">
+        <form method="POST" action="/subscriptions/new" modelAttribute="subscription">
             <fieldset class="form-category">
                 <span class="form-category-title">Informations de l'équipe</span>
                 <div class="form-category-content mat-card">
@@ -18,11 +18,13 @@
                                 <input type="radio" name="tournamentId" value="2"> Masculin
                             </label>
                         </div>
+                        <span class="help-block">Veuillez sélectionner un tournoi</span>
                     </div>
 
                     <div class="form-group">
                         <label for="name">Nom</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" name="name" value="{{ subscription.name }}">
+                        <span class="help-block">Veuillez saisir le nom de votre équipe</span>
                     </div>
 
                     <div class="form-group">
@@ -41,6 +43,7 @@
                                 <input type="radio" name="level" value="4"> Loisirs
                             </label>
                         </div>
+                        <span class="help-block">Veuillez sélectionner votre niveau</span>
                     </div>
                 </div>
             </fieldset>
@@ -50,15 +53,20 @@
                 <div class="form-category-content mat-card">
                     <div class="form-group">
                         <label for="captainName">Nom complet</label>
-                        <input type="text" class="form-control" id="captainName" name="captainName">
-                    </div>
-                    <div class="form-group">
-                        <label for="captainPhone">Téléphone</label>
-                        <input type="text" class="form-control" id="captainPhone" name="captainPhone">
+                        <input type="text" class="form-control" id="captainName" name="captainName"
+                               value="{{ subscription.captainName }}">
+                        <span class="help-block">Veuillez saisir votre nom</span>
                     </div>
                     <div class="form-group">
                         <label for="captainEmail">Email</label>
-                        <input type="text" class="form-control" id="captainEmail" name="captainEmail">
+                        <input type="text" class="form-control" id="captainEmail" name="captainEmail"
+                               value="{{ subscription.captainEmail }}">
+                        <span class="help-block">Pour recevoir la confirmation de votre inscription</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="captainPhone">Téléphone <i>- facultatif</i></label>
+                        <input type="text" class="form-control" id="captainPhone" name="captainPhone"
+                               value="{{ subscription.captainPhone }}">
                     </div>
                 </div>
             </fieldset>
@@ -68,11 +76,14 @@
                 <div class="form-category-content mat-card">
                     <div class="form-group">
                         <label for="player2Name">Nom complet</label>
-                        <input type="text" class="form-control" id="player2Name" name="player2Name">
+                        <input type="text" class="form-control" id="player2Name" name="player2Name"
+                               value="{{ subscription.player2Name }}">
+                        <span class="help-block">Veuillez saisir le nom du deuxième joueur</span>
                     </div>
                     <div class="form-group">
-                    <label for="player2Email">Email</label>
-                    <input type="text" class="form-control" id="player2Email" name="player2Email">
+                        <label for="player2Email">Email <i>- facultatif</i></label>
+                        <input type="text" class="form-control" id="player2Email" name="player2Email"
+                               value="{{ subscription.player2Email }}">
                     </div>
                 </div>
             </fieldset>
@@ -82,11 +93,14 @@
                 <div class="form-category-content mat-card">
                     <div class="form-group">
                         <label for="player3Name">Nom complet</label>
-                        <input type="text" class="form-control" id="player3Name" name="player3Name">
+                        <input type="text" class="form-control" id="player3Name" name="player3Name"
+                               value="{{ subscription.player3Name }}">
+                        <span class="help-block">Veuillez saisir le nom du troisième joueur</span>
                     </div>
                     <div class="form-group">
-                    <label for="player3Email">Email</label>
-                    <input type="text" class="form-control" id="player3Email" name="player3Email">
+                        <label for="player3Email">Email <i>- facultatif</i></label>
+                        <input type="text" class="form-control" id="player3Email" name="player3Email"
+                               value="{{ subscription.player3Email }}">
                     </div>
                 </div>
             </fieldset>

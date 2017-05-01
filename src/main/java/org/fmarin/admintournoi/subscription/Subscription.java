@@ -1,17 +1,34 @@
 package org.fmarin.admintournoi.subscription;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class Subscription {
 
-    private Long tournamentId;
-    private String name;
-    private int level;
-    private String captainName;
-    private String captainEmail;
-    private String captainPhone;
-    private String player2Name;
-    private String player2Email;
-    private String player3Name;
-    private String player3Email;
+    @NotNull
+    private Long tournamentId = 0L;
+    @NotEmpty
+    private String name = "";
+    @NotNull
+    @Min(1)
+    @Max(4)
+    private int level = 0;
+    @NotEmpty
+    private String captainName= "";
+    @NotEmpty
+    @Email
+    private String captainEmail= "";
+    private String captainPhone= "";
+    @NotEmpty
+    private String player2Name= "";
+    private String player2Email= "";
+    @NotEmpty
+    private String player3Name= "";
+    private String player3Email= "";
 
     public Long getTournamentId() {
         return tournamentId;

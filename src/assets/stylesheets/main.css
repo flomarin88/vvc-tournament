@@ -1,5 +1,6 @@
 body {
     padding-top: 70px;
+    font-family: "Lora", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .form-category {
@@ -28,13 +29,11 @@ body {
     position: relative;
     padding: 24px;
     border-radius: 2px;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .mat-input-container {
     display: inline-block;
     position: relative;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
     line-height: normal;
     text-align: left;
 }
