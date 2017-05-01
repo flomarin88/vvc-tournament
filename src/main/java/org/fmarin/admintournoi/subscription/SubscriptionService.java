@@ -19,7 +19,7 @@ public class SubscriptionService {
     Team subscribe(Subscription subscription) throws TeamAlreadyExistsException, TournamentIsFullException {
         Tournament tournament = tournamentRepository.findOne(subscription.getTournamentId());
         if (tournament != null) {
-            if (tournament.getTeamLimit() > tournament.getTeams().size()) {
+            if (!isFull(tournament)) {
                 if (teamRepository.findByName(subscription.getName()) == null) {
                     Team team = create(subscription, tournament);
                     return teamRepository.save(team);
@@ -30,6 +30,11 @@ public class SubscriptionService {
             }
         }
         throw new TournamentIsFullException();
+    }
+
+    boolean isFull(Tournament tournament) {
+        long count = tournament.getTeams().stream().filter(team -> "Completed".equals(team.getPaymentStatus())).count();
+        return count >= tournament.getTeamLimit();
     }
 
     Team create(Subscription subscription, Tournament tournament) {

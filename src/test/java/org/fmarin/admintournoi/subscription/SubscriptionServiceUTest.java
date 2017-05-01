@@ -1,7 +1,9 @@
 package org.fmarin.admintournoi.subscription;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -9,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -22,6 +25,9 @@ public class SubscriptionServiceUTest {
     @Mock
     private TournamentRepository mockedTournamentRepository;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Before
     public void setUp() throws Exception {
         service = new SubscriptionService(mockedTeamRepository, mockedTournamentRepository);
@@ -32,11 +38,13 @@ public class SubscriptionServiceUTest {
         // Given
         Subscription subscriptionWithUnknownTournament = new Subscription();
 
+        expectedException.expect(TournamentIsFullException.class);
+
         // When
-        Team result = service.subscribe(subscriptionWithUnknownTournament);
+        service.subscribe(subscriptionWithUnknownTournament);
 
         // Then
-        assertThat(result).isNull();
+        fail("Tournament exists");
     }
 
     @Test
@@ -44,17 +52,21 @@ public class SubscriptionServiceUTest {
         // Given
         Tournament tournament = new Tournament();
         tournament.setTeamLimit(2);
-        tournament.setTeams(Arrays.asList(new Team(), new Team()));
+        Team teamCompleted = new Team();
+        teamCompleted.setPaymentStatus("Completed");
+        tournament.setTeams(Arrays.asList(teamCompleted, new Team(), teamCompleted));
         Subscription subscriptionWithLimitReached = new Subscription();
         subscriptionWithLimitReached.setTournamentId(1L);
 
         when(mockedTournamentRepository.findOne(1L)).thenReturn(tournament);
 
+        expectedException.expect(TournamentIsFullException.class);
+
         // When
-        Team result = service.subscribe(subscriptionWithLimitReached);
+        service.subscribe(subscriptionWithLimitReached);
 
         // Then
-        assertThat(result).isNull();
+        fail("Tournament is not full");
     }
 
     @Test

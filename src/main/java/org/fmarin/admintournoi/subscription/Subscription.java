@@ -23,6 +23,7 @@ public class Subscription {
     @NotEmpty
     @Email
     private String captainEmail= "";
+    @NotEmpty
     private String captainPhone= "";
     @NotEmpty
     private String player2Name= "";

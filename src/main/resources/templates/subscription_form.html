@@ -74,10 +74,13 @@
                                value="{{ subscription.captainEmail }}">
                         <span class="help-block">{{#errors}} {{#captainEmail}} Email invalide, {{/captainEmail}} {{/errors}}Nécessaire pour recevoir la confirmation de votre inscription</span>
                     </div>
-                    <div class="form-group">
-                        <label for="captainPhone" class="control-label">Téléphone <i>- facultatif</i></label>
+                    <div class="form-group {{#errors}} {{#captainPhone}} has-error {{/captainPhone}} {{/errors}}">
+                        <label for="captainPhone" class="control-label">Téléphone</i></label>
                         <input type="text" class="form-control" id="captainPhone" name="captainPhone"
                                value="{{ subscription.captainPhone }}">
+                        {{#errors}} {{#captainName}}
+                        <span class="help-block">Veuillez saisir votre numéro de téléphone</span>
+                        {{/captainName}} {{/errors}}
                     </div>
                 </div>
             </fieldset>
