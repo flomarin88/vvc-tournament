@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 public class Subscription {
 
     @NotNull
+    @Min(1)
     private Long tournamentId = 0L;
     @NotEmpty
     private String name = "";

@@ -5,7 +5,7 @@ ALTER TABLE TEAM
 ALTER TABLE TEAM
   ADD COLUMN payment_status VARCHAR(255);
 ALTER TABLE TEAM
-  ADD COLUMN payment_processed_at TIMESTAMP(255);
+  ADD COLUMN payment_processed_at TIMESTAMP;
 ALTER TABLE TEAM
   ADD COLUMN payment_verification_code INTEGER;
 

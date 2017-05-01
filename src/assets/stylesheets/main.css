@@ -56,3 +56,7 @@ body {
 .level {
     margin-top: 25px !important;
 }
+
+.height {
+    min-height: 150px;
+}

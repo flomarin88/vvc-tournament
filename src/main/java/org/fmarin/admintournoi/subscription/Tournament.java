@@ -17,6 +17,8 @@ public class Tournament {
     private int teamLimit;
     @OneToMany(mappedBy = "tournament")
     private List<Team> teams = new ArrayList<>();
+    @Column(name = "paypal_button_id")
+    private String paypalButtonId;
 
     public Long getId() {
         return id;
@@ -48,5 +50,13 @@ public class Tournament {
 
     public void setTeams(List<Team> teams) {
         this.teams = teams;
+    }
+
+    public String getPaypalButtonId() {
+        return paypalButtonId;
+    }
+
+    public void setPaypalButtonId(String paypalButtonId) {
+        this.paypalButtonId = paypalButtonId;
     }
 }

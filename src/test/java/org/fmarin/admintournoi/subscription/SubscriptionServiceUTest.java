@@ -28,19 +28,19 @@ public class SubscriptionServiceUTest {
     }
 
     @Test
-    public void subscribe_should_return_null_when_tournament_does_not_exist() {
+    public void subscribe_should_return_null_when_tournament_does_not_exist() throws TournamentIsFullException {
         // Given
         Subscription subscriptionWithUnknownTournament = new Subscription();
 
         // When
-        Long result = service.subscribe(subscriptionWithUnknownTournament);
+        Team result = service.subscribe(subscriptionWithUnknownTournament);
 
         // Then
         assertThat(result).isNull();
     }
 
     @Test
-    public void subscribe_should_return_null_when_tournament_limit_is_reached() {
+    public void subscribe_should_return_null_when_tournament_limit_is_reached() throws TournamentIsFullException {
         // Given
         Tournament tournament = new Tournament();
         tournament.setTeamLimit(2);
@@ -51,14 +51,14 @@ public class SubscriptionServiceUTest {
         when(mockedTournamentRepository.findOne(1L)).thenReturn(tournament);
 
         // When
-        Long result = service.subscribe(subscriptionWithLimitReached);
+        Team result = service.subscribe(subscriptionWithLimitReached);
 
         // Then
         assertThat(result).isNull();
     }
 
     @Test
-    public void subscribe_should_return_new_team_id() {
+    public void subscribe_should_return_new_team_id() throws TournamentIsFullException {
         // Given
         Tournament tournament = new Tournament();
         tournament.setTeamLimit(20);
@@ -72,10 +72,10 @@ public class SubscriptionServiceUTest {
         when(mockedTeamRepository.save(any(Team.class))).thenReturn(team);
 
         // When
-        Long result = service.subscribe(subscription);
+        Team result = service.subscribe(subscription);
 
         // Then
-        assertThat(result).isEqualTo(100L);
+        assertThat(result.getId()).isEqualTo(100L);
     }
 
     @Test

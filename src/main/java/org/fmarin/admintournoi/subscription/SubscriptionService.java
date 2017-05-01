@@ -16,16 +16,20 @@ public class SubscriptionService {
         this.tournamentRepository = tournamentRepository;
     }
 
-    Long subscribe(Subscription subscription) {
+    Team subscribe(Subscription subscription) throws TeamAlreadyExistsException, TournamentIsFullException {
         Tournament tournament = tournamentRepository.findOne(subscription.getTournamentId());
         if (tournament != null) {
             if (tournament.getTeamLimit() > tournament.getTeams().size()) {
-                Team team = create(subscription, tournament);
-                team = teamRepository.save(team);
-                return team.getId();
+                if (teamRepository.findByName(subscription.getName()) == null) {
+                    Team team = create(subscription, tournament);
+                    return teamRepository.save(team);
+                }
+                else {
+                    throw new TeamAlreadyExistsException();
+                }
             }
         }
-        return null;
+        throw new TournamentIsFullException();
     }
 
     Team create(Subscription subscription, Tournament tournament) {
