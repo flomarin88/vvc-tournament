@@ -16,6 +16,11 @@ class LayoutAdvice {
         return new Layout();
     }
 
+    @ModelAttribute("admin_layout")
+    public Mustache.Lambda adminLayout() {
+        return new Layout();
+    }
+
 }
 
 class Layout implements Mustache.Lambda {

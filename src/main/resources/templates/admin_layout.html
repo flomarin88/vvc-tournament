@@ -1,4 +1,4 @@
-<!-- layout.mustache -->
+<!-- admin_layout.mustache -->
 <!DOCTYPE html>
 
 <html>
@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="icon" type="image/png" href="/assets/favicon.png" sizes="32x32"/>
-    <!--<link rel='stylesheet' href='/webjars/bootstrap/3.3.7/css/bootstrap.min.css'>-->
+
     <link rel='stylesheet' href='/assets/bootswatch.css'/>
     <link rel='stylesheet' href='/assets/navbar.css'/>
-    <link rel='stylesheet' href='/assets/main.css'/>
+    <link rel='stylesheet' href='/assets/admin.css'/>
 
     <script src="/webjars/jquery/3.2.0/jquery.js"></script>
     <script src="/webjars/bootstrap/3.3.7/js/bootstrap.js"></script>
@@ -39,8 +39,8 @@
 <nav class="navbar navbar-custom navbar-fixed-top top-nav-collapse" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand page-scroll" href="/">
-                <i class="fa icon-vvc"></i> <span class="light">VVC Tournament</span> édition 2017
+            <a class="navbar-brand" href="/admin">
+                <i class="fa icon-vvc"></i> <span class="light">VVC Tournament</span> Admin
             </a>
         </div>
 
@@ -71,7 +71,7 @@
 </nav>
 
 <div class="container" role="main">
-    {{{layout.body}}}
+    {{{admin_layout.body}}}
 </div>
 
 </body>

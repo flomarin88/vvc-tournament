@@ -39,13 +39,17 @@ dependencies {
     compile group: 'org.postgresql', name: 'postgresql', version: '42.0.0'
     compile("org.flywaydb:flyway-core:4.1.2")
 
+    // Security / Authentication
+    compile 'com.auth0:auth0-spring-mvc:1.2.0'
+
+    // Paypal
     compile group: 'com.benfante.paypal', name: 'ipnAssistant', version: '1.0'
 
+    // Mailchimp
     compile 'com.ecwid:maleorang:3.0-0.9.6'
 
     compile("org.codehaus.groovy:groovy")
     compile 'com.bertramlabs.plugins:asset-pipeline-spring-boot:2.14.1'
-//    compile 'com.bertramlabs.plugins:less-asset-pipeline:2.14.1'
 
     // tag::actuator[]
     compile("org.springframework.boot:spring-boot-starter-actuator")
