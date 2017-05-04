@@ -34,7 +34,7 @@ public class SubscriptionServiceUTest {
     }
 
     @Test
-    public void subscribe_should_return_null_when_tournament_does_not_exist() throws TournamentIsFullException {
+    public void subscribe_should_should_throw_exception_when_tournament_does_not_exist() throws TournamentIsFullException {
         // Given
         Subscription subscriptionWithUnknownTournament = new Subscription();
 
@@ -48,7 +48,7 @@ public class SubscriptionServiceUTest {
     }
 
     @Test
-    public void subscribe_should_return_null_when_tournament_limit_is_reached() throws TournamentIsFullException {
+    public void subscribe_should_throw_exception_when_tournament_limit_is_reached() throws TournamentIsFullException {
         // Given
         Tournament tournament = new Tournament();
         tournament.setTeamLimit(2);
@@ -67,6 +67,28 @@ public class SubscriptionServiceUTest {
 
         // Then
         fail("Tournament is not full");
+    }
+
+    @Test
+    public void subscribe_should_throw_exception_when_team_with_same_name_as_completed_payment() throws TournamentIsFullException {
+        // Given
+        Tournament tournament = new Tournament();
+        tournament.setTeamLimit(20);
+        tournament.setTeams(Arrays.asList(new Team(), new Team()));
+        Subscription subscription = new Subscription();
+        subscription.setTournamentId(1L);
+        subscription.setName("Toto");
+
+        when(mockedTournamentRepository.findOne(1L)).thenReturn(tournament);
+        when(mockedTeamRepository.findByNameAndPaymentStatus("Toto", "Completed")).thenReturn(new Team());
+
+        expectedException.expect(TeamAlreadyExistsException.class);
+
+        // When
+        service.subscribe(subscription);
+
+        // Then
+        fail("Team does not exist");
     }
 
     @Test

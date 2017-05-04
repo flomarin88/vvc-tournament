@@ -1,0 +1,1 @@
+ALTER TABLE TEAM DROP CONSTRAINT team_tournament_id_name_key;
