@@ -13,7 +13,8 @@ public class Team {
     @Column(name = "name")
     private String name;
     @Column(name = "level")
-    private Integer level;
+    @Enumerated(EnumType.STRING)
+    private Level level;
     @Column(name = "captain_name")
     private String captainName;
     @Column(name = "captain_email")
@@ -59,11 +60,11 @@ public class Team {
         this.name = name;
     }
 
-    public Integer getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(Integer level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 

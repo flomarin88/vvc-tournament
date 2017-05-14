@@ -37,7 +37,7 @@ public class SubscriptionService {
         Team team = new Team();
         team.setTournament(tournament);
         team.setName(subscription.getName());
-        team.setLevel(subscription.getLevel());
+        team.setLevel(Level.valueOf(subscription.getLevel()));
         team.setCaptainName(subscription.getCaptainName());
         team.setCaptainEmail(subscription.getCaptainEmail());
         team.setCaptainPhone(subscription.getCaptainPhone());

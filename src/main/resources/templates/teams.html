@@ -10,7 +10,6 @@
                     <th>Capitaine</th>
                     <th>Téléphone</th>
                     <th>Email</th>
-                    <th>Paiement</th>
                     <th>Présent</th>
                 </tr>
             </thead>
@@ -18,11 +17,10 @@
             {{#teams}}
                 <tr>
                     <th scope="row">{{name}}</th>
-                    <td>{{level}}</td>
+                    <td>{{levelLabel}}</td>
                     <td>{{captainName}}</td>
                     <td>{{captainPhone}}</td>
                     <td>{{captainEmail}}</td>
-                    <td>-</td>
                     <td>-</td>
                 </tr>
             {{/teams}}

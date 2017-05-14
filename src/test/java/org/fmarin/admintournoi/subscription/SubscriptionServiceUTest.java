@@ -134,7 +134,7 @@ public class SubscriptionServiceUTest {
         assertThat(result.getId()).isNull();
         assertThat(result.getTournament()).isEqualTo(tournament);
         assertThat(result.getName()).isEqualTo("Equipe");
-        assertThat(result.getLevel()).isEqualTo(1);
+        assertThat(result.getLevel()).isEqualTo(Level.NATIONAL);
         assertThat(result.getCaptainName()).isEqualTo("Captain");
         assertThat(result.getCaptainEmail()).isEqualTo("Captain email");
         assertThat(result.getCaptainPhone()).isEqualTo("0123456789");

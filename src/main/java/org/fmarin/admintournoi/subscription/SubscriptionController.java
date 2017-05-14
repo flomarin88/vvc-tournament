@@ -53,7 +53,7 @@ public class SubscriptionController {
                 Team team = service.subscribe(subscription);
                 ModelAndView modelAndView = new ModelAndView("subscription_payment", "team", team);
                 modelAndView.addObject("tournamentLabel", team.getTournament().getName());
-                modelAndView.addObject("levelLabel", getLevelLabel(team.getLevel()));
+                modelAndView.addObject("levelLabel", team.getLevel().getLabel());
                 modelAndView.addObject("paypal_id", team.getTournament().getPaypalButtonId());
                 return modelAndView;
             }
@@ -96,10 +96,4 @@ public class SubscriptionController {
         return key + value.toString();
     }
 
-    private String getLevelLabel(Integer level) {
-        if (level == 1) return "National";
-        if (level == 2) return "Régional";
-        if (level == 3) return "Départemental";
-        return "Loisirs";
-    }
 }
