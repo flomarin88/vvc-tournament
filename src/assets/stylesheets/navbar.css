@@ -81,8 +81,14 @@
     }
 }
 
+.call-to-action {
+    color: #DEB501 !important;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
 .icon-vvc {
-    background: url("../images/volleyball.svg") center center;
+    background: url("/assets/volleyball.svg") center center;
     height: 16px;
     width: 16px;
 }

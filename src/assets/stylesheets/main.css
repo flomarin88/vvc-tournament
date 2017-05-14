@@ -9,13 +9,14 @@ body {
 
 .form-category-title {
     font-size: 16px;
-    color: #5bc0de;
+    color: #1c3f6f;
+    font-weight: bold;
 }
 
 .form-category-content {
     margin-top: 10px;
     margin-bottom: 30px;
-    border-left: 5px solid #5bc0de;
+    border-left: 5px solid #1c3f6f;
     padding: 0;
 }
 
@@ -50,6 +51,10 @@ body {
 .form-control {
     border-bottom: 1px solid #cccccc !important;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0) !important;
+}
+
+.control-label {
+    font-weight: bold;
 }
 
 .level {

@@ -12,10 +12,12 @@
                         <label class="control-label">Tournoi</label>
                         <div class="btn-group btn-group-justified" data-toggle="buttons">
                             <label class="btn btn-info {{#tournamentId1}}active{{/tournamentId1}}">
-                                <input type="radio" name="tournamentId" value="1" {{#tournamentId1}}checked{{/tournamentId1}}> Féminin
+                                <input type="radio" name="tournamentId" value="1" {{#tournamentId1}}checked{{/tournamentId1}}>
+                                Féminin
                             </label>
                             <label class="btn btn-info {{#tournamentId2}}active{{/tournamentId2}}">
-                                <input type="radio" name="tournamentId" value="2" {{#tournamentId2}}checked{{/tournamentId2}}> Masculin
+                                <input type="radio" name="tournamentId" value="2" {{#tournamentId2}}checked{{/tournamentId2}}>
+                                Masculin
                             </label>
                         </div>
                         {{#errors}} {{#tournamentId}}
@@ -24,7 +26,7 @@
                     </div>
 
                     <div class="form-group {{#errors}} {{#name}} has-error {{/name}} {{#teamExists}} has-error {{/teamExists}} {{/errors}}">
-                        <label class="control-label" for="name">Nom</label>
+                        <label class="control-label" for="name">Nom d'équipe</label>
                         <input type="text" class="form-control" id="name" name="name" value="{{ subscription.name }}">
                         {{#errors}} {{#name}}
                         <span class="help-block">Veuillez saisir le nom de votre équipe</span>
@@ -37,17 +39,21 @@
                     <div class="form-group {{#errors}} {{#level}} has-error {{/level}} {{/errors}}">
                         <label class="control-label">Niveau</label>
                         <div class="btn-group btn-group-justified" data-toggle="buttons">
-                            <label class="btn btn-info {{#level1}}active{{/level1}}">
-                                <input type="radio" name="level" value="1" {{#level1}}checked{{/level1}}> National
+                            <label class="btn btn-info {{#level1}}active{{/level1}} ">
+                                <input type="radio" name="level" value="1" {{#level1}}checked{{/level1}}>
+                                National
                             </label>
                             <label class="btn btn-info {{#level2}}active{{/level2}}">
-                                <input type="radio" name="level" value="2" {{#level2}}checked{{/level2}}> Régional
+                                <input type="radio" name="level" value="2" {{#level2}}checked{{/level2}}>
+                                Régional
                             </label>
-                            <label class="btn btn-info {{#level3}}active{{/level3}}">
-                                <input type="radio" name="level" value="3" {{#level3}}checked{{/level3}}> Départemental
+                            <label class="btn btn-info {{#level3}}active{{/level3}} ">
+                                <input type="radio" name="level" value="3" {{#level3}}checked{{/level3}}>
+                                Départemental
                             </label>
-                            <label class="btn btn-info {{#level4}}active{{/level4}}">
-                                <input type="radio" name="level" value="4" {{#level4}}checked{{/level4}}> Loisirs
+                            <label class="btn btn-info {{#level4}}active{{/level4}} ">
+                                <input type="radio" name="level" value="4" {{#level4}}checked{{/level4}}>
+                                Loisirs
                             </label>
                         </div>
                         {{#errors}} {{#level}}
@@ -122,8 +128,9 @@
                     </div>
                 </div>
             </fieldset>
-
-            <button type="submit" class="btn btn-lg btn-primary">Valider l'inscription</button>
+            <div class="text-center" style="margin-bottom: 50px">
+                <button type="submit" class="btn btn-lg btn-primary">Valider l'inscription</button>
+            </div>
         </form>
 
     </div>
