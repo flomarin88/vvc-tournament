@@ -61,6 +61,6 @@ public class SubscriptionPaymentProcessorUTest {
         assertThat(updatedTeam.getPaymentTransactionId()).isEqualTo("TEDGSD1235");
         assertThat(updatedTeam.getPaymentStatus()).isEqualTo("Completed");
         assertThat(updatedTeam.getPaymentProcessedAt()).isEqualTo(now);
-        assertThat(updatedTeam.getPaymentVerficationCode()).isNotNull();
+        assertThat(updatedTeam.getPaymentVerificationCode()).isNotNull();
     }
 }

@@ -10,5 +10,5 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
 
     Team findByNameAndPaymentStatus(String name, String paymentStatus);
 
-    List<Team> findAllByPaymentStatusOrderByNameAsc(String paymentStatus);
+    List<Team> findAllByTournamentAndPaymentStatusOrderByNameAsc(Tournament tournament, String paymentStatus);
 }

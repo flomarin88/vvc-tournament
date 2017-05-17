@@ -42,7 +42,10 @@ public class Team {
     @Column(name = "payment_processed_at")
     private LocalDateTime paymentProcessedAt;
     @Column(name = "payment_verification_code")
-    private Integer paymentVerficationCode;
+    private Integer paymentVerificationCode;
+
+    @Column(name = "present")
+    private boolean present;
 
     public Long getId() {
         return id;
@@ -164,12 +167,20 @@ public class Team {
         this.paymentProcessedAt = paymentProcessedAt;
     }
 
-    public Integer getPaymentVerficationCode() {
-        return paymentVerficationCode;
+    public Integer getPaymentVerificationCode() {
+        return paymentVerificationCode;
     }
 
-    public void setPaymentVerficationCode(Integer paymentVerficationCode) {
-        this.paymentVerficationCode = paymentVerficationCode;
+    public void setPaymentVerificationCode(Integer paymentVerificationCode) {
+        this.paymentVerificationCode = paymentVerificationCode;
+    }
+
+    public boolean isPresent() {
+        return present;
+    }
+
+    public void setPresent(boolean present) {
+        this.present = present;
     }
 
     @Override
@@ -190,7 +201,8 @@ public class Team {
                 ", paymentTransactionId='" + paymentTransactionId + '\'' +
                 ", paymentStatus='" + paymentStatus + '\'' +
                 ", paymentProcessedAt=" + paymentProcessedAt +
-                ", paymentVerficationCode=" + paymentVerficationCode +
+                ", paymentVerificationCode=" + paymentVerificationCode +
+                ", present=" + present +
                 '}';
     }
 }

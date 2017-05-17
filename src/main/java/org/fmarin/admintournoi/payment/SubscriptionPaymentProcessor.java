@@ -44,7 +44,7 @@ public class    SubscriptionPaymentProcessor implements PaymentProcessor {
             team.setPaymentStatus(ipnData.getPaymentStatus());
             Random rnd = new Random();
             int code = 100000 + rnd.nextInt(900000);
-            team.setPaymentVerficationCode(code);
+            team.setPaymentVerificationCode(code);
             logger.info("{} updated and subscription validated", team.toString());
             return teamRepository.save(team);
         }
@@ -53,6 +53,6 @@ public class    SubscriptionPaymentProcessor implements PaymentProcessor {
     }
 
     private void subscibeTeamToMailChimp(Team team) {
-        mailService.subscribe(team.getCaptainEmail(), team.getName(), team.getPaymentVerficationCode());
+        mailService.subscribe(team.getCaptainEmail(), team.getName(), team.getPaymentVerificationCode());
     }
 }
