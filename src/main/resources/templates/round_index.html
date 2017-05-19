@@ -1,0 +1,37 @@
+{{#admin_layout}}
+
+<div class="page-header">
+    <h1>Tours</h1>
+    <p class="lead">Tournoi {{ tournament.name }}
+        <a class="btn btn-primary pull-right" href="/tournaments/{{ tournament.id }}/rounds/new">Nouveau tour</a>
+    </p>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Tours</div>
+    <div class="panel-body">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Tour Précédent</th>
+                <th>Nb Équipes</th>
+                <th>Statut</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#rounds}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{previousRoundName}}</td>
+                <td>{{teamsCount}}</td>
+                <td>{{status}}</td>
+            </tr>
+            {{/rounds}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{/admin_layout}}
+{{>admin_layout}}

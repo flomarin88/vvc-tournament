@@ -1,0 +1,67 @@
+{{#admin_layout}}
+
+<div class="page-header">
+    <h1>Nouveau Tour</h1>
+    <p class="lead">Tournoi {{ tournament.name }}</p>
+</div>
+
+<form method="POST" action="/tournaments/{{ tournament.id }}/rounds" modelAttribute="round">
+
+    <div class="row">
+        <div class="col-lg-6">
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="name">Nom</label>
+        <input type="text" class="form-control" id="name" name="name">
+    </div>
+
+    <div class="form-group">
+        <label for="previousRoundId">Tour précédent</label>
+        <select class="form-control" id="previousRoundId" name="previousRoundId">
+            <option value="" selected>Premier tour</option>
+            {{#rounds}}
+            <option value="{{id}}">{{name}}</option>
+            {{/rounds}}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Branche</label>
+        <div class="btn-group btn-group-justified" data-toggle="buttons">
+            <label class="btn btn-info">
+                <input type="radio" name="tournamentBranch" value="PRINCIPALE">Principale
+            </label>
+            <label class="btn btn-info">
+                <input type="radio" name="tournamentBranch" value="CONSOLANTE">Consolante
+            </label>
+            <label class="btn btn-info">
+                <input type="radio" name="tournamentBranch" value="SUPER_CONSOLANTE">Super Consolante
+            </label>
+        </div>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>#</th>
+            <th>Équipe</th>
+            <th>Niveau</th>
+            <th>Ratio</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="text-center" style="margin-bottom: 50px">
+        <button type="submit" class="btn btn-lg btn-primary">Créer</button>
+    </div>
+</form>
+
+<script src="/assets/rounds.js"></script>
+{{/admin_layout}}
+{{>admin_layout}}

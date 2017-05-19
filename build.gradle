@@ -55,6 +55,8 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-devtools")
 
+    compile group: 'org.choco-solver', name: 'choco-solver', version: '4.0.4'
+
     // tag::actuator[]
     compile("org.springframework.boot:spring-boot-starter-actuator")
     // end::actuator[]
