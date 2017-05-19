@@ -27,7 +27,7 @@
                 <td>{{captainName}}</td>
                 <td>{{captainPhone}}</td>
                 <td>{{paymentVerificationCode}}</td>
-                <td><input type="checkbox" data-toggle="toggle" data-on="Oui" data-off="Non"
+                <td><input type="checkbox" data-id="{{ id }}" data-toggle="toggle" data-on="Oui" data-off="Non"
                            data-onstyle="success" data-offstyle="danger" data-size="mini" {{#isPresent}}checked{{/isPresent}}></td>
             </tr>
             {{/teams}}
@@ -35,5 +35,7 @@
         </table>
     </div>
 </div>
+
+<script src="/assets/checkin.js"></script>
 {{/admin_layout}}
 {{>admin_layout}}
