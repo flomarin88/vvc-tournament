@@ -45,7 +45,7 @@ public class Team {
     private Integer paymentVerificationCode;
 
     @Column(name = "present")
-    private boolean present;
+    private Boolean present = false;
 
     public Long getId() {
         return id;
@@ -175,11 +175,11 @@ public class Team {
         this.paymentVerificationCode = paymentVerificationCode;
     }
 
-    public boolean isPresent() {
+    public Boolean isPresent() {
         return present;
     }
 
-    public void setPresent(boolean present) {
+    public void setPresent(Boolean present) {
         this.present = present;
     }
 

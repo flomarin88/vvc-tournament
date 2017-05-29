@@ -1,11 +1,8 @@
 function bindPreviousRoundSelection() {
 
     $("select").change(function () {
-        console.log("bim");
-        var previousRoundId = $("select option:selected").value()
-        console.log(previousRoundId);
-        var teams = getTeams(previousRoundId);
-        console.log(teams);
+        var previousRoundId = $(event.target).find('option:selected').val();
+        getTeams(previousRoundId);
     });
 }
 
@@ -15,10 +12,16 @@ function getTeams(previousRoundId) {
     };
 
     $.ajax({
-        url: '/admin/rounds/' + previousRoundId + '/teams',
-        type: 'post',
+        url: '/rounds/' + previousRoundId + '/teams',
+        type: 'get',
         dataType: 'json',
         data: data
+    }).done(function () {
+        alert("success");
+    }).fail(function () {
+        alert("error");
+    }).always(function () {
+        alert("complete");
     });
 }
 

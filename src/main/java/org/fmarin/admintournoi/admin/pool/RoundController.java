@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/admin")
 public class RoundController {
 
     private final TournamentRepository tournamentRepository;
@@ -39,9 +40,13 @@ public class RoundController {
     }
 
     @GetMapping("/tournaments/{tournamentId}/rounds/new")
-    public ModelAndView newRound(@Valid @PathVariable(name = "tournamentId") Long tournamentId) {
+    public ModelAndView newRoundStep1(@Valid @PathVariable(name = "tournamentId") Long tournamentId) {
         Tournament tournament = tournamentRepository.findOne(tournamentId);
-        return new ModelAndView("round_new", "tournament", tournament);
+        List<Round> rounds = roundRepository.findAllByTournament(tournament);
+        Map<String, Object> model = Maps.newHashMap();
+        model.put("tournament", tournament);
+        model.put("rounds", rounds);
+        return new ModelAndView("round_new", model);
     }
 
     @GetMapping("/rounds/{roundId}/teams")
@@ -50,14 +55,14 @@ public class RoundController {
     }
 
     @PostMapping("/tournaments/{tournamentId}/rounds")
-    public ModelAndView createRound(@PathVariable(name = "tournamentId") Long tournamentId, @Valid @ModelAttribute(name = "round") RoundToCreateView roundToCreate) {
+    public ModelAndView createRound(@PathVariable(name = "tournamentId") Long tournamentId,
+                                    @Valid @ModelAttribute(name = "round") RoundToCreateView roundToCreate) {
         Tournament tournament = tournamentRepository.findOne(tournamentId);
         Round previousRound = null;
         List<Team> teams = Collections.emptyList();
         if (roundToCreate.getPreviousRoundId() == null) {
             teams = Lists.newArrayList(tournament.getTeams());
-        }
-        else {
+        } else {
             previousRound = roundRepository.findOne(roundToCreate.getPreviousRoundId());
         }
         Round round = RoundBuilder.aRound()
@@ -72,6 +77,17 @@ public class RoundController {
         return new ModelAndView("redirect:/tournaments/" + tournamentId.toString() + "/rounds");
     }
 
+    @GetMapping("/tournaments/{tournamentId}/rounds/{roundId}")
+    public ModelAndView getRound(@PathVariable(name = "tournamentId") Long tournamentId,
+                                 @PathVariable(name = "roundId") Long roundId) {
+        Round round = roundRepository.findOne(roundId);
+        if (!tournamentId.equals(round.getTournament().getId())) {
+            return null;
+        }
+
+        return null;
+    }
+
     RoundView convert(Round round) {
         String previousRoundLabel = round.getPreviousRound() != null ? round.getPreviousRound().getName() : "-";
         return RoundViewBuilder.aPoolView()
@@ -79,7 +95,7 @@ public class RoundController {
                 .withName(round.getName())
                 .withPreviousRoundName(previousRoundLabel)
                 .withTeamsCount(round.getTeams().size())
-                .withStatus(round.getStatus().name())
+                .withStatus(round.getStatus().getLabel())
                 .build();
     }
 }

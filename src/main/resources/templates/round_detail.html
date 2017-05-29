@@ -1,0 +1,39 @@
+{{#admin_layout}}
+
+<div class="page-header">
+    <h1>Tour <strong>{{ round.name }}</strong></h1>
+    <p class="lead">Tournoi {{ round.tournament.name }}</p>
+</div>
+
+<div class="row">
+    {{#pools}}
+    <div class="col-lg-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Poule 1 - Terrain 1</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th scope="row">A</th>
+                            <td>Equipe 1</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">B</th>
+                            <td>Equipe 2</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">C</th>
+                            <td>Equipe 3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {{/pools}}
+</div>
+
+{{/admin_layout}}
+{{>admin_layout}}
