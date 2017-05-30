@@ -20,6 +20,9 @@ public class LoginController extends Auth0CallbackHandler {
     public ModelAndView login(final Map<String, Object> model, final HttpServletRequest req) {
         detectError(model);
         NonceUtils.addNonceToStorage(req);
+        model.put("clientId", auth0Config.getClientId());
+        String baseUrl = req.getRequestURL().toString().replace(req.getRequestURI(), req.getContextPath());
+        model.put("loginCallback", baseUrl + auth0Config.getLoginCallback());
         model.put("state", SessionUtils.getState(req));
         return new ModelAndView("login");
     }

@@ -5,9 +5,9 @@
 <div class="container">
     <script type="text/javascript">
         $(function () {
-            var lock = new Auth0Lock('ksThWSfIBi_JPaktTWYukbL8Qv1QgtX3', 'tournoi-vincennes.eu.auth0.com', {
+            var lock = new Auth0Lock('{{ clientId }}', 'tournoi-vincennes.eu.auth0.com', {
                 auth: {
-                    redirectUrl: 'http://localhost:8080/login/callback',
+                    redirectUrl: '{{ loginCallback }}',
                     responseType: 'code',
                     params: {
                         state: '{{state}}',
