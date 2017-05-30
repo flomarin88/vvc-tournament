@@ -30,7 +30,7 @@ public class CheckInController {
         this.tournamentRepository = tournamentRepository;
     }
 
-    @GetMapping(("/admin/tournament/{tournamentId}/checkin"))
+    @GetMapping(("/admin/tournaments/{tournamentId}/checkin"))
     public ModelAndView index(@PathVariable(name = "tournamentId") Long id) {
         Tournament tournament = tournamentRepository.findOne(id);
         List<Team> teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, "Completed");
