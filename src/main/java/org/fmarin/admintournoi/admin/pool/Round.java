@@ -34,6 +34,10 @@ public class Round {
     @Enumerated(value = EnumType.STRING)
     private RoundStatus status;
 
+    @Column(name = "type")
+    @Enumerated(value = EnumType.STRING)
+    private RoundType type;
+
     public Long getId() {
         return id;
     }
@@ -89,4 +93,13 @@ public class Round {
     public void setBranch(TournamentBranch branch) {
         this.branch = branch;
     }
+
+    public RoundType getType() {
+        return type;
+    }
+
+    public void setType(RoundType type) {
+        this.type = type;
+    }
+
 }

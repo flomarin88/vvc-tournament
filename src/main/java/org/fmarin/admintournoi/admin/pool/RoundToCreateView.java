@@ -6,6 +6,7 @@ public class RoundToCreateView {
 
     private String name;
     private String tournamentBranch;
+    private String type;
     private Long previousRoundId;
     private List<Long> teamsId;
 
@@ -23,6 +24,14 @@ public class RoundToCreateView {
 
     public void setTournamentBranch(String tournamentBranch) {
         this.tournamentBranch = tournamentBranch;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getPreviousRoundId() {

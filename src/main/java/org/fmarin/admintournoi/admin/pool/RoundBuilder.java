@@ -11,6 +11,7 @@ public final class RoundBuilder {
     private Round previousRound;
     private Tournament tournament;
     private TournamentBranch branch;
+    private RoundType type;
     private List<Team> teams;
     private RoundStatus status;
 
@@ -28,6 +29,11 @@ public final class RoundBuilder {
 
     public RoundBuilder withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public RoundBuilder withType(RoundType type) {
+        this.type = type;
         return this;
     }
 
@@ -60,6 +66,7 @@ public final class RoundBuilder {
         Round round = new Round();
         round.setId(id);
         round.setName(name);
+        round.setType(type);
         round.setPreviousRound(previousRound);
         round.setTournament(tournament);
         round.setBranch(branch);

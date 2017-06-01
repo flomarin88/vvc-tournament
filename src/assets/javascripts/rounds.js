@@ -12,7 +12,7 @@ function getTeams(previousRoundId) {
     };
 
     $.ajax({
-        url: '/rounds/' + previousRoundId + '/teams',
+        url: '/admin/rounds/' + previousRoundId + '/teams',
         type: 'get',
         dataType: 'json',
         data: data

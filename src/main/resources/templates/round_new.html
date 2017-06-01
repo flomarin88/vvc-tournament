@@ -5,7 +5,7 @@
     <p class="lead">Tournoi {{ tournament.name }}</p>
 </div>
 
-<form method="POST" action="/tournaments/{{ tournament.id }}/rounds" modelAttribute="round">
+<form method="POST" action="/admin/tournaments/{{ tournament.id }}/rounds" modelAttribute="round">
 
     <div class="row">
         <div class="col-lg-6">
@@ -39,6 +39,18 @@
             </label>
             <label class="btn btn-info">
                 <input type="radio" name="tournamentBranch" value="SUPER_CONSOLANTE">Super Consolante
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Type</label>
+        <div class="btn-group btn-group-justified" data-toggle="buttons">
+            <label class="btn btn-info">
+                <input type="radio" name="type" value="POOL">Poules
+            </label>
+            <label class="btn btn-info">
+                <input type="radio" name="type" value="DIRECT_ELIMINATION">Élimination directe
             </label>
         </div>
     </div>
