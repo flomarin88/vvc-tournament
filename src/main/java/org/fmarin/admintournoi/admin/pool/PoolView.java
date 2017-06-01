@@ -10,6 +10,12 @@ public class PoolView {
     private String teamName2;
     private Long teamId3;
     private String teamName3;
+    private String teamLevel1;
+    private String teamLevel2;
+    private String teamLevel3;
+    private String teamLevelColor1;
+    private String teamLevelColor2;
+    private String teamLevelColor3;
 
     public Long getId() {
         return id;
@@ -73,5 +79,53 @@ public class PoolView {
 
     public void setTeamName3(String teamName3) {
         this.teamName3 = teamName3;
+    }
+
+    public String getTeamLevel1() {
+        return teamLevel1;
+    }
+
+    public void setTeamLevel1(String teamLevel1) {
+        this.teamLevel1 = teamLevel1;
+    }
+
+    public String getTeamLevel2() {
+        return teamLevel2;
+    }
+
+    public void setTeamLevel2(String teamLevel2) {
+        this.teamLevel2 = teamLevel2;
+    }
+
+    public String getTeamLevel3() {
+        return teamLevel3;
+    }
+
+    public void setTeamLevel3(String teamLevel3) {
+        this.teamLevel3 = teamLevel3;
+    }
+
+    public String getTeamLevelColor1() {
+        return teamLevelColor1;
+    }
+
+    public void setTeamLevelColor1(String teamLevelColor1) {
+        this.teamLevelColor1 = teamLevelColor1;
+    }
+
+    public String getTeamLevelColor2() {
+        return teamLevelColor2;
+    }
+
+    public void setTeamLevelColor2(String teamLevelColor2) {
+        this.teamLevelColor2 = teamLevelColor2;
+    }
+
+    public String getTeamLevelColor3() {
+        return teamLevelColor3;
+    }
+
+    public void setTeamLevelColor3(String teamLevelColor3) {
+        this.teamLevelColor3 = teamLevelColor3;
     }
 }

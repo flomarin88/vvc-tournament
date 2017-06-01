@@ -2,17 +2,19 @@ package org.fmarin.admintournoi.subscription;
 
 public enum Level {
 
-    NATIONAL(1, "National"),
-    REGIONAL(2, "Régional"),
-    DEPARTEMENTAL(3, "Départemental"),
-    LOISIRS(4, "Loisirs");
+    NATIONAL(1, "National", "success"),
+    REGIONAL(2, "Régional", "info"),
+    DEPARTEMENTAL(3, "Départemental", "warning"),
+    LOISIRS(4, "Loisirs", "danger");
 
     private Integer value;
     private String label;
+    private String color;
 
-    Level(Integer value, String label) {
+    Level(Integer value, String label, String color) {
         this.value = value;
         this.label = label;
+        this.color = color;
     }
 
     public static Level valueOf(int value) {
@@ -30,5 +32,9 @@ public enum Level {
 
     public String getLabel() {
         return label;
+    }
+
+    public String getColor() {
+        return color;
     }
 }

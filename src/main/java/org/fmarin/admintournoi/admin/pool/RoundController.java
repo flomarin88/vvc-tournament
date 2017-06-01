@@ -120,6 +120,12 @@ public class RoundController {
                 .withTeamName1(pool.getTeam1().getName())
                 .withTeamName2(pool.getTeam2().getName())
                 .withTeamName3(pool.getTeam3().getName())
+                .withTeamLevel1(pool.getTeam1().getLevel().getLabel())
+                .withTeamLevel2(pool.getTeam2().getLevel().getLabel())
+                .withTeamLevel3(pool.getTeam3().getLevel().getLabel())
+                .withTeamLevelColor1("label-" + pool.getTeam1().getLevel().getColor())
+                .withTeamLevelColor2("label-" + pool.getTeam2().getLevel().getColor())
+                .withTeamLevelColor3("label-" + pool.getTeam3().getLevel().getColor())
                 .build();
     }
 

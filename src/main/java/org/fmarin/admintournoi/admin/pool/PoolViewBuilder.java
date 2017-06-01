@@ -5,10 +5,16 @@ public final class PoolViewBuilder {
     private String name;
     private Long teamId1;
     private String teamName1;
+    private String teamLevel1;
     private Long teamId2;
     private String teamName2;
+    private String teamLevel2;
     private Long teamId3;
     private String teamName3;
+    private String teamLevel3;
+    private String teamLevelColor1;
+    private String teamLevelColor2;
+    private String teamLevelColor3;
 
     private PoolViewBuilder() {
     }
@@ -57,6 +63,36 @@ public final class PoolViewBuilder {
         return this;
     }
 
+    public PoolViewBuilder withTeamLevel1(String teamLevel1) {
+        this.teamLevel1 = teamLevel1;
+        return this;
+    }
+
+    public PoolViewBuilder withTeamLevel2(String teamLevel2) {
+        this.teamLevel2 = teamLevel2;
+        return this;
+    }
+
+    public PoolViewBuilder withTeamLevel3(String teamLevel3) {
+        this.teamLevel3 = teamLevel3;
+        return this;
+    }
+
+    public PoolViewBuilder withTeamLevelColor1(String teamLevelColor1) {
+        this.teamLevelColor1 = teamLevelColor1;
+        return this;
+    }
+
+    public PoolViewBuilder withTeamLevelColor2(String teamLevelColor2) {
+        this.teamLevelColor2 = teamLevelColor2;
+        return this;
+    }
+
+    public PoolViewBuilder withTeamLevelColor3(String teamLevelColor3) {
+        this.teamLevelColor3 = teamLevelColor3;
+        return this;
+    }
+
     public PoolView build() {
         PoolView poolView = new PoolView();
         poolView.setId(id);
@@ -67,6 +103,12 @@ public final class PoolViewBuilder {
         poolView.setTeamName2(teamName2);
         poolView.setTeamId3(teamId3);
         poolView.setTeamName3(teamName3);
+        poolView.setTeamLevel1(teamLevel1);
+        poolView.setTeamLevel2(teamLevel2);
+        poolView.setTeamLevel3(teamLevel3);
+        poolView.setTeamLevelColor1(teamLevelColor1);
+        poolView.setTeamLevelColor2(teamLevelColor2);
+        poolView.setTeamLevelColor3(teamLevelColor3);
         return poolView;
     }
 }
