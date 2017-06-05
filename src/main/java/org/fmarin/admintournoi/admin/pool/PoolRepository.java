@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.admin.pool;
 
+import org.fmarin.admintournoi.admin.round.Round;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

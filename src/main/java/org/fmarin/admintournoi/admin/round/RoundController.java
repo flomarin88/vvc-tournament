@@ -1,11 +1,14 @@
-package org.fmarin.admintournoi.admin.pool;
+package org.fmarin.admintournoi.admin.round;
 
 import com.google.common.collect.Maps;
+import org.fmarin.admintournoi.admin.match.MatchGenerationService;
+import org.fmarin.admintournoi.admin.pool.*;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.fmarin.admintournoi.subscription.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,14 +27,16 @@ public class RoundController {
     private final RoundRepository roundRepository;
     private final PoolRepository poolRepository;
     private final PoolGenerationService poolGenerationService;
+    private final MatchGenerationService matchGenerationService;
 
     @Autowired
-    public RoundController(TournamentRepository tournamentRepository, TeamRepository teamRepository, RoundRepository roundRepository, PoolRepository poolRepository, PoolGenerationService poolGenerationService) {
+    public RoundController(TournamentRepository tournamentRepository, TeamRepository teamRepository, RoundRepository roundRepository, PoolRepository poolRepository, PoolGenerationService poolGenerationService, MatchGenerationService matchGenerationService) {
         this.tournamentRepository = tournamentRepository;
         this.teamRepository = teamRepository;
         this.roundRepository = roundRepository;
         this.poolRepository = poolRepository;
         this.poolGenerationService = poolGenerationService;
+        this.matchGenerationService = matchGenerationService;
     }
 
     @GetMapping("/tournaments/{tournamentId}/rounds")
@@ -97,16 +102,27 @@ public class RoundController {
         return new ModelAndView("round_detail", model);
     }
 
+    @PostMapping("/rounds/{roundId}/matches")
+    public ResponseEntity validateRound(@PathVariable(name = "roundId") Long roundId) {
+        Round round = roundRepository.findOne(roundId);
+        round.setStatus(RoundStatus.VALIDATED);
+        matchGenerationService.generate(round);
+        roundRepository.save(round);
+        return ResponseEntity.ok().build();
+    }
+
     RoundListView convertListItem(Round round) {
         String previousRoundLabel = round.getPreviousRound() != null ? round.getPreviousRound().getName() : "-";
         return RoundListViewBuilder.aRoundListView()
                 .withId(round.getId())
-                .withName(round.getName())
+                .withName(round.getBranch().getLabel() + " - " + round.getName())
                 .withType(round.getType().getLabel())
                 .withPreviousRoundName(previousRoundLabel)
                 .withTeamsCount(round.getTeams().size())
                 .withStatus(round.getStatus().getLabel())
+                .withTournamentId(round.getTournament().getId())
                 .withTournamentName(round.getTournament().getName())
+                .withValidated(round.getStatus().equals(RoundStatus.VALIDATED))
                 .build();
     }
 

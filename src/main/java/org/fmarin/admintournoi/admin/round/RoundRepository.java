@@ -1,4 +1,4 @@
-package org.fmarin.admintournoi.admin.pool;
+package org.fmarin.admintournoi.admin.round;
 
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.springframework.data.repository.CrudRepository;

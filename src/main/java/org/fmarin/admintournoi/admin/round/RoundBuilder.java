@@ -1,5 +1,6 @@
-package org.fmarin.admintournoi.admin.pool;
+package org.fmarin.admintournoi.admin.round;
 
+import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.Tournament;
 
@@ -13,6 +14,7 @@ public final class RoundBuilder {
     private TournamentBranch branch;
     private RoundType type;
     private List<Team> teams;
+    private List<Pool> pools;
     private RoundStatus status;
 
     private RoundBuilder() {
@@ -57,6 +59,11 @@ public final class RoundBuilder {
         return this;
     }
 
+    public RoundBuilder withPools(List<Pool> pools) {
+        this.pools = pools;
+        return this;
+    }
+
     public RoundBuilder withStatus(RoundStatus status) {
         this.status = status;
         return this;
@@ -71,6 +78,7 @@ public final class RoundBuilder {
         round.setTournament(tournament);
         round.setBranch(branch);
         round.setTeams(teams);
+        round.setPools(pools);
         round.setStatus(status);
         return round;
     }

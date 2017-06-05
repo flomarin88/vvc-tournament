@@ -1,4 +1,4 @@
-package org.fmarin.admintournoi.admin.pool;
+package org.fmarin.admintournoi.admin.round;
 
 public enum TournamentBranch {
 

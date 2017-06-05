@@ -1,5 +1,7 @@
-package org.fmarin.admintournoi.admin.pool;
+package org.fmarin.admintournoi.admin.round;
 
+import com.google.common.collect.Lists;
+import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.Tournament;
 
@@ -37,6 +39,9 @@ public class Round {
     @Column(name = "type")
     @Enumerated(value = EnumType.STRING)
     private RoundType type;
+
+    @OneToMany(mappedBy = "round")
+    private List<Pool> pools = Lists.newArrayList();
 
     public Long getId() {
         return id;
@@ -102,4 +107,11 @@ public class Round {
         this.type = type;
     }
 
+    public List<Pool> getPools() {
+        return pools;
+    }
+
+    public void setPools(List<Pool> pools) {
+        this.pools = pools;
+    }
 }

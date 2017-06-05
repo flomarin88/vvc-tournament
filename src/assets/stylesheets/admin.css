@@ -94,3 +94,11 @@ body {
     color: #fff;
     background: rgba(0, 0, 0, 0.15)
 }
+
+.breadcrumb {
+    font-size: 14px;
+}
+
+.clickable-row {
+    cursor: pointer;
+}

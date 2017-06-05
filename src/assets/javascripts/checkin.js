@@ -12,12 +12,21 @@ function checkin(teamId, isPresent) {
     var data = {
         isPresent: isPresent
     };
+    var diff = 1;
+    if (!isPresent) {
+        diff = -1;
+    }
 
     $.ajax({
         url: '/admin/teams/' + teamId + '/checkin',
-        type: 'post',
+        type: 'POST',
         dataType: 'json',
         data: data
+    }).done(function () {
+        console.log("Checkin done");
+        var absenceCountLabel = $('.label');
+        var current = absenceCountLabel.value();
+        absenceCountLabel.value(current + diff);
     });
 }
 

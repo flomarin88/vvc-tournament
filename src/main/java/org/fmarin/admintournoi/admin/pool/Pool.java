@@ -1,8 +1,12 @@
 package org.fmarin.admintournoi.admin.pool;
 
+import org.fmarin.admintournoi.admin.match.Match;
+import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.subscription.Team;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "POOL")
@@ -28,6 +32,9 @@ public class Pool {
     @ManyToOne
     @JoinColumn(name = "team_3_id")
     private Team team3;
+
+    @OneToMany(mappedBy = "pool", cascade = CascadeType.ALL)
+    private List<Match> matches = new ArrayList<>();
 
     public void addTeam(Team team) {
         if (team1 == null) {
@@ -85,5 +92,13 @@ public class Pool {
 
     public void setRound(Round round) {
         this.round = round;
+    }
+
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<Match> matches) {
+        this.matches = matches;
     }
 }

@@ -35,9 +35,10 @@ public class CheckInController {
         Tournament tournament = tournamentRepository.findOne(id);
         List<Team> teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, "Completed");
         List<TeamToCheckInView> teamsToCheckin = teams.stream().map(this::convert).collect(Collectors.toList());
+        long absenceCount = teams.parallelStream().filter(team -> !team.isPresent()).count();
         Map<String, Object> model = new ImmutableMap.Builder<String, Object>()
                 .put("tournament", tournament)
-                .put("teamsToCheckinCount", teams.size())
+                .put("absenceCount", absenceCount)
                 .put("teams", teamsToCheckin)
                 .build();
         return new ModelAndView("teams", model);

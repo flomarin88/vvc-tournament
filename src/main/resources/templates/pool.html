@@ -1,0 +1,79 @@
+{{#admin_layout}}
+
+{{#pool}}
+<ol class="breadcrumb">
+    <li><a href="/admin">Accueil</a></li>
+    <li><a href="/admin/tournaments/{{tournamentId}}">{{tournamentName}}</a></li>
+    <li><a href="/admin/tournaments/{{tournamentId}}/rounds">Tours</a></li>
+    <li><a href="/admin/rounds/{{roundId}}">{{roundName}}</a></li>
+    <li class="active">{{name}}</li>
+</ol>
+
+<div class="page-header">
+    <button class="btn btn-success pull-right">Valider les résultats</button>
+    <h1>{{name}}</h1>
+    <p class="lead"><span class="label label-danger">Matchs en cours</span></p>
+</div>
+{{/pool}}
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Matchs</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <tbody>
+                    {{#matches}}
+                    <tr data-id="{{id}}" style="text-align: center;vertical-align: middle;">
+                        <td>{{ teamName1 }}</td>
+                        <td><input type="number" value="{{teamScore1}}"></td>
+                        <td><input type="number" value="{{teamScore2}}"></td>
+                        <td>{{ teamName2 }}</td>
+                        <td>
+                            <button class="btn btn-primary btn-xs"><i class="fa fa-check"></i></button>
+                        </td>
+                    </tr>
+                    {{/matches}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Classement</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Équipe</th>
+                        <th>Bilan</th>
+                        <th>Différence</th>
+                        <th>PM / PP</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#rankings}}
+                    <tr>
+                        <th scope="row">{{position}}</th>
+                        <td>{{ name }}</td>
+                        <td>{{ victories }} / {{ defeats }}</td>
+                        <td>{{ difference }}</td>
+                        <td>{{ pm }} / {{ pp }}</td>
+                    </tr>
+                    {{/rankings}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{{/admin_layout}}
+{{>admin_layout}}

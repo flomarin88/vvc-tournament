@@ -1,4 +1,4 @@
-package org.fmarin.admintournoi.admin.pool;
+package org.fmarin.admintournoi.admin.round;
 
 public class RoundListView {
 
@@ -7,8 +7,13 @@ public class RoundListView {
     private String type;
     private String previousRoundName;
     private String tournamentName;
+    private Long tournamentId;
     private int teamsCount;
     private String status;
+    private boolean validated;
+
+    public RoundListView() {
+    }
 
     public Long getId() {
         return id;
@@ -65,4 +70,21 @@ public class RoundListView {
     public void setTournamentName(String tournamentName) {
         this.tournamentName = tournamentName;
     }
+
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
+    }
+
+    public Long getTournamentId() {
+        return tournamentId;
+    }
+
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
+    }
+
 }
