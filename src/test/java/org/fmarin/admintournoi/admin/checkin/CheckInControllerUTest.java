@@ -80,6 +80,6 @@ public class CheckInControllerUTest {
         // Then
         assertThat(result.getViewName()).isEqualTo("teams");
         assertThat(result.getModel())
-                .containsKeys("teams", "tournament", "teamsToCheckinCount");
+                .containsKeys("teams", "tournament", "absenceCount");
     }
 }

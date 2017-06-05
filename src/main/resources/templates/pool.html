@@ -26,13 +26,13 @@
                 <table class="table table-striped">
                     <tbody>
                     {{#matches}}
-                    <tr data-id="{{id}}" style="text-align: center;vertical-align: middle;">
+                    <tr style="text-align: center;vertical-align: middle;" data-id="{{id}}">
                         <td>{{ teamName1 }}</td>
-                        <td><input type="number" value="{{teamScore1}}"></td>
-                        <td><input type="number" value="{{teamScore2}}"></td>
+                        <td><input type="number" value="{{teamScore1}}" name="teamScore1"></td>
+                        <td><input type="number" value="{{teamScore2}}" name="teamScore2"></td>
                         <td>{{ teamName2 }}</td>
                         <td>
-                            <button class="btn btn-primary btn-xs"><i class="fa fa-check"></i></button>
+                            <button class="btn btn-primary btn-xs match-button-js"><i class="fa fa-check"></i></button>
                         </td>
                     </tr>
                     {{/matches}}
@@ -74,6 +74,8 @@
     </div>
 
 </div>
+
+<script src="/assets/pool.js"></script>
 
 {{/admin_layout}}
 {{>admin_layout}}
