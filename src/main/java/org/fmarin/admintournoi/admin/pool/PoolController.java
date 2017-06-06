@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.admin.pool;
 
 import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.admin.match.MatchView;
+import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,12 @@ import static org.fmarin.admintournoi.admin.pool.PoolDetailViewBuilder.aPoolDeta
 public class PoolController {
 
     private final PoolRepository poolRepository;
+    private final RankingService rankingService;
 
     @Autowired
-    public PoolController(PoolRepository poolRepository) {
+    public PoolController(PoolRepository poolRepository, RankingService rankingService) {
         this.poolRepository = poolRepository;
+        this.rankingService = rankingService;
     }
 
     @GetMapping("{poolId}")
@@ -56,6 +59,7 @@ public class PoolController {
         Map<String, Object> model = Maps.newHashMap();
         model.put("pool", poolView);
         model.put("matches", matches);
+        model.put("rankings", rankingService.getPoolRanking(poolId));
         return new ModelAndView("pool", model);
     }
 

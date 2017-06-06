@@ -23,7 +23,7 @@ public class MatchController {
         match.setScoreTeam1(body.getTeamScore1());
         match.setScoreTeam2(body.getTeamScore2());
         matchRepository.save(match);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("{\"result\":\"OK\"}");
     }
 
 }

@@ -1,5 +1,7 @@
 package org.fmarin.admintournoi.subscription;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -181,6 +183,19 @@ public class Team {
 
     public void setPresent(Boolean present) {
         this.present = present;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Team team = (Team) o;
+        return Objects.equal(id, team.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     @Override

@@ -26,9 +26,41 @@ public class Match {
     private Team team2;
 
     @Column(name = "score_team1")
-    private Integer scoreTeam1;
+    private Integer scoreTeam1 = 0;
     @Column(name = "score_team2")
-    private Integer scoreTeam2;
+    private Integer scoreTeam2 = 0;
+
+    public Integer getPointsFor(Team team) {
+        if (team.equals(team1)) {
+            return scoreTeam1;
+        }
+        if (team.equals(team2)) {
+            return scoreTeam2;
+        }
+        return 0;
+    }
+
+    public Integer getPointsAgainst(Team team) {
+        if (team.equals(team1)) {
+            return scoreTeam2;
+        }
+        if (team.equals(team2)) {
+            return scoreTeam1;
+        }
+        return 0;
+    }
+
+    public MatchStatus getStatus(Team team) {
+        if ((!team.equals(team1) && !team.equals(team2)) || (scoreTeam1.equals(scoreTeam2))) {
+            return MatchStatus.DRAW;
+        }
+        if (scoreTeam1 > scoreTeam2) {
+            return team1.equals(team) ? MatchStatus.VICTORY : MatchStatus.DEFEAT;
+        }
+        else {
+            return team1.equals(team) ? MatchStatus.DEFEAT : MatchStatus.VICTORY;
+        }
+    }
 
     public Long getId() {
         return id;

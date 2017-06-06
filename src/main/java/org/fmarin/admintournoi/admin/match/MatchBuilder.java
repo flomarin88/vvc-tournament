@@ -8,8 +8,8 @@ public final class MatchBuilder {
     private Pool pool;
     private Team team1;
     private Team team2;
-    private Integer scoreTeam1;
-    private Integer scoreTeam2;
+    private Integer scoreTeam1 = 0;
+    private Integer scoreTeam2 = 0;
 
     private MatchBuilder() {
     }
