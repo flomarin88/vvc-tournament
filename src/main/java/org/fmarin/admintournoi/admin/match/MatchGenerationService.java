@@ -18,9 +18,9 @@ public class MatchGenerationService {
 
     void generatePoolMatches(Pool pool) {
         List<Match> matches = Lists.newArrayList(
-                aMatch().withTeam1(pool.getTeam1()).withTeam2(pool.getTeam2()).withPool(pool).build(),
                 aMatch().withTeam1(pool.getTeam1()).withTeam2(pool.getTeam3()).withPool(pool).build(),
-                aMatch().withTeam1(pool.getTeam2()).withTeam2(pool.getTeam3()).withPool(pool).build()
+                aMatch().withTeam1(pool.getTeam2()).withTeam2(pool.getTeam3()).withPool(pool).build(),
+                aMatch().withTeam1(pool.getTeam1()).withTeam2(pool.getTeam2()).withPool(pool).build()
         );
         pool.setMatches(matches);
     }
