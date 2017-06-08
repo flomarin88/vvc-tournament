@@ -9,12 +9,19 @@ public final class RankingBuilder {
     private Integer pointsFor;
     private Integer pointsAgainst;
     private Team team;
+    private Integer position;
 
     private RankingBuilder() {
     }
 
     public static RankingBuilder aRanking() {
         return new RankingBuilder();
+    }
+
+
+    public RankingBuilder withPosition(Integer position) {
+        this.position = position;
+        return this;
     }
 
     public RankingBuilder withVictories(Integer victories) {
@@ -49,6 +56,7 @@ public final class RankingBuilder {
 
     public Ranking build() {
         Ranking ranking = new Ranking(team);
+        ranking.setPosition(position);
         ranking.setVictories(victories);
         ranking.setDefeats(defeats);
         ranking.setDifference(difference);

@@ -63,6 +63,7 @@ public class RankingServiceUTest {
 
         // Then
         Ranking ranking1 = aRanking()
+                .withPosition(1)
                 .withTeam(teamC)
                 .withVictories(2)
                 .withDefeats(0)
@@ -72,6 +73,7 @@ public class RankingServiceUTest {
                 .build();
         Ranking ranking2 = aRanking()
                 .withTeam(teamA)
+                .withPosition(2)
                 .withVictories(1)
                 .withDefeats(1)
                 .withPointsFor(33)
@@ -79,6 +81,7 @@ public class RankingServiceUTest {
                 .withDifference(-3)
                 .build();
         Ranking ranking3 = aRanking()
+                .withPosition(3)
                 .withTeam(teamB)
                 .withVictories(0)
                 .withDefeats(2)

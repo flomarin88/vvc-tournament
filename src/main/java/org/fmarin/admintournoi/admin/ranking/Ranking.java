@@ -5,6 +5,7 @@ import org.fmarin.admintournoi.subscription.Team;
 
 public class Ranking {
 
+    private Integer position;
     private final Team team;
     private Integer victories = 0;
     private Integer defeats = 0;
@@ -66,6 +67,7 @@ public class Ranking {
         if (o == null || getClass() != o.getClass()) return false;
         Ranking ranking = (Ranking) o;
         return Objects.equal(team, ranking.team) &&
+                Objects.equal(position, ranking.position) &&
                 Objects.equal(victories, ranking.victories) &&
                 Objects.equal(defeats, ranking.defeats) &&
                 Objects.equal(difference, ranking.difference) &&
@@ -82,11 +84,20 @@ public class Ranking {
     public String toString() {
         return "Ranking{" +
                 "team=" + team +
+                ", position=" + position +
                 ", victories=" + victories +
                 ", defeats=" + defeats +
                 ", difference=" + difference +
                 ", pointsFor=" + pointsFor +
                 ", pointsAgainst=" + pointsAgainst +
                 '}';
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 }

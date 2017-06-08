@@ -102,3 +102,11 @@ body {
 .clickable-row {
     cursor: pointer;
 }
+
+.table-readable {
+    font-size: 16px;
+}
+
+.table-centered td th {
+    text-align: center;
+}
