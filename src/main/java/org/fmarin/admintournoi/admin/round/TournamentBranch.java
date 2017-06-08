@@ -3,8 +3,8 @@ package org.fmarin.admintournoi.admin.round;
 public enum TournamentBranch {
 
     PRINCIPALE("Principal"),
-    CONSOLANTE("Consolante"),
-    SUPER_CONSOLANTE("Super Consolante");
+    SUPER_CONSOLANTE("Super Consolante"),
+    CONSOLANTE("Consolante");
 
     private String label;
 

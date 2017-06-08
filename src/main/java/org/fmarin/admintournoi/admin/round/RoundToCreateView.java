@@ -1,14 +1,13 @@
 package org.fmarin.admintournoi.admin.round;
 
-import java.util.List;
-
 public class RoundToCreateView {
 
     private String name;
     private String tournamentBranch;
     private String type;
     private Long previousRoundId;
-    private List<Long> teamsId;
+    private Integer teamsFrom;
+    private Integer teamsTo;
 
     public String getName() {
         return name;
@@ -42,11 +41,19 @@ public class RoundToCreateView {
         this.previousRoundId = previousRoundId;
     }
 
-    public List<Long> getTeamsId() {
-        return teamsId;
+    public Integer getTeamsFrom() {
+        return teamsFrom;
     }
 
-    public void setTeamsId(List<Long> teamsId) {
-        this.teamsId = teamsId;
+    public void setTeamsFrom(Integer teamsFrom) {
+        this.teamsFrom = teamsFrom;
+    }
+
+    public Integer getTeamsTo() {
+        return teamsTo;
+    }
+
+    public void setTeamsTo(Integer teamsTo) {
+        this.teamsTo = teamsTo;
     }
 }

@@ -3,6 +3,8 @@ package org.fmarin.admintournoi.admin.round;
 import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.admin.match.MatchGenerationService;
 import org.fmarin.admintournoi.admin.pool.*;
+import org.fmarin.admintournoi.admin.ranking.Ranking;
+import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,15 +29,17 @@ public class RoundController {
     private final PoolRepository poolRepository;
     private final PoolGenerationService poolGenerationService;
     private final MatchGenerationService matchGenerationService;
+    private final RankingService rankingService;
 
     @Autowired
-    public RoundController(TournamentRepository tournamentRepository, TeamRepository teamRepository, RoundRepository roundRepository, PoolRepository poolRepository, PoolGenerationService poolGenerationService, MatchGenerationService matchGenerationService) {
+    public RoundController(TournamentRepository tournamentRepository, TeamRepository teamRepository, RoundRepository roundRepository, PoolRepository poolRepository, PoolGenerationService poolGenerationService, MatchGenerationService matchGenerationService, RankingService rankingService) {
         this.tournamentRepository = tournamentRepository;
         this.teamRepository = teamRepository;
         this.roundRepository = roundRepository;
         this.poolRepository = poolRepository;
         this.poolGenerationService = poolGenerationService;
         this.matchGenerationService = matchGenerationService;
+        this.rankingService = rankingService;
     }
 
     @GetMapping("/tournaments/{tournamentId}/rounds")
@@ -60,21 +63,21 @@ public class RoundController {
         return new ModelAndView("round_new", model);
     }
 
-    @GetMapping("/rounds/{roundId}/teams")
-    public List<Team> getTeams(@Valid @PathVariable(name = "roundId") Long roundId) {
-        return roundRepository.findOne(roundId).getTeams();
-    }
-
     @PostMapping("/tournaments/{tournamentId}/rounds")
     public ModelAndView createRound(@PathVariable(name = "tournamentId") Long tournamentId,
                                     @Valid @ModelAttribute(name = "round") RoundToCreateView roundToCreate) {
         Tournament tournament = tournamentRepository.findOne(tournamentId);
         Round previousRound = null;
-        List<Team> teams = Collections.emptyList();
+        List<Team> teams;
         if (roundToCreate.getPreviousRoundId() == null) {
             teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, "Completed");
         } else {
             previousRound = roundRepository.findOne(roundToCreate.getPreviousRoundId());
+            List<Ranking> roundRanking = rankingService.getRoundRanking(roundToCreate.getPreviousRoundId());
+            teams = roundRanking.subList(roundToCreate.getTeamsFrom() - 1, roundToCreate.getTeamsTo())
+                    .stream()
+                    .map(Ranking::getTeam)
+                    .collect(Collectors.toList());
         }
         Round round = RoundBuilder.aRound()
                 .withName(roundToCreate.getName())
@@ -148,7 +151,7 @@ public class RoundController {
 
     private String getColorStatus(Pool pool) {
         long count = pool.getMatches().parallelStream().filter(match -> !match.isFinished()).count();
-        return count > 0 ? "primary" : "success";
+        return count > 0 && pool.getMatches().size() != 0 ? "primary" : "success";
     }
 
 }
