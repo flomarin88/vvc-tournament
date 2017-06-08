@@ -16,6 +16,7 @@ public class PoolView {
     private String teamLevelColor1;
     private String teamLevelColor2;
     private String teamLevelColor3;
+    private String color;
 
     public Long getId() {
         return id;
@@ -127,5 +128,13 @@ public class PoolView {
 
     public void setTeamLevelColor3(String teamLevelColor3) {
         this.teamLevelColor3 = teamLevelColor3;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

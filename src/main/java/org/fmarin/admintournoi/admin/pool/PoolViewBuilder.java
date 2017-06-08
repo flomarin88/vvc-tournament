@@ -15,6 +15,7 @@ public final class PoolViewBuilder {
     private String teamLevelColor1;
     private String teamLevelColor2;
     private String teamLevelColor3;
+    private String color;
 
     private PoolViewBuilder() {
     }
@@ -93,6 +94,11 @@ public final class PoolViewBuilder {
         return this;
     }
 
+    public PoolViewBuilder withColor(String color) {
+        this.color = color;
+        return this;
+    }
+
     public PoolView build() {
         PoolView poolView = new PoolView();
         poolView.setId(id);
@@ -109,6 +115,7 @@ public final class PoolViewBuilder {
         poolView.setTeamLevelColor1(teamLevelColor1);
         poolView.setTeamLevelColor2(teamLevelColor2);
         poolView.setTeamLevelColor3(teamLevelColor3);
+        poolView.setColor(color);
         return poolView;
     }
 }

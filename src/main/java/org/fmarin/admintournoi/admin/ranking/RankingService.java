@@ -35,34 +35,39 @@ public class RankingService {
 
     public List<Ranking> getPoolRanking(Long poolId) {
         Pool pool = poolRepository.findOne(poolId);
-        List<Match> matches = matchRepository.findAllByPool(pool);
-        return getRankings(matches);
+        return getRankings(pool);
     }
 
     public List<Ranking> getRoundRanking(Long roundId) {
         Round round = roundRepository.findOne(roundId);
-        List<Match> matches = round.getPools().parallelStream()
-                .map(Pool::getMatches)
+        List<Ranking> rankingsByPool = round.getPools().parallelStream()
+                .map(this::getRankings)
                 .collect(Collectors.toList()).stream()
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
-        return getRankings(matches);
+        rankingsByPool.sort(roundRankingOrdering());
+        updatePosition(rankingsByPool);
+        return rankingsByPool;
     }
 
     @NotNull
-    private List<Ranking> getRankings(List<Match> matches) {
+    private List<Ranking> getRankings(Pool pool) {
         Map<Team, Ranking> rankings = Maps.newHashMap();
-        for (Match match : matches) {
+        for (Match match : pool.getMatches()) {
             updateRanking(get(rankings, match.getTeam1()), match, match.getTeam1());
             updateRanking(get(rankings, match.getTeam2()), match, match.getTeam2());
         }
         List<Ranking> rankingsOrdered = rankings.values().stream()
                 .sorted(poolRankingOrdering())
                 .collect(Collectors.toList());
+        updatePosition(rankingsOrdered);
+        return rankingsOrdered;
+    }
+
+    private void updatePosition(List<Ranking> rankingsOrdered) {
         for (int i = 0; i < rankingsOrdered.size(); i++) {
             rankingsOrdered.get(i).setPosition(i + 1);
         }
-        return rankingsOrdered;
     }
 
     private void updateRanking(Ranking ranking, Match match, Team team) {
@@ -83,5 +88,10 @@ public class RankingService {
                 .thenComparing(Ranking::getDifference)
                 .thenComparing(Ranking::getPointsFor)
                 .reversed();
+    }
+
+    private Comparator<Ranking> roundRankingOrdering() {
+        return Comparator.comparing(Ranking::getPosition)
+                .thenComparing(poolRankingOrdering());
     }
 }

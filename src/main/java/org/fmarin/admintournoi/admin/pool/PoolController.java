@@ -38,6 +38,7 @@ public class PoolController {
         Round round = pool.getRound();
         Tournament tournament = round.getTournament();
 
+        String[] status = getStatus(pool);
         PoolDetailView poolView = aPoolDetailView()
                 .withId(pool.getId())
                 .withName("Poule " + pool.getPosition())
@@ -45,6 +46,8 @@ public class PoolController {
                 .withTournamentName(tournament.getName())
                 .withRoundId(round.getId())
                 .withRoundName(round.getBranch().getLabel() + " - " + round.getName())
+                .withColor(status[0])
+                .withStatus(status[1])
                 .build();
 
         List<MatchView> matches = pool.getMatches().stream().map(match -> aMatchView()
@@ -62,5 +65,11 @@ public class PoolController {
         model.put("rankings", rankingService.getPoolRanking(poolId));
         return new ModelAndView("pool", model);
     }
+
+    private String[] getStatus(Pool pool) {
+        long count = pool.getMatches().parallelStream().filter(match -> !match.isFinished()).count();
+        return count > 0 ? new String[]{"primary", "en cours"} : new String[]{"success", "terminés"};
+    }
+
 
 }

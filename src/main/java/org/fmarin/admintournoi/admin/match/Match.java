@@ -30,6 +30,10 @@ public class Match {
     @Column(name = "score_team2")
     private Integer scoreTeam2 = 0;
 
+    public boolean isFinished() {
+        return scoreTeam1 != 0 || scoreTeam2 !=0;
+    }
+
     public Integer getPointsFor(Team team) {
         if (team.equals(team1)) {
             return scoreTeam1;

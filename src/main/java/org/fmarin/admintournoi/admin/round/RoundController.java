@@ -126,7 +126,7 @@ public class RoundController {
                 .build();
     }
 
-    PoolView convert(Pool pool) {
+    private PoolView convert(Pool pool) {
         return PoolViewBuilder.aPoolView()
                 .withId(pool.getId())
                 .withName("Poule " + pool.getPosition())
@@ -142,7 +142,13 @@ public class RoundController {
                 .withTeamLevelColor1("label-" + pool.getTeam1().getLevel().getColor())
                 .withTeamLevelColor2("label-" + pool.getTeam2().getLevel().getColor())
                 .withTeamLevelColor3("label-" + pool.getTeam3().getLevel().getColor())
+                .withColor(getColorStatus(pool))
                 .build();
+    }
+
+    private String getColorStatus(Pool pool) {
+        long count = pool.getMatches().parallelStream().filter(match -> !match.isFinished()).count();
+        return count > 0 ? "primary" : "success";
     }
 
 }

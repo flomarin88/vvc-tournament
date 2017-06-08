@@ -18,7 +18,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.fmarin.admintournoi.admin.match.MatchBuilder.aMatch;
 import static org.fmarin.admintournoi.admin.pool.PoolBuilder.aPool;
-import static org.fmarin.admintournoi.admin.ranking.RankingBuilder.*;
+import static org.fmarin.admintournoi.admin.ranking.RankingBuilder.aRanking;
 import static org.mockito.Mockito.when;
 
 
@@ -36,9 +36,6 @@ public class RankingServiceUTest {
     @Test
     public void getPoolRanking() {
         // Given
-        Pool pool = aPool().build();
-        when(mockedPoolRepository.findOne(1L)).thenReturn(pool);
-
         Team teamA = TeamBuilder.aTeam().withId(1L).build();
         Team teamB = TeamBuilder.aTeam().withId(2L).build();
         Team teamC = TeamBuilder.aTeam().withId(3L).build();
@@ -56,7 +53,9 @@ public class RankingServiceUTest {
                 .withTeam2(teamB).withScoreTeam2(19)
                 .build();
 
-        when(mockedMatchRepository.findAllByPool(pool)).thenReturn(Lists.newArrayList(match1, match2, match3));
+        Pool pool = aPool().withMatches(Lists.newArrayList(match1, match2, match3)).build();
+        when(mockedPoolRepository.findOne(1L)).thenReturn(pool);
+
 
         // When
         List<Ranking> result = service.getPoolRanking(1L);

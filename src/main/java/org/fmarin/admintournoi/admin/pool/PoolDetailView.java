@@ -8,14 +8,18 @@ public class PoolDetailView {
     private final String tournamentName;
     private final Long roundId;
     private final String roundName;
+    private final String color;
+    private final String status;
 
-    public PoolDetailView(Long id, String name, Long tournamentId, String tournamentName, Long roundId, String roundName) {
+    public PoolDetailView(Long id, String name, Long tournamentId, String tournamentName, Long roundId, String roundName, String color, String status) {
         this.id = id;
         this.name = name;
         this.tournamentId = tournamentId;
         this.tournamentName = tournamentName;
         this.roundId = roundId;
         this.roundName = roundName;
+        this.color = color;
+        this.status = status;
     }
 
     public Long getId() {
@@ -40,5 +44,13 @@ public class PoolDetailView {
 
     public String getRoundName() {
         return roundName;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }
