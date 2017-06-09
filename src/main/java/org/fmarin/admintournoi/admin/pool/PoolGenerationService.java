@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -111,7 +112,9 @@ public class PoolGenerationService {
     }
 
     List<Pool> affectTeamsToPool(int[][] poolsModel, List<Team> teams, Round round) {
-        Map<Integer, List<Team>> teamsToAffectByLevel = teams.stream().collect(Collectors.groupingBy(team -> team.getLevel().getValue(), Collectors.toList()));
+        Map<Integer, List<Team>> teamsToAffectByLevel = teams.stream()
+                .collect(Collectors.groupingBy(team -> team.getLevel().getValue(), Collectors.toList()));
+
         List<Pool> pools = Lists.newArrayList();
         for (int levelIndex = 0; levelIndex < poolsModel.length; levelIndex++) {
             for (int poolIndex = 0; poolIndex < poolsModel[levelIndex].length; poolIndex++) {
@@ -126,7 +129,10 @@ public class PoolGenerationService {
                     pool = pools.get(poolIndex);
                 }
                 for (int teamCount = 0; teamCount < poolsModel[levelIndex][poolIndex]; teamCount++) {
-                    Team team = teamsToAffectByLevel.get(levelIndex + 1).remove(0);
+                    int maxIndex = teamsToAffectByLevel.get(levelIndex + 1).size();
+                    Random r = new Random();
+                    int index = r.ints(0, maxIndex).findFirst().getAsInt();
+                    Team team = teamsToAffectByLevel.get(levelIndex + 1).remove(index);
                     pool.addTeam(team);
                 }
             }
