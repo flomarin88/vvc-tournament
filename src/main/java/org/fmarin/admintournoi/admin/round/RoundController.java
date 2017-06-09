@@ -149,9 +149,9 @@ public class RoundController {
                 .build();
     }
 
-    private String getColorStatus(Pool pool) {
+    String getColorStatus(Pool pool) {
         long count = pool.getMatches().parallelStream().filter(match -> !match.isFinished()).count();
-        return count > 0 && pool.getMatches().size() != 0 ? "primary" : "success";
+        return pool.getMatches().size() == 0 || count > 0  ? "primary" : "success";
     }
 
 }
