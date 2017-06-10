@@ -105,13 +105,41 @@ public class RoundController {
         return new ModelAndView("round_detail", model);
     }
 
-    @PostMapping("/rounds/{roundId}/matches")
-    public ResponseEntity validateRound(@PathVariable(name = "roundId") Long roundId) {
+    @GetMapping("/rounds/{roundId}/matches")
+    public ModelAndView validateRound(@PathVariable(name = "roundId") Long roundId) {
         Round round = roundRepository.findOne(roundId);
-        round.setStatus(RoundStatus.VALIDATED);
+        round.setStatus(RoundStatus.STARTED);
         matchGenerationService.generate(round);
         roundRepository.save(round);
-        return ResponseEntity.ok().build();
+        return new ModelAndView("redirect:/admin/rounds/" + roundId);
+    }
+
+    @PutMapping("/rounds/{roundId}/switch")
+    public ResponseEntity switchTeams(@PathVariable(name = "roundId") Long roundId,
+                                      @Valid @ModelAttribute SwitchTeamsFromPool body) {
+        Pool pool1 = poolRepository.findOne(body.getPool1Id());
+        Team team1 = teamRepository.findOne(body.getTeam1Id());
+        Pool pool2 = poolRepository.findOne(body.getPool2Id());
+        Team team2 = teamRepository.findOne(body.getTeam2Id());
+        switchTeams(pool1, team1, team2);
+        switchTeams(pool2, team2, team1);
+        poolRepository.save(pool1);
+        poolRepository.save(pool2);
+        Map<String, String> result = Maps.newHashMap();
+        result.put("redirect", "/admin/rounds/" + roundId);
+        return ResponseEntity.ok(result);
+    }
+
+    void switchTeams(Pool pool, Team team1, Team team2) {
+        if (team1.equals(pool.getTeam1())) {
+            pool.setTeam1(team2);
+        }
+        if (team1.equals(pool.getTeam2())) {
+            pool.setTeam2(team2);
+        }
+        if (team1.equals(pool.getTeam3())) {
+            pool.setTeam3(team2);
+        }
     }
 
     RoundListView convertListItem(Round round) {
@@ -125,7 +153,7 @@ public class RoundController {
                 .withStatus(round.getStatus().getLabel())
                 .withTournamentId(round.getTournament().getId())
                 .withTournamentName(round.getTournament().getName())
-                .withValidated(round.getStatus().equals(RoundStatus.VALIDATED))
+                .withValidated(round.getStatus().equals(RoundStatus.STARTED))
                 .build();
     }
 
@@ -151,7 +179,7 @@ public class RoundController {
 
     String getColorStatus(Pool pool) {
         long count = pool.getMatches().parallelStream().filter(match -> !match.isFinished()).count();
-        return pool.getMatches().size() == 0 || count > 0  ? "primary" : "success";
+        return pool.getMatches().size() == 0 || count > 0 ? "primary" : "success";
     }
 
 }

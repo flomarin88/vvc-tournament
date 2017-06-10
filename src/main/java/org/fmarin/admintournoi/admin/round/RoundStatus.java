@@ -3,8 +3,7 @@ package org.fmarin.admintournoi.admin.round;
 public enum RoundStatus {
 
     CREATED("Créé"),
-    COMPOSED("Composition générée"),
-    VALIDATED("Composition validée"),
+    COMPOSED("Composition à valider"),
     STARTED("Matchs en cours"),
     FINISHED("Terminé");
 
