@@ -15,6 +15,7 @@ public final class PoolBuilder {
     private Team team2;
     private Team team3;
     private List<Match> matches = new ArrayList<>();
+    private Integer field;
 
     private PoolBuilder() {
     }
@@ -30,6 +31,11 @@ public final class PoolBuilder {
 
     public PoolBuilder withRound(Round round) {
         this.round = round;
+        return this;
+    }
+
+    public PoolBuilder withField(Integer field) {
+        this.field = field;
         return this;
     }
 
@@ -67,6 +73,7 @@ public final class PoolBuilder {
         pool.setTeam2(team2);
         pool.setTeam3(team3);
         pool.setMatches(matches);
+        pool.setField(field);
         return pool;
     }
 }

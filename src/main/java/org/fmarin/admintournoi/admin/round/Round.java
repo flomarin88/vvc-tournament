@@ -43,6 +43,9 @@ public class Round {
     @OneToMany(mappedBy = "round")
     private List<Pool> pools = Lists.newArrayList();
 
+    @Column(name = "field_ranges")
+    private String fieldRanges;
+
     public Long getId() {
         return id;
     }
@@ -113,5 +116,13 @@ public class Round {
 
     public void setPools(List<Pool> pools) {
         this.pools = pools;
+    }
+
+    public String getFieldRanges() {
+        return fieldRanges;
+    }
+
+    public void setFieldRanges(String fieldRanges) {
+        this.fieldRanges = fieldRanges;
     }
 }

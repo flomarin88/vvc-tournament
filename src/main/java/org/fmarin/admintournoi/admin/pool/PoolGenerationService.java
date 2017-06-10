@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class PoolGenerationService {
@@ -79,7 +80,7 @@ public class PoolGenerationService {
         }
 
         // Niveau de pool
-        int[] coeff = COEFFS.subList(0, levelsCount).stream().mapToInt(i->i).toArray();
+        int[] coeff = COEFFS.subList(0, levelsCount).stream().mapToInt(i -> i).toArray();
         IntVar[] poolsLevel = new IntVar[poolsCount];
         for (int pool = 0; pool < poolsCount; pool++) {
             poolsLevel[pool] = model.intVar("PoolLevel" + pool, TEAMS_COUNT_BY_POOL, TEAMS_COUNT_BY_POOL * levelsCount);
@@ -115,6 +116,7 @@ public class PoolGenerationService {
         Map<Integer, List<Team>> teamsToAffectByLevel = teams.stream()
                 .collect(Collectors.groupingBy(team -> team.getLevel().getValue(), Collectors.toList()));
 
+        List<Integer> fields = getFieldList(round.getFieldRanges());
         List<Pool> pools = Lists.newArrayList();
         for (int levelIndex = 0; levelIndex < poolsModel.length; levelIndex++) {
             for (int poolIndex = 0; poolIndex < poolsModel[levelIndex].length; poolIndex++) {
@@ -123,9 +125,9 @@ public class PoolGenerationService {
                     pool = new Pool();
                     pool.setPosition(poolIndex + 1);
                     pool.setRound(round);
+                    pool.setField(getField(fields, poolIndex + 1));
                     pools.add(pool);
-                }
-                else {
+                } else {
                     pool = pools.get(poolIndex);
                 }
                 for (int teamCount = 0; teamCount < poolsModel[levelIndex][poolIndex]; teamCount++) {
@@ -150,4 +152,23 @@ public class PoolGenerationService {
         return reversedMatrix;
     }
 
+    Integer getField(List<Integer> fields, Integer position) {
+        Integer newPosition = position % fields.size();
+        if (newPosition == 0) {
+            newPosition = fields.size();
+        }
+        return fields.get(newPosition - 1);
+    }
+
+    List<Integer> getFieldList(String fieldRanges) {
+        List<Integer> result = Lists.newArrayList();
+        String[] ranges = fieldRanges.split(";");
+        for (int i = 0; i < ranges.length; i++) {
+            String[] range = ranges[i].split("-");
+            Integer from = Integer.valueOf(range[0]);
+            Integer to = Integer.valueOf(range[1]);
+            result.addAll(IntStream.range(from, to + 1).boxed().collect(Collectors.toList()));
+        }
+        return result;
+    }
 }

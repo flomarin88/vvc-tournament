@@ -3,6 +3,7 @@ package org.fmarin.admintournoi.admin.pool;
 public final class PoolViewBuilder {
     private Long id;
     private String name;
+    private Integer field;
     private Long teamId1;
     private String teamName1;
     private String teamLevel1;
@@ -99,6 +100,11 @@ public final class PoolViewBuilder {
         return this;
     }
 
+    public PoolViewBuilder withField(Integer field) {
+        this.field = field;
+        return this;
+    }
+
     public PoolView build() {
         PoolView poolView = new PoolView();
         poolView.setId(id);
@@ -116,6 +122,8 @@ public final class PoolViewBuilder {
         poolView.setTeamLevelColor2(teamLevelColor2);
         poolView.setTeamLevelColor3(teamLevelColor3);
         poolView.setColor(color);
+        poolView.setField(field);
         return poolView;
     }
+
 }

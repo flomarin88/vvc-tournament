@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.admin.match;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
+import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,8 +43,10 @@ public class MatchController {
         Round round = roundRepository.findOne(roundId);
         ArrayList<String> elements = Lists.newArrayList(round.getTournament().getName(), round.getBranch().getLabel(), round.getName());
         String roundName = StringUtils.join(elements, " / ");
-        List<MatchPaper> matchPapers = round.getPools().stream().map(pool -> new MatchPaper(roundName, pool.getPosition(), 1,
-                pool.getTeam1().getName(), pool.getTeam2().getName(), pool.getTeam3().getName()))
+        List<MatchPaper> matchPapers = round.getPools().stream()
+                .sorted(Comparator.comparing(Pool::getPosition))
+                .map(pool -> new MatchPaper(roundName, pool.getPosition(), pool.getField(),
+                        pool.getTeam1().getName(), pool.getTeam2().getName(), pool.getTeam3().getName()))
                 .collect(Collectors.toList());
         return new ModelAndView("match_paper", "papers", matchPapers);
     }

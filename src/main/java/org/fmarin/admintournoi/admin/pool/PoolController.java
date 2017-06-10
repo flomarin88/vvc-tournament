@@ -39,6 +39,7 @@ public class PoolController {
         PoolDetailView poolView = aPoolDetailView()
                 .withId(pool.getId())
                 .withName("Poule " + pool.getPosition())
+                .withField(pool.getField())
                 .withTournamentId(tournament.getId())
                 .withTournamentName(tournament.getName())
                 .withRoundId(round.getId())

@@ -4,6 +4,7 @@ public class PoolView {
 
     private Long id;
     private String name;
+    private Integer field;
     private Long teamId1;
     private String teamName1;
     private Long teamId2;
@@ -136,5 +137,13 @@ public class PoolView {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public Integer getField() {
+        return field;
+    }
+
+    public void setField(Integer field) {
+        this.field = field;
     }
 }

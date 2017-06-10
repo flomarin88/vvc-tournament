@@ -32,6 +32,8 @@ public class Pool {
     @ManyToOne
     @JoinColumn(name = "team_3_id")
     private Team team3;
+    @Column(name = "field")
+    private Integer field;
 
     @OneToMany(mappedBy = "pool", cascade = CascadeType.ALL)
     private List<Match> matches = new ArrayList<>();
@@ -100,5 +102,13 @@ public class Pool {
 
     public void setMatches(List<Match> matches) {
         this.matches = matches;
+    }
+
+    public Integer getField() {
+        return field;
+    }
+
+    public void setField(Integer field) {
+        this.field = field;
     }
 }

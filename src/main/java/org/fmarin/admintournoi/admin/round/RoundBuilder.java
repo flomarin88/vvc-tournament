@@ -16,6 +16,7 @@ public final class RoundBuilder {
     private List<Team> teams;
     private List<Pool> pools;
     private RoundStatus status;
+    private String fieldRanges;
 
     private RoundBuilder() {
     }
@@ -69,6 +70,11 @@ public final class RoundBuilder {
         return this;
     }
 
+    public RoundBuilder withFieldRanges(String fieldRanges) {
+        this.fieldRanges = fieldRanges;
+        return this;
+    }
+
     public Round build() {
         Round round = new Round();
         round.setId(id);
@@ -80,6 +86,7 @@ public final class RoundBuilder {
         round.setTeams(teams);
         round.setPools(pools);
         round.setStatus(status);
+        round.setFieldRanges(fieldRanges);
         return round;
     }
 }

@@ -8,6 +8,7 @@ public class RoundToCreateView {
     private Long previousRoundId;
     private Integer teamsFrom;
     private Integer teamsTo;
+    private String fieldRanges;
 
     public String getName() {
         return name;
@@ -55,5 +56,13 @@ public class RoundToCreateView {
 
     public void setTeamsTo(Integer teamsTo) {
         this.teamsTo = teamsTo;
+    }
+
+    public String getFieldRanges() {
+        return fieldRanges;
+    }
+
+    public void setFieldRanges(String fieldRanges) {
+        this.fieldRanges = fieldRanges;
     }
 }

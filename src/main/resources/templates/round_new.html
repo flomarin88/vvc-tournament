@@ -7,60 +7,72 @@
 
 <form method="POST" action="/admin/tournaments/{{ tournament.id }}/rounds" modelAttribute="round">
 
-    <div class="form-group">
-        <label for="name">Nom</label>
-        <input type="text" class="form-control" id="name" name="name">
-    </div>
+    <div class="row">
+        <div class="form-group col-lg-2">
+            <label for="name">Nom</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
 
-    <div class="form-group">
-        <label class="control-label">Branche</label>
-        <div class="btn-group btn-group-justified" data-toggle="buttons">
-            <label class="btn btn-primary">
-                <input type="radio" name="tournamentBranch" value="PRINCIPALE">Principale
-            </label>
-            <label class="btn btn-info">
-                <input type="radio" name="tournamentBranch" value="SUPER_CONSOLANTE">Super Consolante
-            </label>
-            <label class="btn btn-default">
-                <input type="radio" name="tournamentBranch" value="CONSOLANTE">Consolante
-            </label>
+        <div class="form-group col-lg-5">
+            <label class="control-label">Branche</label>
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="tournamentBranch" value="PRINCIPALE">Principale
+                </label>
+                <label class="btn btn-info">
+                    <input type="radio" name="tournamentBranch" value="SUPER_CONSOLANTE">Super Consolante
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" name="tournamentBranch" value="CONSOLANTE">Consolante
+                </label>
+            </div>
+        </div>
+        <div class="form-group col-lg-5">
+            <label class="control-label">Type</label>
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                <label class="btn btn-info">
+                    <input type="radio" name="type" value="POOL">Poules
+                </label>
+                <label class="btn btn-info">
+                    <input type="radio" name="type" value="DIRECT_ELIMINATION">Élimination directe
+                </label>
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        <label class="control-label">Type</label>
-        <div class="btn-group btn-group-justified" data-toggle="buttons">
-            <label class="btn btn-info">
-                <input type="radio" name="type" value="POOL">Poules
-            </label>
-            <label class="btn btn-info">
-                <input type="radio" name="type" value="DIRECT_ELIMINATION">Élimination directe
-            </label>
+    <div class="row">
+        <div class="form-group col-lg-4">
+            <label for="previousRoundId">Tour précédent</label>
+            <select class="form-control" id="previousRoundId" name="previousRoundId">
+                <option value="" selected>-</option>
+                {{#rounds}}
+                <option value="{{id}}">{{ branch.label }} - {{name}}</option>
+                {{/rounds}}
+            </select>
         </div>
+
+        <div class="form-group col-lg-3">
+            <label for="teamsFrom">Équipes de</label>
+            <input type="number" class="form-control" id="teamsFrom" name="teamsFrom">
+        </div>
+
+        <div class="form-group col-lg-3">
+            <label for="teamsTo">À</label>
+            <input type="number" class="form-control" id="teamsTo" name="teamsTo">
+        </div>
+
+        <div class="form-group col-lg-3">
+            <label for="fieldRanges">Terrains</label>
+            <input type="text" class="form-control" id="fieldRanges" name="fieldRanges" placeholder="1-12;20-22">
+        </div>
+
+
     </div>
 
-    <div class="form-group">
-        <label for="previousRoundId">Tour précédent</label>
-        <select class="form-control" id="previousRoundId" name="previousRoundId">
-            <option value="" selected>-</option>
-            {{#rounds}}
-            <option value="{{id}}">{{ branch.label }} - {{name}}</option>
-            {{/rounds}}
-        </select>
-    </div>
 
-    <div class="form-group">
-        <label for="teamsFrom">Équipes de</label>
-        <input type="number" class="form-control" id="teamsFrom" name="teamsFrom">
-    </div>
-
-    <div class="form-group">
-        <label for="teamsTo">À</label>
-        <input type="number" class="form-control" id="teamsTo" name="teamsTo">
-    </div>
-
-    <div class="text-center" style="margin-bottom: 50px">
-        <button type="submit" class="btn btn-lg btn-primary">Créer le tour</button>
+    <div class="row">
+        <div class="text-center" style="margin-bottom: 50px">
+            <button type="submit" class="btn btn-lg btn-primary">Créer le tour</button>
+        </div>
     </div>
 </form>
 

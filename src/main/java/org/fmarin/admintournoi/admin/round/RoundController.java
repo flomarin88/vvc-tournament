@@ -87,6 +87,7 @@ public class RoundController {
                 .withPreviousRound(previousRound)
                 .withTeams(teams)
                 .withTournament(tournament)
+                .withFieldRanges(roundToCreate.getFieldRanges())
                 .build();
         roundRepository.save(round);
         poolGenerationService.generatePools(round);
@@ -161,6 +162,7 @@ public class RoundController {
         return PoolViewBuilder.aPoolView()
                 .withId(pool.getId())
                 .withName("Poule " + pool.getPosition())
+                .withField(pool.getField())
                 .withTeamId1(pool.getTeam1().getId())
                 .withTeamId2(pool.getTeam2().getId())
                 .withTeamId3(pool.getTeam3().getId())

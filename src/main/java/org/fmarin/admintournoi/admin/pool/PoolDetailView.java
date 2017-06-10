@@ -3,6 +3,7 @@ package org.fmarin.admintournoi.admin.pool;
 public class PoolDetailView {
 
     private final Long id;
+    private final Integer field;
     private final String name;
     private final Long tournamentId;
     private final String tournamentName;
@@ -11,8 +12,9 @@ public class PoolDetailView {
     private final String color;
     private final String status;
 
-    public PoolDetailView(Long id, String name, Long tournamentId, String tournamentName, Long roundId, String roundName, String color, String status) {
+    public PoolDetailView(Long id, Integer field, String name, Long tournamentId, String tournamentName, Long roundId, String roundName, String color, String status) {
         this.id = id;
+        this.field = field;
         this.name = name;
         this.tournamentId = tournamentId;
         this.tournamentName = tournamentName;
