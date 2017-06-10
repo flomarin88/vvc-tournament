@@ -33,25 +33,25 @@
                 <table class="table table-striped table-readable">
                     <tbody>
                     <tr>
-                        {{^isValidated}}
+                        {{^round.isValidated}}
                         <td><input type="checkbox" class="switch-team-js" data-team-id="{{ teamId1 }}" data-pool-id="{{ id }}" ></td>
-                        {{/isValidated}}
+                        {{/round.isValidated}}
                         <th scope="row">A</th>
                         <td>{{ teamName1 }}</td>
                         <td align="center"><span class="label {{ teamLevelColor1 }}">{{ teamLevel1 }}</span></td>
                     </tr>
                     <tr>
-                        {{^isValidated}}
+                        {{^round.isValidated}}
                         <td><input type="checkbox" class="switch-team-js" data-team-id="{{ teamId2 }}" data-pool-id="{{ id }}" ></td>
-                        {{/isValidated}}
+                        {{/round.isValidated}}
                         <th scope="row">B</th>
                         <td>{{ teamName2 }}</td>
                         <td align="center"><span class="label {{ teamLevelColor2 }}">{{ teamLevel2 }}</span></td>
                     </tr>
                     <tr>
-                        {{^isValidated}}
+                        {{^round.isValidated}}
                         <td><input type="checkbox" class="switch-team-js" data-team-id="{{ teamId3 }}" data-pool-id="{{ id }}" ></td>
-                        {{/isValidated}}
+                        {{/round.isValidated}}
                         <th scope="row">C</th>
                         <td>{{ teamName3 }}</td>
                         <td align="center"><span class="label {{ teamLevelColor3 }}">{{ teamLevel3 }}</span></td>

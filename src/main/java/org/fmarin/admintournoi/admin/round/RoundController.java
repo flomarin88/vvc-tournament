@@ -111,7 +111,7 @@ public class RoundController {
         round.setStatus(RoundStatus.STARTED);
         matchGenerationService.generate(round);
         roundRepository.save(round);
-        return new ModelAndView("redirect:/admin/rounds/" + roundId);
+        return new ModelAndView("redirect:/admin/rounds/" + roundId + "/matches/papers");
     }
 
     @PutMapping("/rounds/{roundId}/switch")

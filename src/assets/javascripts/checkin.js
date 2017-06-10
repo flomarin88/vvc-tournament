@@ -12,9 +12,9 @@ function checkin(teamId, isPresent) {
     var data = {
         isPresent: isPresent
     };
-    var diff = 1;
+    var diff = -1;
     if (!isPresent) {
-        diff = -1;
+        diff = 1;
     }
 
     $.ajax({
@@ -25,8 +25,8 @@ function checkin(teamId, isPresent) {
     }).done(function () {
         console.log("Checkin done");
         var absenceCountLabel = $('.label');
-        var current = absenceCountLabel.value();
-        absenceCountLabel.value(current + diff);
+        var current = parseInt(absenceCountLabel.text());
+        absenceCountLabel.text(current + diff);
     });
 }
 

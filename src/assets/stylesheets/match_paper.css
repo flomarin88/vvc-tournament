@@ -1,0 +1,57 @@
+@media print {
+    @page {
+        size: A4 landscape;
+    }
+}
+
+body {
+    padding-top: 25px;
+    font-size :15pt;
+    text-align: center;
+}
+
+.container {
+    width: 90%;
+}
+
+.row {
+    padding-bottom: 30px;
+}
+
+.pool-field {
+    font-size: 20pt;
+    font-weight: 300;
+}
+
+.lead {
+    font-style: italic;
+}
+
+.table {
+    width: 95%;
+    font-size :15pt;
+}
+
+.table th {
+    text-align: center;
+}
+
+.table td {
+    height: 100pt;
+}
+
+.team-list {
+    text-align: left;
+}
+
+.table {
+    border: 1px solid #000000;
+}
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+    border: 1px solid #000000;
+}

@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.admin.checkin;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
@@ -50,7 +51,9 @@ public class CheckInController {
         Team team = teamRepository.findOne(teamId);
         team.setPresent(isPresent);
         teamRepository.save(team);
-        return ResponseEntity.ok().build();
+        Map<String, String> result = Maps.newHashMap();
+        result.put("result", "ok");
+        return ResponseEntity.ok(result);
     }
 
     TeamToCheckInView convert(Team team) {

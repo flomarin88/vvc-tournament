@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    <title>Feuilles de Match</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel='stylesheet' href='/assets/bootswatch.css'/>
+    <link rel='stylesheet' href='/assets/match_paper.css'/>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="row">
+        {{#papers}}
+        <div class="col-xs-6">
+            <div class="row">
+                <h2>{{ roundName }}</h2>
+
+            </div>
+            <div class="row">
+                <div class="col-lg-6 pool-field">
+                    <span>POULE <strong>{{ pool }}</strong></span>
+                </div>
+                <div class="col-lg-6 pool-field">
+                    <span>TERRAIN <strong>{{ field }}</strong></span>
+                </div>
+            </div>
+            <div class="row">
+                <p class="lead">1 Set de 25 points (2 points d'écarts)</p>
+            </div>
+            <div class="row team-list">
+                <p>Équipe A : <strong>{{ teamA }}</strong></p>
+                <p>Équipe B : <strong>{{ teamB }}</strong></p>
+                <p>Équipe C : <strong>{{ teamC }}</strong></p>
+            </div>
+            <div class="row">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>EQUIPE 1</th>
+                        <th>EQUIPE 2</th>
+                        <th>ARBITRE</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>A</td>
+                        <td>C</td>
+                        <td>B<br/><strong>Score final</strong></td>
+                    </tr>
+                    <tr>
+                        <td>B</td>
+                        <td>C</td>
+                        <td>A<br/><strong>Score final</strong></td>
+                    </tr>
+                    <tr>
+                        <td>A</td>
+                        <td>B</td>
+                        <td>C<br/><strong>Score final</strong></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {{/papers}}
+    </div>
+</div>
+</body>
+</html>
