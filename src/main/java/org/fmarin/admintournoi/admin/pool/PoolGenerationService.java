@@ -60,8 +60,11 @@ public class PoolGenerationService {
                 .map(pool -> rankingService.getPoolRanking(pool.getId()))
                 .collect(Collectors.toList()).stream()
                 .flatMap(List::stream)
+                .collect(Collectors.toList())
+                .stream().filter(ranking -> round.getTeams().contains(ranking.getTeam()))
                 .collect(Collectors.toList());
-        Integer poolsCount = rankings.size() / TEAMS_COUNT_BY_POOL;
+
+        Integer poolsCount = round.getTeams().size() / TEAMS_COUNT_BY_POOL;
         Map<Integer, Long> teamsCountByLevel = countTeamsByRanking(rankings);
         int[][] poolsModel = findFirstRoundLevelDistribution(teamsCountByLevel, poolsCount);
         List<Pool> pools = affectTeamsToPoolWithRankings(poolsModel, rankings, round);
