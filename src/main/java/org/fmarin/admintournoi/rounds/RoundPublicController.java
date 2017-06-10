@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.rounds;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolRepository;
@@ -16,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.fmarin.admintournoi.admin.team.TeamOverviewViewBuilder.aTeamOverviewView;
 
 @RestController
 public class RoundPublicController {
@@ -48,9 +51,20 @@ public class RoundPublicController {
                 .withId(pool.getId())
                 .withName("Poule " + pool.getPosition())
                 .withField(pool.getField())
-                .withTeamName1(pool.getTeam1().getName())
-                .withTeamName2(pool.getTeam2().getName())
-                .withTeamName3(pool.getTeam3().getName())
+                .withTeams(Lists.newArrayList(
+                        aTeamOverviewView()
+                                .withName(pool.getTeam1().getName())
+                                .withLetter("A")
+                                .build(),
+                        aTeamOverviewView()
+                                .withName(pool.getTeam2().getName())
+                                .withLetter("B")
+                                .build(),
+                        aTeamOverviewView()
+                                .withName(pool.getTeam3().getName())
+                                .withLetter("C")
+                                .build()
+                ))
                 .build();
     }
 }

@@ -1,12 +1,14 @@
 package org.fmarin.admintournoi.admin.round;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.admin.match.MatchGenerationService;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolRepository;
 import org.fmarin.admintournoi.admin.pool.PoolView;
-import org.fmarin.admintournoi.admin.pool.PoolViewBuilder;
 import org.fmarin.admintournoi.admin.ranking.RankingService;
+import org.fmarin.admintournoi.admin.team.TeamOverviewView;
+import org.fmarin.admintournoi.admin.team.TeamOverviewViewBuilder;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
@@ -20,6 +22,9 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.fmarin.admintournoi.admin.pool.PoolViewBuilder.aPoolView;
+import static org.fmarin.admintournoi.admin.team.TeamOverviewViewBuilder.aTeamOverviewView;
 
 @RestController
 @RequestMapping("/admin")
@@ -140,34 +145,32 @@ public class RoundController {
     }
 
     private PoolView convert(Pool pool) {
-        PoolViewBuilder poolView = PoolViewBuilder.aPoolView()
+        return aPoolView()
                 .withId(pool.getId())
                 .withName("Poule " + pool.getPosition())
                 .withField(pool.getField())
-                .withTeamId1(pool.getTeam1().getId())
-                .withTeamId2(pool.getTeam2().getId())
-                .withTeamId3(pool.getTeam3().getId())
-                .withTeamName1(pool.getTeam1().getName())
-                .withTeamName2(pool.getTeam2().getName())
-                .withTeamName3(pool.getTeam3().getName())
-                .withColor(getColorStatus(pool));
-
-        if (pool.getRound().getPreviousRound() != null) {
-            poolView.withTeamPreviousRank1(rankingService.getTeamRanking(pool.getTeam1(),
-                    pool.getRound().getPreviousRound()).getPosition());
-            poolView.withTeamPreviousRank2(rankingService.getTeamRanking(pool.getTeam2(),
-                    pool.getRound().getPreviousRound()).getPosition());
-            poolView.withTeamPreviousRank3(rankingService.getTeamRanking(pool.getTeam3(),
-                    pool.getRound().getPreviousRound()).getPosition());
-        }
-        return poolView
-                .withTeamLevel1(pool.getTeam1().getLevel().getLabel())
-                .withTeamLevel2(pool.getTeam2().getLevel().getLabel())
-                .withTeamLevel3(pool.getTeam3().getLevel().getLabel())
-                .withTeamLevelColor1("label-" + pool.getTeam1().getLevel().getColor())
-                .withTeamLevelColor2("label-" + pool.getTeam2().getLevel().getColor())
-                .withTeamLevelColor3("label-" + pool.getTeam3().getLevel().getColor())
+                .withColor(getColorStatus(pool))
+                .withTeams(Lists.newArrayList(
+                        getTeamOverview(pool.getTeam1(), "A", pool),
+                        getTeamOverview(pool.getTeam2(), "B", pool),
+                        getTeamOverview(pool.getTeam3(), "C", pool)
+                ))
                 .build();
+    }
+
+    TeamOverviewView getTeamOverview(Team team, String letter, Pool pool) {
+        TeamOverviewViewBuilder builder = aTeamOverviewView()
+                .withId(team.getId())
+                .withLetter(letter)
+                .withName(team.getName())
+                .withLevel(team.getLevel())
+                .withPlayedAlready(false);
+        if (pool.getRound().getPreviousRound() != null) {
+            Integer previousRank = rankingService.getTeamRanking(pool.getTeam1(), pool.getRound().getPreviousRound())
+                    .getPosition();
+            builder.withPreviousRank(previousRank);
+        }
+        return builder.build();
     }
 
     String getColorStatus(Pool pool) {

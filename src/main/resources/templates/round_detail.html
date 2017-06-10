@@ -32,33 +32,17 @@
             <div class="panel-body">
                 <table class="table table-striped table-readable">
                     <tbody>
+                    {{#teams}}
                     <tr>
                         {{^round.isValidated}}
-                        <td><input type="checkbox" class="switch-team-js" data-team-id="{{ teamId1 }}" data-pool-id="{{ id }}" ></td>
+                        <td><input type="checkbox" class="switch-team-js" data-team-id="{{ id }}" data-pool-id="{{ pools.id }}" ></td>
                         {{/round.isValidated}}
-                        <th scope="row">A</th>
-                        <td>{{ teamName1 }}</td>
-                        <td align="center"><span class="label {{ teamLevelColor1 }}">{{ teamLevel1 }}</span></td>
-                        {{#teamPreviousRank1}}<td align="center"><span class="badge ">{{ teamPreviousRank1 }}</span></td>{{/teamPreviousRank1}}
+                        <th scope="row">{{ letter }}</th>
+                        <td>{{ name }}</td>
+                        <td align="center"><span class="label label-{{ levelColor }}">{{ levelName }}</span></td>
+                        {{#previousRank}}<td align="center"><span class="badge ">{{ previousRank }}</span></td>{{/previousRank}}
                     </tr>
-                    <tr>
-                        {{^round.isValidated}}
-                        <td><input type="checkbox" class="switch-team-js" data-team-id="{{ teamId2 }}" data-pool-id="{{ id }}" ></td>
-                        {{/round.isValidated}}
-                        <th scope="row">B</th>
-                        <td>{{ teamName2 }}</td>
-                        <td align="center"><span class="label {{ teamLevelColor2 }}">{{ teamLevel2 }}</span></td>
-                        {{#teamPreviousRank2}}<td align="center"><span class="badge ">{{ teamPreviousRank2 }}</span></td>{{/teamPreviousRank2}}
-                    </tr>
-                    <tr>
-                        {{^round.isValidated}}
-                        <td><input type="checkbox" class="switch-team-js" data-team-id="{{ teamId3 }}" data-pool-id="{{ id }}" ></td>
-                        {{/round.isValidated}}
-                        <th scope="row">C</th>
-                        <td>{{ teamName3 }}</td>
-                        <td align="center"><span class="label {{ teamLevelColor3 }}">{{ teamLevel3 }}</span></td>
-                        {{#teamPreviousRank3}}<td align="center"><span class="badge ">{{ teamPreviousRank3 }}</span></td>{{/teamPreviousRank3}}
-                    </tr>
+                    {{/teams}}
                     </tbody>
                 </table>
             </div>
