@@ -21,7 +21,7 @@
             </thead>
             <tbody>
             {{#teams}}
-            <tr>
+            <tr {{#isToPay}} class="danger" {{/isToPay}}>
                 <th scope="row">{{name}}</th>
                 <td>{{levelLabel}}</td>
                 <td>{{captainName}}</td>

@@ -3,6 +3,7 @@ package org.fmarin.admintournoi.admin.pool;
 import com.google.common.collect.Lists;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.IntVar;
+import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.fmarin.admintournoi.admin.round.RoundStatus;
@@ -45,6 +46,13 @@ public class PoolGenerationService {
         int[][] poolsModel = findFirstRoundLevelDistribution(teamsCountByLevel, poolsCount);
         List<Pool> pools = affectTeamsToPool(poolsModel, teams, round);
         pools.parallelStream().forEach(poolRepository::save);
+        round.setStatus(RoundStatus.COMPOSED);
+        roundRepository.save(round);
+    }
+
+    @Async
+    public void generatePools(Round round, List<Ranking> rankings) {
+
         round.setStatus(RoundStatus.COMPOSED);
         roundRepository.save(round);
     }

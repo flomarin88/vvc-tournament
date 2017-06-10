@@ -35,29 +35,46 @@ public class RoundService {
 
     public void create(Long tournamentId, RoundToCreateView roundToCreate) {
         Tournament tournament = tournamentRepository.findOne(tournamentId);
-        Round previousRound = null;
-        List<Team> teams;
+        Round round;
         if (roundToCreate.getPreviousRoundId() == null) {
-            teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, "Completed");
+            round = createFirstRound(tournament, roundToCreate);
+            roundRepository.save(round);
+            poolGenerationService.generatePools(round);
         } else {
-            previousRound = roundRepository.findOne(roundToCreate.getPreviousRoundId());
-            List<Ranking> roundRanking = rankingService.getRoundRanking(roundToCreate.getPreviousRoundId());
-            teams = roundRanking.subList(roundToCreate.getTeamsFrom() - 1, roundToCreate.getTeamsTo())
-                    .stream()
-                    .map(Ranking::getTeam)
-                    .collect(Collectors.toList());
+            List<Ranking> rankings = rankingService.getRoundRanking(roundToCreate.getPreviousRoundId());
+            round = createNextRound(tournament, roundToCreate, rankings);
+            roundRepository.save(round);
+            poolGenerationService.generatePools(round, rankings);
         }
-        Round round = RoundBuilder.aRound()
+    }
+
+    private Round createNextRound(Tournament tournament, RoundToCreateView roundToCreate, List<Ranking> rankings) {
+        List<Team> teams;
+        Round previousRound = roundRepository.findOne(roundToCreate.getPreviousRoundId());
+        teams = rankings.subList(roundToCreate.getTeamsFrom() - 1, roundToCreate.getTeamsTo())
+                .stream()
+                .map(Ranking::getTeam)
+                .collect(Collectors.toList());
+        return initRound(tournament, roundToCreate)
+                .withTeams(teams)
+                .withPreviousRound(previousRound)
+                .build();
+    }
+
+    private Round createFirstRound(Tournament tournament, RoundToCreateView roundToCreate) {
+        List<Team> teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, "Completed");
+        return initRound(tournament, roundToCreate)
+                .withTeams(teams)
+                .build();
+    }
+
+    private RoundBuilder initRound(Tournament tournament, RoundToCreateView roundToCreate) {
+        return RoundBuilder.aRound()
                 .withName(roundToCreate.getName())
                 .withBranch(TournamentBranch.valueOf(roundToCreate.getTournamentBranch()))
                 .withType(RoundType.valueOf(roundToCreate.getType()))
                 .withStatus(RoundStatus.CREATED)
-                .withPreviousRound(previousRound)
-                .withTeams(teams)
                 .withTournament(tournament)
-                .withFieldRanges(roundToCreate.getFieldRanges())
-                .build();
-        roundRepository.save(round);
-        poolGenerationService.generatePools(round);
+                .withFieldRanges(roundToCreate.getFieldRanges());
     }
 }

@@ -66,6 +66,7 @@ public class CheckInController {
                 team.getCaptainEmail(),
                 team.getCaptainPhone(),
                 team.getPaymentVerificationCode(),
+                "A PAYER".equals(team.getCaptainName()),
                 team.isPresent());
     }
 

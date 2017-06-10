@@ -64,3 +64,11 @@ body {
 .height {
     min-height: 150px;
 }
+
+.table-readable {
+    font-size: 16px;
+}
+
+.table-centered td, .table-centered th {
+    text-align: center;
+}

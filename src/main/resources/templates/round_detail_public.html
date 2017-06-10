@@ -1,0 +1,41 @@
+{{#layout}}
+
+{{#round}}
+<div class="page-header">
+    <h1>{{ name }}</h1>
+    <p class="lead">{{ tournamentName }}</p>
+</div>
+{{/round}}
+
+<div class="row">
+    {{#pools}}
+    <div class="col-lg-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2 class="panel-title">{{ name }} - Terrain {{ field }}</h2>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped table-readable table-centered">
+                    <tbody>
+                    <tr>
+                        <th scope="row">A</th>
+                        <td>{{ teamName1 }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">B</th>
+                        <td>{{ teamName2 }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">C</th>
+                        <td>{{ teamName3 }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {{/pools}}
+</div>
+
+{{/layout}}
+{{>layout}}

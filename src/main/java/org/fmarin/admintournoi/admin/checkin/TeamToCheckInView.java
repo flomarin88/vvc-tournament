@@ -10,10 +10,11 @@ public class TeamToCheckInView {
     private final String captainEmail;
     private final String captainPhone;
     private final Integer paymentVerificationCode;
+    private final boolean toPay;
     private final boolean isPresent;
 
     public TeamToCheckInView(Long id, String name, String tournamentLabel, String levelLabel, String captainName,
-                             String captainEmail, String captainPhone, Integer paymentVerificationCode, boolean isPresent) {
+                             String captainEmail, String captainPhone, Integer paymentVerificationCode, boolean toPay, boolean isPresent) {
         this.id = id;
         this.name = name;
         this.tournamentLabel = tournamentLabel;
@@ -22,6 +23,7 @@ public class TeamToCheckInView {
         this.captainEmail = captainEmail;
         this.captainPhone = captainPhone;
         this.paymentVerificationCode = paymentVerificationCode;
+        this.toPay = toPay;
         this.isPresent = isPresent;
     }
 
@@ -59,5 +61,9 @@ public class TeamToCheckInView {
 
     public boolean isPresent() {
         return isPresent;
+    }
+
+    public boolean isToPay() {
+        return toPay;
     }
 }
