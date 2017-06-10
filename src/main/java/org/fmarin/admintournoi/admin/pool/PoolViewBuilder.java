@@ -16,6 +16,9 @@ public final class PoolViewBuilder {
     private String teamLevelColor1;
     private String teamLevelColor2;
     private String teamLevelColor3;
+    private Integer teamPreviousRank1;
+    private Integer teamPreviousRank2;
+    private Integer teamPreviousRank3;
     private String color;
 
     private PoolViewBuilder() {
@@ -95,6 +98,21 @@ public final class PoolViewBuilder {
         return this;
     }
 
+    public PoolViewBuilder withTeamPreviousRank1(Integer teamPreviousRank1) {
+        this.teamPreviousRank1 = teamPreviousRank1;
+        return this;
+    }
+
+    public PoolViewBuilder withTeamPreviousRank2(Integer teamPreviousRank2) {
+        this.teamPreviousRank2 = teamPreviousRank2;
+        return this;
+    }
+
+    public PoolViewBuilder withTeamPreviousRank3(Integer teamPreviousRank3) {
+        this.teamPreviousRank3 = teamPreviousRank3;
+        return this;
+    }
+
     public PoolViewBuilder withColor(String color) {
         this.color = color;
         return this;
@@ -121,6 +139,9 @@ public final class PoolViewBuilder {
         poolView.setTeamLevelColor1(teamLevelColor1);
         poolView.setTeamLevelColor2(teamLevelColor2);
         poolView.setTeamLevelColor3(teamLevelColor3);
+        poolView.setTeamPreviousRank1(teamPreviousRank1);
+        poolView.setTeamPreviousRank2(teamPreviousRank2);
+        poolView.setTeamPreviousRank3(teamPreviousRank3);
         poolView.setColor(color);
         poolView.setField(field);
         return poolView;

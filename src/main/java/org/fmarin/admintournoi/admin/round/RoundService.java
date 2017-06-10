@@ -44,14 +44,13 @@ public class RoundService {
             List<Ranking> rankings = rankingService.getRoundRanking(roundToCreate.getPreviousRoundId());
             round = createNextRound(tournament, roundToCreate, rankings);
             roundRepository.save(round);
-            poolGenerationService.generatePools(round, rankings);
+            poolGenerationService.generatePoolsWithRankings(round);
         }
     }
 
     private Round createNextRound(Tournament tournament, RoundToCreateView roundToCreate, List<Ranking> rankings) {
-        List<Team> teams;
         Round previousRound = roundRepository.findOne(roundToCreate.getPreviousRoundId());
-        teams = rankings.subList(roundToCreate.getTeamsFrom() - 1, roundToCreate.getTeamsTo())
+        List<Team> teams = rankings.subList(roundToCreate.getTeamsFrom() - 1, roundToCreate.getTeamsTo())
                 .stream()
                 .map(Ranking::getTeam)
                 .collect(Collectors.toList());

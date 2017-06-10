@@ -2,7 +2,6 @@ package org.fmarin.admintournoi.admin.ranking;
 
 import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.admin.match.Match;
-import org.fmarin.admintournoi.admin.match.MatchRepository;
 import org.fmarin.admintournoi.admin.match.MatchStatus;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolRepository;
@@ -16,19 +15,18 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @Service
 public class RankingService {
 
-    private final MatchRepository matchRepository;
     private final PoolRepository poolRepository;
     private final RoundRepository roundRepository;
 
     @Autowired
-    public RankingService(MatchRepository matchRepository, PoolRepository poolRepository, RoundRepository roundRepository) {
-        this.matchRepository = matchRepository;
+    public RankingService(PoolRepository poolRepository, RoundRepository roundRepository) {
         this.poolRepository = poolRepository;
         this.roundRepository = roundRepository;
     }
@@ -48,6 +46,13 @@ public class RankingService {
         rankingsByPool.sort(roundRankingOrdering());
         updatePosition(rankingsByPool);
         return rankingsByPool;
+    }
+
+    public Ranking getTeamRanking(Team team, Round round) {
+        Pool pool = poolRepository.findByRoundAndTeam(round, team);
+        List<Ranking> rankings = getRankings(pool);
+        Optional<Ranking> optRanking = rankings.stream().filter(ranking -> ranking.getTeam().equals(team)).findAny();
+        return optRanking.get();
     }
 
     @NotNull

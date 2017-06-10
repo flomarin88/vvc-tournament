@@ -17,6 +17,9 @@ public class PoolView {
     private String teamLevelColor1;
     private String teamLevelColor2;
     private String teamLevelColor3;
+    private Integer teamPreviousRank1;
+    private Integer teamPreviousRank2;
+    private Integer teamPreviousRank3;
     private String color;
 
     public Long getId() {
@@ -145,5 +148,29 @@ public class PoolView {
 
     public void setField(Integer field) {
         this.field = field;
+    }
+
+    public Integer getTeamPreviousRank1() {
+        return teamPreviousRank1;
+    }
+
+    public void setTeamPreviousRank1(Integer teamPreviousRank1) {
+        this.teamPreviousRank1 = teamPreviousRank1;
+    }
+
+    public Integer getTeamPreviousRank2() {
+        return teamPreviousRank2;
+    }
+
+    public void setTeamPreviousRank2(Integer teamPreviousRank2) {
+        this.teamPreviousRank2 = teamPreviousRank2;
+    }
+
+    public Integer getTeamPreviousRank3() {
+        return teamPreviousRank3;
+    }
+
+    public void setTeamPreviousRank3(Integer teamPreviousRank3) {
+        this.teamPreviousRank3 = teamPreviousRank3;
     }
 }

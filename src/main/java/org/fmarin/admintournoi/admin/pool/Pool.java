@@ -35,7 +35,7 @@ public class Pool {
     @Column(name = "field")
     private Integer field;
 
-    @OneToMany(mappedBy = "pool", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pool", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Match> matches = new ArrayList<>();
 
     public void addTeam(Team team) {

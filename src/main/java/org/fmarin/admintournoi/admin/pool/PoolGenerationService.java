@@ -4,10 +4,12 @@ import com.google.common.collect.Lists;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.IntVar;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
+import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.fmarin.admintournoi.admin.round.RoundStatus;
 import org.fmarin.admintournoi.subscription.Team;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,13 @@ public class PoolGenerationService {
 
     private final PoolRepository poolRepository;
     private final RoundRepository roundRepository;
+    private final RankingService rankingService;
 
     @Autowired
-    public PoolGenerationService(PoolRepository poolRepository, RoundRepository roundRepository) {
+    public PoolGenerationService(PoolRepository poolRepository, RoundRepository roundRepository, RankingService rankingService) {
         this.poolRepository = poolRepository;
         this.roundRepository = roundRepository;
+        this.rankingService = rankingService;
     }
 
     @Async
@@ -44,21 +48,34 @@ public class PoolGenerationService {
         Integer poolsCount = teams.size() / TEAMS_COUNT_BY_POOL;
         Map<Integer, Long> teamsCountByLevel = countTeamsByLevel(teams);
         int[][] poolsModel = findFirstRoundLevelDistribution(teamsCountByLevel, poolsCount);
-        List<Pool> pools = affectTeamsToPool(poolsModel, teams, round);
+        List<Pool> pools = affectTeamsToPoolWithLevel(poolsModel, teams, round);
         pools.parallelStream().forEach(poolRepository::save);
         round.setStatus(RoundStatus.COMPOSED);
         roundRepository.save(round);
     }
 
     @Async
-    public void generatePools(Round round, List<Ranking> rankings) {
-
+    public void generatePoolsWithRankings(Round round) {
+        List<Ranking> rankings = round.getPreviousRound().getPools().stream()
+                .map(pool -> rankingService.getPoolRanking(pool.getId()))
+                .collect(Collectors.toList()).stream()
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+        Integer poolsCount = rankings.size() / TEAMS_COUNT_BY_POOL;
+        Map<Integer, Long> teamsCountByLevel = countTeamsByRanking(rankings);
+        int[][] poolsModel = findFirstRoundLevelDistribution(teamsCountByLevel, poolsCount);
+        List<Pool> pools = affectTeamsToPoolWithRankings(poolsModel, rankings, round);
+        pools.parallelStream().forEach(poolRepository::save);
         round.setStatus(RoundStatus.COMPOSED);
         roundRepository.save(round);
     }
 
     Map<Integer, Long> countTeamsByLevel(List<Team> teams) {
         return teams.stream().collect(Collectors.groupingBy(team -> team.getLevel().getValue(), Collectors.counting()));
+    }
+
+    Map<Integer, Long> countTeamsByRanking(List<Ranking> rankings) {
+        return rankings.stream().collect(Collectors.groupingBy(Ranking::getPosition, Collectors.counting()));
     }
 
     int[][] findFirstRoundLevelDistribution(Map<Integer, Long> countByLevel, Integer poolsCount) {
@@ -120,10 +137,28 @@ public class PoolGenerationService {
         return solution;
     }
 
-    List<Pool> affectTeamsToPool(int[][] poolsModel, List<Team> teams, Round round) {
+//    int[][] nextRoundModel(Map<Integer, Long> countByLevel, Integer poolsCount) {
+//        return null;
+//    }
+
+    List<Pool> affectTeamsToPoolWithRankings(int[][] poolsModel, List<Ranking> rankings, Round round) {
+        Map<Integer, List<Ranking>> teamsToAffectByLevel = rankings.stream()
+                .collect(Collectors.groupingBy(Ranking::getPosition, Collectors.toList()));
+        Map<Integer, List<Team>> teamsToAffectByRanking = teamsToAffectByLevel.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> e.getValue().stream().map(Ranking::getTeam).collect(Collectors.toList())));
+        return affectTeamsToPool(poolsModel, round, teamsToAffectByRanking);
+    }
+
+    List<Pool> affectTeamsToPoolWithLevel(int[][] poolsModel, List<Team> teams, Round round) {
         Map<Integer, List<Team>> teamsToAffectByLevel = teams.stream()
                 .collect(Collectors.groupingBy(team -> team.getLevel().getValue(), Collectors.toList()));
 
+        return affectTeamsToPool(poolsModel, round, teamsToAffectByLevel);
+    }
+
+    @NotNull
+    private List<Pool> affectTeamsToPool(int[][] poolsModel, Round round, Map<Integer, List<Team>> teamsToAffectByLevel) {
         List<Integer> fields = getFieldList(round.getFieldRanges());
         List<Pool> pools = Lists.newArrayList();
         for (int levelIndex = 0; levelIndex < poolsModel.length; levelIndex++) {
