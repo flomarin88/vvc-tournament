@@ -57,7 +57,7 @@
                     <a href="#page-top"></a>
                 </li>
                 <li>
-                    <a class="page-scroll" href="#subscriptions">Inscriptions</a>
+                    <a class="page-scroll" href="#pools">Poules</a>
                 </li>
                 <li>
                     <a class="page-scroll" href="#contact">Nous contacter</a>
@@ -117,20 +117,20 @@
     </div>
 </header>
 
-<section id="subscriptions" class="container content-section text-center subscriptions-section">
+<section id="pools" class="container content-section text-center subscriptions-section">
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2">
-            <h2>Inscriptions</h2>
-            <p>Le tournoi accueillera <strong>33 équipes féminines et 48 équipes masculines</strong>.</p>
-            <p>Les inscriptions et le paiement se font en ligne uniquement</p>
-            <p>Le tarif est de 33€ par équipe, soit 11€ par joueur</p>
-            <p>Aucune inscription ne sera acceptée le jour du tournoi</p>
-            <a href="/subscriptions/new" class="btn btn-default btn-lg" {{^subscriptionsEnable}}disabled{{/subscriptionsEnable}}><i
-                class="fa fa-sign-in"></i> Je
-            m'inscris</a>
-            {{^subscriptionsEnable}}
-            <p><i>Les 2 tournois sont maintenant complets</i></p>
-            {{/subscriptionsEnable}}
+            <h2>Poules</h2>
+            <ul class="list-inline banner-social-buttons">
+                <li>
+                    <a href="/rounds/1" class="btn btn-default btn-lg"><i
+                            class="fa fa-female"></i> <span class="network-name">Femmes</span></a>
+                </li>
+                <li>
+                    <a href="/rounds/2" class="btn btn-default btn-lg"><i
+                            class="fa fa-male"></i> <span class="network-name">Hommes</span></a>
+                </li>
+            </ul>
         </div>
     </div>
 </section>
