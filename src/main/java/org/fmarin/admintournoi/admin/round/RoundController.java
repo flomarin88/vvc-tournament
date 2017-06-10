@@ -2,9 +2,10 @@ package org.fmarin.admintournoi.admin.round;
 
 import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.admin.match.MatchGenerationService;
-import org.fmarin.admintournoi.admin.pool.*;
-import org.fmarin.admintournoi.admin.ranking.Ranking;
-import org.fmarin.admintournoi.admin.ranking.RankingService;
+import org.fmarin.admintournoi.admin.pool.Pool;
+import org.fmarin.admintournoi.admin.pool.PoolRepository;
+import org.fmarin.admintournoi.admin.pool.PoolView;
+import org.fmarin.admintournoi.admin.pool.PoolViewBuilder;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
@@ -27,19 +28,19 @@ public class RoundController {
     private final TeamRepository teamRepository;
     private final RoundRepository roundRepository;
     private final PoolRepository poolRepository;
-    private final PoolGenerationService poolGenerationService;
     private final MatchGenerationService matchGenerationService;
-    private final RankingService rankingService;
+    private final RoundService roundService;
 
     @Autowired
-    public RoundController(TournamentRepository tournamentRepository, TeamRepository teamRepository, RoundRepository roundRepository, PoolRepository poolRepository, PoolGenerationService poolGenerationService, MatchGenerationService matchGenerationService, RankingService rankingService) {
+    public RoundController(TournamentRepository tournamentRepository, TeamRepository teamRepository,
+                           RoundRepository roundRepository, PoolRepository poolRepository,
+                           MatchGenerationService matchGenerationService, RoundService roundService) {
         this.tournamentRepository = tournamentRepository;
         this.teamRepository = teamRepository;
         this.roundRepository = roundRepository;
         this.poolRepository = poolRepository;
-        this.poolGenerationService = poolGenerationService;
         this.matchGenerationService = matchGenerationService;
-        this.rankingService = rankingService;
+        this.roundService = roundService;
     }
 
     @GetMapping("/tournaments/{tournamentId}/rounds")
@@ -66,31 +67,7 @@ public class RoundController {
     @PostMapping("/tournaments/{tournamentId}/rounds")
     public ModelAndView createRound(@PathVariable(name = "tournamentId") Long tournamentId,
                                     @Valid @ModelAttribute(name = "round") RoundToCreateView roundToCreate) {
-        Tournament tournament = tournamentRepository.findOne(tournamentId);
-        Round previousRound = null;
-        List<Team> teams;
-        if (roundToCreate.getPreviousRoundId() == null) {
-            teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, "Completed");
-        } else {
-            previousRound = roundRepository.findOne(roundToCreate.getPreviousRoundId());
-            List<Ranking> roundRanking = rankingService.getRoundRanking(roundToCreate.getPreviousRoundId());
-            teams = roundRanking.subList(roundToCreate.getTeamsFrom() - 1, roundToCreate.getTeamsTo())
-                    .stream()
-                    .map(Ranking::getTeam)
-                    .collect(Collectors.toList());
-        }
-        Round round = RoundBuilder.aRound()
-                .withName(roundToCreate.getName())
-                .withBranch(TournamentBranch.valueOf(roundToCreate.getTournamentBranch()))
-                .withType(RoundType.valueOf(roundToCreate.getType()))
-                .withStatus(RoundStatus.CREATED)
-                .withPreviousRound(previousRound)
-                .withTeams(teams)
-                .withTournament(tournament)
-                .withFieldRanges(roundToCreate.getFieldRanges())
-                .build();
-        roundRepository.save(round);
-        poolGenerationService.generatePools(round);
+        roundService.create(tournamentId, roundToCreate);
         return new ModelAndView("redirect:/admin/tournaments/" + tournamentId.toString() + "/rounds");
     }
 
