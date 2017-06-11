@@ -120,3 +120,7 @@ body {
 .table-centered td, .table-centered th {
     text-align: center;
 }
+
+.fa.danger {
+    color: #C0341C;
+}

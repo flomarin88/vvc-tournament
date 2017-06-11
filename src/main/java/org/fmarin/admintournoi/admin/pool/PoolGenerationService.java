@@ -9,17 +9,13 @@ import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.fmarin.admintournoi.admin.round.RoundStatus;
 import org.fmarin.admintournoi.subscription.Team;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -66,7 +62,7 @@ public class PoolGenerationService {
 
         Integer poolsCount = round.getTeams().size() / TEAMS_COUNT_BY_POOL;
         Map<Integer, Long> teamsCountByLevel = countTeamsByRanking(rankings);
-        int[][] poolsModel = findFirstRoundLevelDistribution(teamsCountByLevel, poolsCount);
+        int[][] poolsModel = nextRoundRankingDistribution(teamsCountByLevel, poolsCount);
         List<Pool> pools = affectTeamsToPoolWithRankings(poolsModel, rankings, round);
         pools.parallelStream().forEach(poolRepository::save);
         round.setStatus(RoundStatus.COMPOSED);
@@ -127,6 +123,67 @@ public class PoolGenerationService {
         model.sum(poolsLevelDiff, "=", objective).post();
         model.setObjective(Model.MINIMIZE, objective);
 
+        int[][] solution = findSolution(poolsCount, levelsCount, model, levelCountForPools, objective);
+        logger.debug(Arrays.deepToString(solution));
+        return solution;
+    }
+
+    int[][] nextRoundRankingDistribution(Map<Integer, Long> countByLevel, Integer poolsCount) {
+        logger.debug(String.valueOf(countByLevel));
+
+        Integer levelsCount = countByLevel.size();
+
+        Model model = new Model("Next Round Model");
+        IntVar[][] levelCountForPools = new IntVar[levelsCount][poolsCount];
+
+        int levelIndex = 0;
+        for (Integer level : countByLevel.keySet()) {
+            for (int pool = 0; pool < poolsCount; pool++) {
+                String varName = "L" + level + "_P" + pool;
+                levelCountForPools[levelIndex][pool] = model.intVar(varName, 0, TEAMS_COUNT_BY_POOL, false);
+            }
+            levelIndex++;
+        }
+
+        // Nombre d'équipes du niveau affectées
+        levelIndex = 0;
+        for (Integer level : countByLevel.keySet()) {
+            model.sum(levelCountForPools[levelIndex], "=", countByLevel.get(level).intValue()).post();
+            levelIndex++;
+        }
+
+        // Nombre d'équipes par poule
+        IntVar[][] reversedVars = getReversedMatrix(levelCountForPools, poolsCount, levelsCount);
+        for (int pool = 0; pool < poolsCount; pool++) {
+            model.sum(reversedVars[pool], "=", TEAMS_COUNT_BY_POOL).post();
+        }
+
+        // Niveau de pool
+        int[] coeff = COEFFS.subList(0, levelsCount).stream().mapToInt(i -> i).toArray();
+        IntVar[] poolsLevel = new IntVar[poolsCount];
+        for (int pool = 0; pool < poolsCount; pool++) {
+            poolsLevel[pool] = model.intVar("PoolLevel" + pool, TEAMS_COUNT_BY_POOL, TEAMS_COUNT_BY_POOL * levelsCount);
+            model.scalar(reversedVars[pool], coeff, "=", poolsLevel[pool]).post();
+        }
+
+        int poolsCountMinus1 = poolsCount - 1;
+        IntVar[] poolsLevelDiff = new IntVar[poolsCountMinus1];
+        for (int pool = 0; pool < poolsCountMinus1; pool++) {
+            poolsLevelDiff[pool] = model.intVar("PoolLevelDiff" + pool + "_" + (pool + 1), -TEAMS_COUNT_BY_POOL * levelsCount, TEAMS_COUNT_BY_POOL * levelsCount);
+            model.sum(new IntVar[]{poolsLevel[pool], model.intMinusView(poolsLevel[pool + 1])}, "=", poolsLevelDiff[pool]).post();
+            poolsLevelDiff[pool] = model.intAbsView(poolsLevelDiff[pool]);
+        }
+
+        IntVar objective = model.intVar("PoolsLevelHomogeneity", 0);
+        model.sum(poolsLevelDiff, "=", objective).post();
+        model.setObjective(Model.MINIMIZE, objective);
+
+        int[][] solution = findSolution(poolsCount, levelsCount, model, levelCountForPools, objective);
+        logger.debug(Arrays.deepToString(solution));
+        return solution;
+    }
+
+    int[][] findSolution(Integer poolsCount, Integer levelsCount, Model model, IntVar[][] levelCountForPools, IntVar objective) {
         int[][] solution = new int[levelsCount][poolsCount];
         while (model.getSolver().solve()) {
             logger.debug("SOLUTION : " + objective.getValue());
@@ -136,13 +193,9 @@ public class PoolGenerationService {
                 }
             }
         }
-        logger.debug(Arrays.deepToString(solution));
         return solution;
     }
 
-//    int[][] nextRoundModel(Map<Integer, Long> countByLevel, Integer poolsCount) {
-//        return null;
-//    }
 
     List<Pool> affectTeamsToPoolWithRankings(int[][] poolsModel, List<Ranking> rankings, Round round) {
         Map<Integer, List<Ranking>> teamsToAffectByLevel = rankings.stream()
@@ -150,7 +203,7 @@ public class PoolGenerationService {
         Map<Integer, List<Team>> teamsToAffectByRanking = teamsToAffectByLevel.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         e -> e.getValue().stream().map(Ranking::getTeam).collect(Collectors.toList())));
-        return affectTeamsToPool(poolsModel, round, teamsToAffectByRanking);
+        return affectTeamsToPoolRankings(poolsModel, round, teamsToAffectByRanking);
     }
 
     List<Pool> affectTeamsToPoolWithLevel(int[][] poolsModel, List<Team> teams, Round round) {
@@ -160,7 +213,6 @@ public class PoolGenerationService {
         return affectTeamsToPool(poolsModel, round, teamsToAffectByLevel);
     }
 
-    @NotNull
     private List<Pool> affectTeamsToPool(int[][] poolsModel, Round round, Map<Integer, List<Team>> teamsToAffectByLevel) {
         List<Integer> fields = getFieldList(round.getFieldRanges());
         List<Pool> pools = Lists.newArrayList();
@@ -181,6 +233,34 @@ public class PoolGenerationService {
                     Random r = new Random();
                     int index = r.ints(0, maxIndex).findFirst().getAsInt();
                     Team team = teamsToAffectByLevel.get(levelIndex + 1).remove(index);
+                    pool.addTeam(team);
+                }
+            }
+        }
+        return pools;
+    }
+
+    private List<Pool> affectTeamsToPoolRankings(int[][] poolsModel, Round round, Map<Integer, List<Team>> teamsToAffectByLevel) {
+        List<Integer> levels = new ArrayList<>(teamsToAffectByLevel.keySet());
+        List<Integer> fields = getFieldList(round.getFieldRanges());
+        List<Pool> pools = Lists.newArrayList();
+        for (int levelIndex = 0; levelIndex < poolsModel.length; levelIndex++) {
+            for (int poolIndex = 0; poolIndex < poolsModel[levelIndex].length; poolIndex++) {
+                Pool pool;
+                if (pools.size() <= poolIndex) {
+                    pool = new Pool();
+                    pool.setPosition(poolIndex + 1);
+                    pool.setRound(round);
+                    pool.setField(getField(fields, poolIndex + 1));
+                    pools.add(pool);
+                } else {
+                    pool = pools.get(poolIndex);
+                }
+                for (int teamCount = 0; teamCount < poolsModel[levelIndex][poolIndex]; teamCount++) {
+                    int maxIndex = teamsToAffectByLevel.get(levels.get(levelIndex)).size();
+                    Random r = new Random();
+                    int index = r.ints(0, maxIndex).findFirst().getAsInt();
+                    Team team = teamsToAffectByLevel.get(levels.get(levelIndex)).remove(index);
                     pool.addTeam(team);
                 }
             }

@@ -5,9 +5,9 @@ function bindSwitchCheckboxButton() {
             alert("2 équipes uniquement");
         }
         var roundId = $('.row.switch-class-js').data('round-id');
-        var pool1 = $(teams[0]).data('pool-id');
+        var pool1 = $(teams[0]).parents('table').data('pool-id');
         var team1 = $(teams[0]).data('team-id');
-        var pool2 = $(teams[1]).data('pool-id');
+        var pool2 = $(teams[1]).parents('table').data('pool-id');
         var team2 = $(teams[1]).data('team-id');
         switchTeams(roundId, pool1, team1, pool2, team2);
     });
