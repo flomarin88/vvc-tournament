@@ -38,8 +38,6 @@ public class Pool {
     @OneToMany(mappedBy = "pool", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Match> matches = new ArrayList<>();
 
-
-
     public void addTeam(Team team) {
         if (team1 == null) {
             team1 = team;

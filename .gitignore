@@ -1,6 +1,7 @@
 .idea
 .gradle*
 build
-.vagrant
 .asscache
 latest.dump
+out
+

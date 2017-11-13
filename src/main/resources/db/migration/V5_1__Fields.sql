@@ -1,0 +1,7 @@
+CREATE TABLE FIELD
+(
+  id            BIGSERIAL PRIMARY KEY,
+  name          VARCHAR(255),
+  tournament_id BIGINT REFERENCES TOURNAMENT,
+  round_id      BIGINT REFERENCES ROUND
+);
