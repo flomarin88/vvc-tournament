@@ -1,6 +1,5 @@
 package org.fmarin.admintournoi.field;
 
-import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.subscription.Tournament;
 
 import javax.persistence.*;
@@ -19,9 +18,6 @@ public class Field {
     @ManyToOne
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
-    @ManyToOne
-    @JoinColumn(name = "pool_id")
-    private Pool pool;
 
     public Long getId() {
         return id;
@@ -45,13 +41,5 @@ public class Field {
 
     public void setTournament(Tournament tournament) {
         this.tournament = tournament;
-    }
-
-    public Pool getPool() {
-        return pool;
-    }
-
-    public void setPool(Pool pool) {
-        this.pool = pool;
     }
 }
