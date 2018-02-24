@@ -9,7 +9,7 @@ buildscript {
 
 plugins {
     id "com.bertramlabs.asset-pipeline" version "2.13.1"
-    id "org.flywaydb.flyway" version "4.2.0"
+    id "org.flywaydb.flyway" version "5.0.7"
 }
 
 apply plugin: 'java'
@@ -40,7 +40,7 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile group: 'org.postgresql', name: 'postgresql', version: '42.0.0'
-    compile group: 'org.flywaydb', name: 'flyway-core', version: '4.2.0'
+    compile group: 'org.flywaydb', name: 'flyway-core', version: '5.0.7'
 
     // Security / Authentication
     compile 'com.auth0:auth0-spring-mvc:1.2.0'
