@@ -5,3 +5,4 @@ build
 latest.dump
 out
 *.iml
+.java-version

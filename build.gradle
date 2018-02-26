@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE")
     }
 }
 
@@ -45,25 +45,26 @@ dependencies {
     // Security / Authentication
     compile 'com.auth0:auth0-spring-mvc:1.2.0'
 
-    // Paypal
+    // Payment
     compile group: 'com.benfante.paypal', name: 'ipnAssistant', version: '1.0'
+    compile 'com.stripe:stripe-java:5.33.0'
 
     // Mailchimp
     compile 'com.ecwid:maleorang:3.0-0.9.6'
 
-    compile("org.codehaus.groovy:groovy")
+    compile 'org.codehaus.groovy:groovy'
     compile 'com.bertramlabs.plugins:asset-pipeline-spring-boot:2.14.1'
 
-    compile("org.springframework.boot:spring-boot-devtools")
+    compile 'org.springframework.boot:spring-boot-devtools'
 
     compile group: 'org.choco-solver', name: 'choco-solver', version: '4.0.4'
 
     // tag::actuator[]
-    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
     // end::actuator[]
 
     // tag::tests[]
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
     // end::tests[]
 }
 

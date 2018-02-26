@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Random;
 
-public class    SubscriptionPaymentProcessor implements PaymentProcessor {
+public class SubscriptionPaymentProcessor implements PaymentProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(SubscriptionPaymentProcessor.class);
 
