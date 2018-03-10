@@ -69,7 +69,7 @@
                     <div class="form-group {{#errors}} {{#captainName}} has-error {{/captainName}} {{/errors}}">
                         <label for="captainName" class="control-label">Nom complet</label>
                         <input type="text" class="form-control" id="captainName" name="captainName"
-                               value="{{ subscription.captainName }}">
+                               value="{{ subscription.captainName }}" placeholder="Prénom Nom">
                         {{#errors}} {{#captainName}}
                         <span class="help-block">Veuillez saisir votre nom</span>
                         {{/captainName}} {{/errors}}
@@ -81,7 +81,7 @@
                         <span class="help-block">{{#errors}} {{#captainEmail}} Email invalide, {{/captainEmail}} {{/errors}}Nécessaire pour recevoir la confirmation de votre inscription</span>
                     </div>
                     <div class="form-group {{#errors}} {{#captainPhone}} has-error {{/captainPhone}} {{/errors}}">
-                        <label for="captainPhone" class="control-label">Téléphone</i></label>
+                        <label for="captainPhone" class="control-label">Numéro de téléphone</i></label>
                         <input type="text" class="form-control" id="captainPhone" name="captainPhone"
                                value="{{ subscription.captainPhone }}">
                         {{#errors}} {{#captainName}}
@@ -97,13 +97,13 @@
                     <div class="form-group {{#errors}} {{#player2Name}} has-error {{/player2Name}} {{/errors}}">
                         <label for="player2Name" class="control-label">Nom complet</label>
                         <input type="text" class="form-control" id="player2Name" name="player2Name"
-                               value="{{ subscription.player2Name }}">
+                               value="{{ subscription.player2Name }}" placeholder="Prénom Nom">
                         {{#errors}} {{#player2Name}}
                         <span class="help-block">Veuillez saisir le nom du deuxième joueur</span>
                         {{/player2Name}} {{/errors}}
                     </div>
                     <div class="form-group">
-                        <label for="player2Email" class="control-label">Email <i>- facultatif</i></label>
+                        <label for="player2Email" class="control-label">Email <span class="optional">- facultatif</span></label>
                         <input type="text" class="form-control" id="player2Email" name="player2Email"
                                value="{{ subscription.player2Email }}">
                     </div>
@@ -116,13 +116,13 @@
                     <div class="form-group {{#errors}} {{#player3Name}} has-error {{/player3Name}} {{/errors}}">
                         <label for="player3Name" class="control-label">Nom complet</label>
                         <input type="text" class="form-control" id="player3Name" name="player3Name"
-                               value="{{ subscription.player3Name }}">
+                               value="{{ subscription.player3Name }}" placeholder="Prénom Nom">
                         {{#errors}} {{#player3Name}}
                         <span class="help-block">Veuillez saisir le nom du troisième joueur</span>
                         {{/player3Name}} {{/errors}}
                     </div>
                     <div class="form-group">
-                        <label for="player3Email" class="control-label">Email <i>- facultatif</i></label>
+                        <label for="player3Email" class="control-label">Email <span class="optional">- facultatif</span></label>
                         <input type="text" class="form-control" id="player3Email" name="player3Email"
                                value="{{ subscription.player3Email }}">
                     </div>

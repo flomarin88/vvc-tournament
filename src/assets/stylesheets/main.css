@@ -72,3 +72,9 @@ body {
 .table-centered td, .table-centered th {
     text-align: center;
 }
+
+.optional {
+    font-style: italic;
+    font-weight: normal;
+    color: #626262;
+}
