@@ -13,6 +13,11 @@ public class Tournament {
     private Long id;
     @Column(name = "name")
     private String name;
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    @Column(name = "year")
+    private Integer year;
     @Column(name = "team_limit")
     private int teamLimit;
     @OneToMany(mappedBy = "tournament")
@@ -58,5 +63,21 @@ public class Tournament {
 
     public void setPaypalButtonId(String paypalButtonId) {
         this.paypalButtonId = paypalButtonId;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 }
