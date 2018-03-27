@@ -17,6 +17,11 @@ public class AdminController {
 
     @GetMapping("/admin")
     public ModelAndView index() {
-        return new ModelAndView("admin_index", dashboardService.getCurrentSubscriptionsStats());
+      return new ModelAndView("admin_index", dashboardService.getCurrentSubscriptionsStats());
+    }
+
+    @GetMapping("/login")
+    public ModelAndView login() {
+      return new ModelAndView("login");
     }
 }

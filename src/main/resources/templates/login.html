@@ -1,25 +1,20 @@
 {{#admin_layout}}
 
-<script src="https://cdn.auth0.com/js/lock/10.15/lock.min.js"></script>
-
 <div class="container">
-    <script type="text/javascript">
-        $(function () {
-            var lock = new Auth0Lock('{{ clientId }}', 'tournoi-vincennes.eu.auth0.com', {
-                auth: {
-                    redirectUrl: '{{ loginCallback }}',
-                    responseType: 'code',
-                    params: {
-                        state: '{{state}}',
-                        scope: 'openid user_id name nickname email picture'
-                    }
-                },
-                allowSignUp: false
-            });
-            // delay to allow welcome message..
-            lock.show();
-        });
-    </script>
+  <div class="col-lg-offset-4 col-lg-4">
+    <h2 class="form-signin-heading">Administration</h2>
+    <form class="form-signin">
+      <div class="form-group">
+        <label for="inputLogin" class="sr-only">Login</label>
+        <input type="text" id="inputLogin" class="form-control" placeholder="Login" required="" autofocus="">
+      </div>
+      <div class="form-group">
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+    </form>
+  </div>
 </div>
 
 {{/admin_layout}}
