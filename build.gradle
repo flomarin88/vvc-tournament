@@ -43,9 +43,6 @@ dependencies {
     compile group: 'org.postgresql', name: 'postgresql', version: '42.0.0'
     compile group: 'org.flywaydb', name: 'flyway-core', version: '5.0.7'
 
-    // Security / Authentication
-    compile 'com.auth0:auth0-spring-mvc:1.2.0'
-
     // Payment
     compile group: 'com.benfante.paypal', name: 'ipnAssistant', version: '1.0'
     compile 'com.stripe:stripe-java:5.33.0'
