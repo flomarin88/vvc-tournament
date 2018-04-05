@@ -7,22 +7,22 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "mailchimp")
 public class MailChimpProperties {
 
-    private String apiKey;
-    private String listId;
+  private String apiKey;
+  private String listId;
 
-    public String getApiKey() {
-        return apiKey;
-    }
+  public String getApiKey() {
+    return apiKey;
+  }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
+  }
 
-    public String getListId() {
-        return listId;
-    }
+  public String getListId() {
+    return listId;
+  }
 
-    public void setListId(String listId) {
-        this.listId = listId;
-    }
+  public void setListId(String listId) {
+    this.listId = listId;
+  }
 }
