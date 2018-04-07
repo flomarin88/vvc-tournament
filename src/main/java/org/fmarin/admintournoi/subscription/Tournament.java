@@ -25,6 +25,11 @@ public class Tournament {
     @Column(name = "paypal_button_id")
     private String paypalButtonId;
 
+    public boolean isFull() {
+      long subscriptionCount = teams.stream().filter(team -> "Completed".equals(team.getPaymentStatus())).count();
+      return subscriptionCount >= teamLimit;
+    }
+
     public Long getId() {
         return id;
     }

@@ -56,17 +56,19 @@
         <li class="hidden">
           <a href="#page-top"></a>
         </li>
-        {{#subscriptions_enabled}}
+        {{^tournaments_full}}
         <li>
           <a class="page-scroll" href="#subscriptions">Inscriptions</a>
         </li>
-        {{/subscriptions_enabled}}
+        {{/tournaments_full}}
+        {{#tournaments_full}}
         <li>
           <a class="page-scroll" href="#pools">Poules</a>
         </li>
-        <li>
-          <a class="page-scroll" href="#tournament">Formules sportives</a>
-        </li>
+        {{/tournaments_full}}
+        <!--<li>-->
+          <!--<a class="page-scroll" href="#tournaments_info">Formules sportives</a>-->
+        <!--</li>-->
         <li>
           <a class="page-scroll" href="#contact">Nous contacter</a>
         </li>
@@ -95,7 +97,13 @@
           <h2>Tournoi 3x3</h2>
           <p class="intro-text">Le Vincennes Volley Club organise son célèbre tournoi 3x3 sur la belle pelouse du stade Léo Lagrange.
             <br/>Continuez à faire de ce tournoi une référence, <strong>parlez en autour de vous</strong>
-            <br/>Ouverture des inscriptions le <strong>1er Mai à 18h</strong></p>
+            {{^subscriptions_opened}}{{^tournaments_full}}
+            <br/>Ouverture des inscriptions le <strong>1er Mai à 18h</strong>
+            {{/tournaments_full}}{{/subscriptions_opened}}
+            {{#tournaments_full}}
+            <p><i>Les 2 tournois sont maintenant complets</i></p>
+            {{/tournaments_full}}
+          </p>
           <ul class="list-inline banner-social-buttons">
             <li>
               <a href="https://www.facebook.com/vincennes.volleyclub" class="btn btn-default btn-lg"><i
@@ -117,7 +125,7 @@
   </div>
 </header>
 
-{{#subscriptions_enabled}}
+{{^tournaments_full}}
 <section id="subscriptions" class="container content-section text-center subscriptions-section">
   <div class="row">
     <div class="col-xs-8 col-xs-offset-2">
@@ -126,17 +134,17 @@
       <p>Les inscriptions et le paiement se font en ligne <strong>uniquement</strong></p>
       <p>Le tarif est de 33€ par équipe, soit 11€ par joueur</p>
       <p>Aucune inscription ne sera acceptée le jour du tournoi</p>
-      <a href="/subscriptions/new" class="btn btn-default btn-lg" {{^subscriptions_opened}}disabled{{/subscriptions_opened}}><i
+      {{#subscriptions_opened}}
+      <a href="/subscriptions/new" class="btn btn-default btn-lg" {{^subscriptions_enabled}}disabled{{/subscriptions_enabled}}><i
       class="fa fa-sign-in"></i> Je
       m'inscris</a>
-      <!--{{^subscriptions_enabled}}-->
-      <!--<p><i>Les 2 tournois sont maintenant complets</i></p>-->
-      <!--{{/subscriptions_enabled}}-->
+      {{/subscriptions_opened}}
     </div>
   </div>
 </section>
-{{/subscriptions_enabled}}
+{{/tournaments_full}}
 
+{{#tournaments_full}}
 <section id="pools" class="container content-section text-center subscriptions-section">
   <div class="row">
     <div class="col-xs-8 col-xs-offset-2">
@@ -154,6 +162,7 @@
     </div>
   </div>
 </section>
+{{/tournaments_full}}
 
 <section id="contact" class="container content-section text-center contact-section">
   <div class="row">
