@@ -2,157 +2,184 @@
 
 <html>
 <head>
-    <title>Tournoi de Vincennes</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Vincennes Volley Ball Tournament">
-    <meta name="author" content="Florian MARIN">
+  <title>Tournoi de Vincennes</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vincennes Volley Ball Tournament">
+  <meta name="author" content="Florian MARIN">
 
 
-    <link rel="icon" type="image/png" href="/assets/favicon.png" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="/assets/favicon.png" sizes="32x32"/>
 
-    <link rel='stylesheet' href='/webjars/bootstrap/3.3.7/css/bootstrap.min.css'>
-    <link rel="stylesheet" media="screen" href="/webjars/font-awesome/4.7.0/css/font-awesome.css"/>
-    <link rel="stylesheet" media="screen" href="/assets/navbar.css"/>
-    <link rel="stylesheet" media="screen" href="/assets/landing.css"/>
+  <link rel='stylesheet' href='/webjars/bootstrap/3.3.7/css/bootstrap.min.css'>
+  <link rel="stylesheet" media="screen" href="/webjars/font-awesome/4.7.0/css/font-awesome.css"/>
+  <link rel="stylesheet" media="screen" href="/assets/navbar.css"/>
+  <link rel="stylesheet" media="screen" href="/assets/landing.css"/>
 
-    <script src="/webjars/jquery/3.2.0/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/assets/jquery.easing.1.3.min.js"></script>
-    <script src="/assets/landing.js"></script>
+  <script src="/webjars/jquery/3.2.0/jquery.min.js"></script>
+  <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="/assets/jquery.easing.1.3.min.js"></script>
+  <script src="/assets/landing.js"></script>
 
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+  <script>
+      (function (i, s, o, g, r, a, m) {
+          i['GoogleAnalyticsObject'] = r;
+          i[r] = i[r] || function () {
+              (i[r].q = i[r].q || []).push(arguments)
+          }, i[r].l = 1 * new Date();
+          a = s.createElement(o),
+              m = s.getElementsByTagName(o)[0];
+          a.async = 1;
+          a.src = g;
+          m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-        ga('create', 'UA-97876228-1', 'auto');
-        ga('send', 'pageview');
-    </script>
+      ga('create', 'UA-97876228-1', 'auto');
+      ga('send', 'pageview');
+  </script>
 
 </head>
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand page-scroll" href="#page-top">
-                <i class="fa icon-vvc"></i> <span class="light">VVC Tournament</span> édition 2017
-            </a>
-        </div>
-
-        <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
-            <ul class="nav navbar-nav">
-                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                <li class="hidden">
-                    <a href="#page-top"></a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="#pools">Poules</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="#contact">Nous contacter</a>
-                </li>
-                <li>
-                    <a href="https://www.facebook.com/events/1357708144309034"><i class="fa fa-facebook"></i></a>
-                </li>
-                <li>
-                    <a href="https://www.instagram.com/vvctournament2017/"><i class="fa fa-instagram"></i></a>
-                </li>
-                <li>
-                    <a href="https://twitter.com/VvcTournament"><i class="fa fa-twitter"></i></a>
-                </li>
-            </ul>
-        </div>
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand page-scroll" href="#page-top">
+        <i class="fa icon-vvc"></i> <span class="light">VVC Tournament</span> édition 2018
+      </a>
     </div>
+
+    <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+      <ul class="nav navbar-nav">
+        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+        <li class="hidden">
+          <a href="#page-top"></a>
+        </li>
+        {{#subscriptions_enabled}}
+        <li>
+          <a class="page-scroll" href="#subscriptions">Inscriptions</a>
+        </li>
+        {{/subscriptions_enabled}}
+        <li>
+          <a class="page-scroll" href="#pools">Poules</a>
+        </li>
+        <li>
+          <a class="page-scroll" href="#tournament">Formules sportives</a>
+        </li>
+        <li>
+          <a class="page-scroll" href="#contact">Nous contacter</a>
+        </li>
+        <li>
+          <a href="https://www.facebook.com/events/184805268986416"><i class="fa fa-facebook"></i></a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/vincennesvolleyclub/"><i class="fa fa-instagram"></i></a>
+        </li>
+        {{#subscriptions_enabled}}{{#subscriptions_opened}}
+        <li>
+          <a href="/subscriptions/new" class="call-to-action">Je m'inscris</a>
+        </li>
+        {{/subscriptions_opened}}{{/subscriptions_enabled}}
+      </ul>
+    </div>
+  </div>
 </nav>
 
 <header class="intro">
-    <div class="intro-body">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-8 col-xs-offset-2">
-                    <h1 class="brand-heading">Dimanche 11 Juin</h1>
-                    <h2>Tournois complets</h2>
-                    <p class="intro-text">Après une <i>trop longue</i> pause, il est de retour avec de <strong>nouvelles
-                        ambitions</strong>
-                        <br/>Un tout <strong>nouveau staff</strong> pour vous préparer une belle journée
-                        <br/>Aidez nous à faire de ce tournoi une référence, <strong>parlez en autour de vous</strong>
-                        <br/>Restez informés, la composition des poules arrive</p>
-                    <ul class="list-inline banner-social-buttons">
-                        <li>
-                            <a href="https://www.facebook.com/vincennes.volleyclub" class="btn btn-default btn-lg"><i
-                                    class="fa fa-facebook"></i> <span class="network-name">Page</span></a>
-                        </li>
-                        <li>
-                            <a href="https://www.facebook.com/events/1357708144309034" class="btn btn-default btn-lg"><i
-                                    class="fa fa-facebook"></i> <span class="network-name">Évènement</span></a>
-                        </li>
-                        <li>
-                            <a href="https://twitter.com/VvcTournament" class="btn btn-default btn-lg"><i
-                                    class="fa fa-twitter"></i> <span class="network-name">Twitter</span></a>
-                        </li>
-                        <li>
-                            <a href="https://www.instagram.com/vvctournament2017/" class="btn btn-default btn-lg"><i
-                                    class="fa fa-instagram"></i> <span
-                                    class="network-name">Instagram</span></a>
-                        </li>
-                    </ul>
-
-                </div>
-            </div>
+  <div class="intro-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+          <h1 class="brand-heading">Dimanche 10 Juin</h1>
+          <h2>Tournoi 3x3</h2>
+          <p class="intro-text">Le Vincennes Volley Club organise son célèbre tournoi 3x3 sur la belle pelouse du stade Léo Lagrange.
+            <br/>Continuez à faire de ce tournoi une référence, <strong>parlez en autour de vous</strong>
+            <br/>Ouverture des inscriptions le <strong>1er Mai à 18h</strong></p>
+          <ul class="list-inline banner-social-buttons">
+            <li>
+              <a href="https://www.facebook.com/vincennes.volleyclub" class="btn btn-default btn-lg"><i
+                class="fa fa-facebook"></i> <span class="network-name">Page</span></a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/events/184805268986416" class="btn btn-default btn-lg"><i
+                class="fa fa-facebook"></i> <span class="network-name">Évènement</span></a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/vincennesvolleyclub/" class="btn btn-default btn-lg"><i
+                class="fa fa-instagram"></i> <span
+                class="network-name">Instagram</span></a>
+            </li>
+          </ul>
         </div>
+      </div>
     </div>
+  </div>
 </header>
 
-<section id="pools" class="container content-section text-center subscriptions-section">
-    <div class="row">
-        <div class="col-xs-8 col-xs-offset-2">
-            <h2>Poules</h2>
-            <ul class="list-inline banner-social-buttons">
-                <li>
-                    <a href="/rounds/1" class="btn btn-default btn-lg"><i
-                            class="fa fa-female"></i> <span class="network-name">Femmes</span></a>
-                </li>
-                <li>
-                    <a href="/rounds/2" class="btn btn-default btn-lg"><i
-                            class="fa fa-male"></i> <span class="network-name">Hommes</span></a>
-                </li>
-            </ul>
-        </div>
+{{#subscriptions_enabled}}
+<section id="subscriptions" class="container content-section text-center subscriptions-section">
+  <div class="row">
+    <div class="col-xs-8 col-xs-offset-2">
+      <h2>Inscriptions</h2>
+      <p>Le tournoi accueillera <strong>33 équipes féminines et 48 équipes masculines</strong>.</p>
+      <p>Les inscriptions et le paiement se font en ligne <strong>uniquement</strong></p>
+      <p>Le tarif est de 33€ par équipe, soit 11€ par joueur</p>
+      <p>Aucune inscription ne sera acceptée le jour du tournoi</p>
+      <a href="/subscriptions/new" class="btn btn-default btn-lg" {{^subscriptions_opened}}disabled{{/subscriptions_opened}}><i
+      class="fa fa-sign-in"></i> Je
+      m'inscris</a>
+      <!--{{^subscriptions_enabled}}-->
+      <!--<p><i>Les 2 tournois sont maintenant complets</i></p>-->
+      <!--{{/subscriptions_enabled}}-->
     </div>
+  </div>
+</section>
+{{/subscriptions_enabled}}
+
+<section id="pools" class="container content-section text-center subscriptions-section">
+  <div class="row">
+    <div class="col-xs-8 col-xs-offset-2">
+      <h2>Poules</h2>
+      <ul class="list-inline banner-social-buttons">
+        <li>
+          <a href="/rounds/1" class="btn btn-default btn-lg"><i
+            class="fa fa-female"></i> <span class="network-name">Femmes</span></a>
+        </li>
+        <li>
+          <a href="/rounds/2" class="btn btn-default btn-lg"><i
+            class="fa fa-male"></i> <span class="network-name">Hommes</span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </section>
 
 <section id="contact" class="container content-section text-center contact-section">
-    <div class="row">
-        <div class="col-xs-8 col-xs-offset-2">
-            <h2>Nous contacter</h2>
-            <p>Nous sommes disponibles pour répondre à toutes vos questions, remarques et suggestions ou juste pour dire
-                bonjour</p>
-            <ul class="list-inline banner-social-buttons">
-                <li>
-                    <a href="mailto:vvctournoi@gmail.com" class="btn btn-primary btn-lg"><i class="fa fa-envelope-o"></i>
-                        Email</a>
-                </li>
-            </ul>
-        </div>
+  <div class="row">
+    <div class="col-xs-8 col-xs-offset-2">
+      <h2>Nous contacter</h2>
+      <p>Nous sommes disponibles pour répondre à toutes vos questions, remarques et suggestions ou juste pour dire
+        bonjour</p>
+      <ul class="list-inline banner-social-buttons">
+        <li>
+          <a href="mailto:vincennesvc.com@gmail.com" class="btn btn-primary btn-lg"><i class="fa fa-envelope-o"></i>
+            Email</a>
+        </li>
+        <li>
+          <a href="tel:0612607542" class="btn btn-primary btn-lg"><i class="fa fa-mobile-phone"></i>
+            Téléphone</a>
+        </li>
+      </ul>
     </div>
+  </div>
 </section>
 
 <footer>
-    <div class="container text-center">
-        <p>Made with <i class="fa fa-heart" aria-hidden="true"></i> by Vincennes Volley Club
-            </br>Copyright &copy; Florian MARIN 2018</p>
-    </div>
+  <div class="container text-center">
+    <p>Made with <i class="fa fa-heart" aria-hidden="true"></i> by Vincennes Volley Club
+      </br>Copyright &copy; Florian MARIN 2018</p>
+  </div>
 </footer>
 
 </body>
