@@ -40,7 +40,7 @@ public class SubscriptionController {
   public ModelAndView index(Model model) {
     Tournament womenTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.WOMEN);
     Tournament menTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.MEN);
-    if (features.areSubscriptionsEnabled() && features.areSubscriptionsOpened() && womenTournament.isFull() && menTournament.isFull()) {
+    if (features.areSubscriptionsEnabled() && womenTournament.areSubscriptionsOpened() && womenTournament.isFull() && menTournament.isFull()) {
       if (!model.containsAttribute("subscription")) {
         model.addAttribute("subscription", new Subscription());
       }

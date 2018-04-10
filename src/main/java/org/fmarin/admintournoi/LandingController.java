@@ -29,9 +29,9 @@ public class LandingController {
   public ModelAndView index() {
     Map<String, Object> model = Maps.newHashMap();
     model.put("subscriptions_enabled", features.areSubscriptionsEnabled());
-    model.put("subscriptions_opened", features.areSubscriptionsOpened());
     Tournament womenTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.WOMEN);
     Tournament menTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.MEN);
+    model.put("subscriptions_opened", menTournament.areSubscriptionsOpened());
     model.put("tournaments_full", womenTournament.isFull() && menTournament.isFull());
 
     return new ModelAndView("landing", model);

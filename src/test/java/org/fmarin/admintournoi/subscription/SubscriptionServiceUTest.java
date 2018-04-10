@@ -29,7 +29,7 @@ public class SubscriptionServiceUTest {
   public ExpectedException expectedException = ExpectedException.none();
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     service = new SubscriptionService(mockedTeamRepository, mockedTournamentRepository);
   }
 
