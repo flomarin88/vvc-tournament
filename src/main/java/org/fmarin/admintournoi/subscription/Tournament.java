@@ -29,7 +29,7 @@ public class Tournament {
   private String paypalButtonId;
   @Column(name = "subscriptions_opening_date")
   private LocalDateTime subscriptionsOpeningDate;
-  @Column(name = "subscriptions_opening_date")
+  @Column(name = "subscriptions_closing_date")
   private LocalDateTime subscriptionsClosingDate;
 
   public boolean isFull() {
