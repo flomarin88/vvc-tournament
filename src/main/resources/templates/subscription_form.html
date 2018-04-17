@@ -1,139 +1,155 @@
 {{#layout}}
 
 <div class="row">
-    <div class="col-lg-offset-2 col-lg-8">
+  <div class="col-lg-offset-2 col-lg-8">
 
-        <form method="POST" action="/subscriptions/new" modelAttribute="subscription">
-            <fieldset class="form-category">
-                <span class="form-category-title">Informations de l'équipe</span>
-                <div class="form-category-content mat-card">
+    <form method="POST" action="/subscriptions/new" modelAttribute="subscription">
+      <fieldset class="form-category">
+        <span class="form-category-title">Informations de l'équipe</span>
+        <div class="form-category-content mat-card">
 
-                    <div class="form-group {{#errors}} {{#tournamentId}} has-error {{/tournamentId}} {{/errors}}">
-                        <label class="control-label">Tournoi</label>
-                        <div class="btn-group btn-group-justified" data-toggle="buttons">
-                            <label class="btn btn-info {{#tournamentId1}}active{{/tournamentId1}}">
-                                <input type="radio" name="tournamentId" value="1" {{#tournamentId1}}checked{{/tournamentId1}}>
-                                Féminin
-                            </label>
-                            <label class="btn btn-info {{#tournamentId2}}active{{/tournamentId2}}">
-                                <input type="radio" name="tournamentId" value="2" {{#tournamentId2}}checked{{/tournamentId2}}>
-                                Masculin
-                            </label>
-                        </div>
-                        {{#errors}} {{#tournamentId}}
-                        <span class="help-block">Veuillez sélectionner un tournoi</span>
-                        {{/tournamentId}} {{/errors}}
-                    </div>
-
-                    <div class="form-group {{#errors}} {{#name}} has-error {{/name}} {{#teamExists}} has-error {{/teamExists}} {{/errors}}">
-                        <label class="control-label" for="name">Nom d'équipe</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ subscription.name }}">
-                        {{#errors}} {{#name}}
-                        <span class="help-block">Veuillez saisir le nom de votre équipe</span>
-                        {{/name}} {{/errors}}
-                        {{#errors}} {{#teamExists}}
-                        <span class="help-block">Déjà utilisé par une autre équipe</span>
-                        {{/teamExists}} {{/errors}}
-                    </div>
-
-                    <div class="form-group {{#errors}} {{#level}} has-error {{/level}} {{/errors}}">
-                        <label class="control-label">Niveau</label>
-                        <div class="btn-group btn-group-justified" data-toggle="buttons">
-                            <label class="btn btn-info {{#level1}}active{{/level1}} ">
-                                <input type="radio" name="level" value="1" {{#level1}}checked{{/level1}}>
-                                National
-                            </label>
-                            <label class="btn btn-info {{#level2}}active{{/level2}}">
-                                <input type="radio" name="level" value="2" {{#level2}}checked{{/level2}}>
-                                Régional
-                            </label>
-                            <label class="btn btn-info {{#level3}}active{{/level3}} ">
-                                <input type="radio" name="level" value="3" {{#level3}}checked{{/level3}}>
-                                Départemental
-                            </label>
-                            <label class="btn btn-info {{#level4}}active{{/level4}} ">
-                                <input type="radio" name="level" value="4" {{#level4}}checked{{/level4}}>
-                                Loisirs
-                            </label>
-                        </div>
-                        {{#errors}} {{#level}}
-                        <span class="help-block">Veuillez sélectionner votre niveau</span>
-                        {{/level}} {{/errors}}
-                    </div>
-                </div>
-            </fieldset>
-
-            <fieldset class="form-category">
-                <span class="form-category-title">Capitaine</span>
-                <div class="form-category-content mat-card">
-                    <div class="form-group {{#errors}} {{#captainName}} has-error {{/captainName}} {{/errors}}">
-                        <label for="captainName" class="control-label">Nom complet</label>
-                        <input type="text" class="form-control" id="captainName" name="captainName"
-                               value="{{ subscription.captainName }}" placeholder="Prénom Nom">
-                        {{#errors}} {{#captainName}}
-                        <span class="help-block">Veuillez saisir votre nom</span>
-                        {{/captainName}} {{/errors}}
-                    </div>
-                    <div class="form-group {{#errors}} {{#captainEmail}} has-error {{/captainEmail}} {{/errors}}">
-                        <label for="captainEmail" class="control-label">Email</label>
-                        <input type="text" class="form-control" id="captainEmail" name="captainEmail"
-                               value="{{ subscription.captainEmail }}">
-                        <span class="help-block">{{#errors}} {{#captainEmail}} Email invalide, {{/captainEmail}} {{/errors}}Nécessaire pour recevoir la confirmation de votre inscription</span>
-                    </div>
-                    <div class="form-group {{#errors}} {{#captainPhone}} has-error {{/captainPhone}} {{/errors}}">
-                        <label for="captainPhone" class="control-label">Numéro de téléphone</i></label>
-                        <input type="text" class="form-control" id="captainPhone" name="captainPhone"
-                               value="{{ subscription.captainPhone }}">
-                        {{#errors}} {{#captainName}}
-                        <span class="help-block">Veuillez saisir votre numéro de téléphone</span>
-                        {{/captainName}} {{/errors}}
-                    </div>
-                </div>
-            </fieldset>
-
-            <fieldset class="form-category">
-                <span class="form-category-title">Joueur 2</span>
-                <div class="form-category-content mat-card">
-                    <div class="form-group {{#errors}} {{#player2Name}} has-error {{/player2Name}} {{/errors}}">
-                        <label for="player2Name" class="control-label">Nom complet</label>
-                        <input type="text" class="form-control" id="player2Name" name="player2Name"
-                               value="{{ subscription.player2Name }}" placeholder="Prénom Nom">
-                        {{#errors}} {{#player2Name}}
-                        <span class="help-block">Veuillez saisir le nom du deuxième joueur</span>
-                        {{/player2Name}} {{/errors}}
-                    </div>
-                    <div class="form-group">
-                        <label for="player2Email" class="control-label">Email <span class="optional">- facultatif</span></label>
-                        <input type="text" class="form-control" id="player2Email" name="player2Email"
-                               value="{{ subscription.player2Email }}">
-                    </div>
-                </div>
-            </fieldset>
-
-            <fieldset class="form-category">
-                <span class="form-category-title">Joueur 3</span>
-                <div class="form-category-content mat-card">
-                    <div class="form-group {{#errors}} {{#player3Name}} has-error {{/player3Name}} {{/errors}}">
-                        <label for="player3Name" class="control-label">Nom complet</label>
-                        <input type="text" class="form-control" id="player3Name" name="player3Name"
-                               value="{{ subscription.player3Name }}" placeholder="Prénom Nom">
-                        {{#errors}} {{#player3Name}}
-                        <span class="help-block">Veuillez saisir le nom du troisième joueur</span>
-                        {{/player3Name}} {{/errors}}
-                    </div>
-                    <div class="form-group">
-                        <label for="player3Email" class="control-label">Email <span class="optional">- facultatif</span></label>
-                        <input type="text" class="form-control" id="player3Email" name="player3Email"
-                               value="{{ subscription.player3Email }}">
-                    </div>
-                </div>
-            </fieldset>
-            <div class="text-center" style="margin-bottom: 50px">
-                <button type="submit" class="btn btn-lg btn-primary">Valider l'inscription</button>
+          <div class="form-group {{#errors}} {{#tournamentId}} has-error {{/tournamentId}} {{/errors}}">
+            <label class="control-label">Tournoi</label>
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+              <label class="btn btn-info {{#tournamentId3}}active{{/tournamentId3}}">
+                <input type="radio" name="tournamentId" value="3" {{#tournamentId3}}checked{{/tournamentId3}}>
+                Féminin
+              </label>
+              <label class="btn btn-info {{#tournamentId4}}active{{/tournamentId4}}">
+                <input type="radio" name="tournamentId" value="4" {{#tournamentId4}}checked{{/tournamentId4}}>
+                Masculin
+              </label>
             </div>
-        </form>
+            {{#errors}} {{#tournamentId}}
+            <span class="help-block">Veuillez sélectionner un tournoi</span>
+            {{/tournamentId}} {{/errors}}
+          </div>
 
-    </div>
+          <div
+            class="form-group {{#errors}} {{#name}} has-error {{/name}} {{#teamExists}} has-error {{/teamExists}} {{/errors}}">
+            <label class="control-label" for="name">Nom d'équipe</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ subscription.name }}">
+            {{#errors}} {{#name}}
+            <span class="help-block">Veuillez saisir le nom de votre équipe</span>
+            {{/name}} {{/errors}}
+            {{#errors}} {{#teamExists}}
+            <span class="help-block">Déjà utilisé par une autre équipe</span>
+            {{/teamExists}} {{/errors}}
+          </div>
+
+          <div class="form-group {{#errors}} {{#level}} has-error {{/level}} {{/errors}}">
+            <label class="control-label">Niveau</label>
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+              <label class="btn btn-info {{#level1}}active{{/level1}} ">
+                <input type="radio" name="level" value="1" {{#level1}}checked{{/level1}}>
+                National
+              </label>
+              <label class="btn btn-info {{#level2}}active{{/level2}}">
+                <input type="radio" name="level" value="2" {{#level2}}checked{{/level2}}>
+                Régional
+              </label>
+              <label class="btn btn-info {{#level3}}active{{/level3}} ">
+                <input type="radio" name="level" value="3" {{#level3}}checked{{/level3}}>
+                Départemental
+              </label>
+              <label class="btn btn-info {{#level4}}active{{/level4}} ">
+                <input type="radio" name="level" value="4" {{#level4}}checked{{/level4}}>
+                Loisirs
+              </label>
+            </div>
+            {{#errors}} {{#level}}
+            <span class="help-block">Veuillez sélectionner votre niveau</span>
+            {{/level}} {{/errors}}
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-category">
+        <span class="form-category-title">Capitaine</span>
+        <div class="form-category-content mat-card">
+          <div class="form-group {{#errors}} {{#captainName}} has-error {{/captainName}} {{/errors}}">
+            <label for="captainName" class="control-label">Nom complet</label>
+            <input type="text" class="form-control" id="captainName" name="captainName"
+                   value="{{ subscription.captainName }}" placeholder="Prénom Nom">
+            {{#errors}} {{#captainName}}
+            <span class="help-block">Veuillez saisir votre nom</span>
+            {{/captainName}} {{/errors}}
+          </div>
+          <div class="form-group {{#errors}} {{#captainEmail}} has-error {{/captainEmail}} {{/errors}}">
+            <label for="captainEmail" class="control-label">Email</label>
+            <input type="text" class="form-control" id="captainEmail" name="captainEmail"
+                   value="{{ subscription.captainEmail }}">
+            <span class="help-block">{{#errors}} {{#captainEmail}} Email invalide, {{/captainEmail}} {{/errors}}Nécessaire pour recevoir la confirmation de votre inscription</span>
+          </div>
+          <div class="form-group {{#errors}} {{#captainPhone}} has-error {{/captainPhone}} {{/errors}}">
+            <label for="captainPhone" class="control-label">Numéro de téléphone</i></label>
+            <input type="text" class="form-control" id="captainPhone" name="captainPhone"
+                   value="{{ subscription.captainPhone }}">
+            {{#errors}} {{#captainName}}
+            <span class="help-block">Veuillez saisir votre numéro de téléphone</span>
+            {{/captainName}} {{/errors}}
+          </div>
+          <div class="form-group">
+            <label for="captainClub" class="control-label">Club <span class="optional">- facultatif</span></label>
+            <input type="text" class="form-control" id="captainClub" name="captainClub"
+                   value="{{ subscription.captainClub }}">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-category">
+        <span class="form-category-title">Joueur 2</span>
+        <div class="form-category-content mat-card">
+          <div class="form-group {{#errors}} {{#player2Name}} has-error {{/player2Name}} {{/errors}}">
+            <label for="player2Name" class="control-label">Nom complet</label>
+            <input type="text" class="form-control" id="player2Name" name="player2Name"
+                   value="{{ subscription.player2Name }}" placeholder="Prénom Nom">
+            {{#errors}} {{#player2Name}}
+            <span class="help-block">Veuillez saisir le nom du deuxième joueur</span>
+            {{/player2Name}} {{/errors}}
+          </div>
+          <div class="form-group">
+            <label for="player2Email" class="control-label">Email <span class="optional">- facultatif</span></label>
+            <input type="text" class="form-control" id="player2Email" name="player2Email"
+                   value="{{ subscription.player2Email }}">
+          </div>
+          <div class="form-group">
+            <label for="player2Club" class="control-label">Club <span class="optional">- facultatif</span></label>
+            <input type="text" class="form-control" id="player2Club" name="player2Club"
+                   value="{{ subscription.player2Club }}">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-category">
+        <span class="form-category-title">Joueur 3</span>
+        <div class="form-category-content mat-card">
+          <div class="form-group {{#errors}} {{#player3Name}} has-error {{/player3Name}} {{/errors}}">
+            <label for="player3Name" class="control-label">Nom complet</label>
+            <input type="text" class="form-control" id="player3Name" name="player3Name"
+                   value="{{ subscription.player3Name }}" placeholder="Prénom Nom">
+            {{#errors}} {{#player3Name}}
+            <span class="help-block">Veuillez saisir le nom du troisième joueur</span>
+            {{/player3Name}} {{/errors}}
+          </div>
+          <div class="form-group">
+            <label for="player3Email" class="control-label">Email <span class="optional">- facultatif</span></label>
+            <input type="text" class="form-control" id="player3Email" name="player3Email"
+                   value="{{ subscription.player3Email }}">
+          </div>
+          <div class="form-group">
+            <label for="player3Club" class="control-label">Club <span class="optional">- facultatif</span></label>
+            <input type="text" class="form-control" id="player3Club" name="player3Club"
+                   value="{{ subscription.player3Club }}">
+          </div>
+        </div>
+      </fieldset>
+      <div class="text-center" style="margin-bottom: 50px">
+        <button type="submit" class="btn btn-lg btn-primary">Valider l'inscription</button>
+      </div>
+    </form>
+
+  </div>
 </div>
 {{/layout}}
 {{>layout}}

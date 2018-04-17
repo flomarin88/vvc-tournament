@@ -29,7 +29,7 @@ public class SubscriptionPaymentProcessor implements PaymentProcessor {
     public void process(IpnData ipnData) {
         Team team = validateSubscription(ipnData);
         if (team != null) {
-            subscibeTeamToMailChimp(team);
+            subscribeTeamToMailChimp(team);
         }
     }
 
@@ -52,7 +52,7 @@ public class SubscriptionPaymentProcessor implements PaymentProcessor {
         return null;
     }
 
-    private void subscibeTeamToMailChimp(Team team) {
+    private void subscribeTeamToMailChimp(Team team) {
         mailService.subscribe(team.getCaptainEmail(), team.getName(), team.getPaymentVerificationCode());
     }
 }
