@@ -45,7 +45,6 @@ dependencies {
 
     // Payment
     compile group: 'com.benfante.paypal', name: 'ipnAssistant', version: '1.0'
-    compile 'com.stripe:stripe-java:5.33.0'
 
     // Mailchimp
     compile 'com.ecwid:maleorang:3.0-0.9.6'
