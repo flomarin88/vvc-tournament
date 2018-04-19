@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.subscription;
 
 import com.benfante.paypal.ipnassistant.IpnAssistant;
 import com.benfante.paypal.ipnassistant.IpnData;
+import org.fmarin.admintournoi.MainProperties;
 import org.fmarin.admintournoi.features.FeatureManager;
 import org.fmarin.admintournoi.helper.TimeMachine;
 import org.jetbrains.annotations.NotNull;
@@ -27,13 +28,15 @@ public class SubscriptionController {
   private final IpnAssistant ipnAssistant;
   private final TournamentRepository tournamentRepository;
   private final FeatureManager features;
+  private final MainProperties mainProperties;
 
   @Autowired
-  public SubscriptionController(SubscriptionService service, IpnAssistant ipnAssistant, SubscriptionProperties properties, TournamentRepository tournamentRepository, FeatureManager features) {
+  public SubscriptionController(SubscriptionService service, IpnAssistant ipnAssistant, SubscriptionProperties properties, TournamentRepository tournamentRepository, FeatureManager features, MainProperties mainProperties) {
     this.service = service;
     this.ipnAssistant = ipnAssistant;
     this.tournamentRepository = tournamentRepository;
     this.features = features;
+    this.mainProperties = mainProperties;
   }
 
   @GetMapping("/new")
@@ -60,6 +63,11 @@ public class SubscriptionController {
         modelAndView.addObject("tournamentLabel", team.getTournament().getName());
         modelAndView.addObject("levelLabel", team.getLevel().getLabel());
         modelAndView.addObject("paypal_id", team.getTournament().getPaypalButtonId());
+        String paypalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+        if (mainProperties.isProd()) {
+          paypalUrl = "https://www.paypal.com/cgi-bin/webscr";
+        }
+        modelAndView.addObject("paypal_url", paypalUrl);
         return modelAndView;
       } catch (TournamentIsFullException exception) {
         return new ModelAndView("redirect:/subscriptions/full");
