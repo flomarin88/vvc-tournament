@@ -2,6 +2,8 @@ package org.fmarin.admintournoi.subscription;
 
 import com.benfante.paypal.ipnassistant.IpnAssistant;
 import com.benfante.paypal.ipnassistant.IpnData;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.MainProperties;
 import org.fmarin.admintournoi.features.FeatureManager;
 import org.fmarin.admintournoi.helper.TimeMachine;
@@ -39,8 +41,17 @@ public class SubscriptionController {
     this.mainProperties = mainProperties;
   }
 
+  @GetMapping
+  public ModelAndView index() {
+    Tournament womenTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.WOMEN);
+    Tournament menTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.MEN);
+    Map<String, Object> model = Maps.newHashMap();
+    model.put("tournaments", Lists.newArrayList(build(womenTournament), build(menTournament)));
+    return new ModelAndView("public/teams", model);
+  }
+
   @GetMapping("/new")
-  public ModelAndView index(Model model) {
+  public ModelAndView newSubscription(Model model) {
     Tournament womenTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.WOMEN);
     Tournament menTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.MEN);
     if (features.areSubscriptionsEnabled() && womenTournament.areSubscriptionsOpened() && (!womenTournament.isFull() || !menTournament.isFull())) {
@@ -107,4 +118,19 @@ public class SubscriptionController {
     return key + value.toString();
   }
 
+
+  private TeamsByTournamentView build(Tournament tournament) {
+    return TeamsByTournamentViewBuilder.aView()
+      .withName(tournament.getName() + ' ' + tournament.getGender().getTranslation())
+      .withTeams(tournament.getSubscribedTeams().stream().map(team -> build(0, team)).collect(Collectors.toList()))
+      .build();
+  }
+
+  private SubscribedTeamView build(Integer index, Team team) {
+    return SubscribedTeamViewBuilder.aTeam()
+      .withIndex(index)
+      .withName(team.getName())
+      .withPlayers(Lists.newArrayList(team.getCaptainName(), team.getPlayer2Name(), team.getPlayer3Name()))
+      .build();
+  }
 }

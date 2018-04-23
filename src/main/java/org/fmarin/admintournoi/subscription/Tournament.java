@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Tournament {
@@ -31,6 +32,10 @@ public class Tournament {
   private LocalDateTime subscriptionsOpeningDate;
   @Column(name = "subscriptions_closing_date")
   private LocalDateTime subscriptionsClosingDate;
+
+  public List<Team> getSubscribedTeams() {
+    return teams.stream().filter(team -> "Completed".equals(team.getPaymentStatus())).collect(Collectors.toList());
+  }
 
   public boolean isFull() {
     long subscriptionCount = teams.stream().filter(team -> "Completed".equals(team.getPaymentStatus())).count();
