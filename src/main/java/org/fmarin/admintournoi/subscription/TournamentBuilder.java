@@ -12,6 +12,7 @@ public final class TournamentBuilder {
   private String paypalButtonId;
   private LocalDateTime subscriptionsOpeningDate;
   private LocalDateTime subscriptionsClosingDate;
+  private Gender gender;
 
   private TournamentBuilder() {
   }
@@ -55,12 +56,18 @@ public final class TournamentBuilder {
     return this;
   }
 
+  public TournamentBuilder withGender(Gender gender) {
+    this.gender = gender;
+    return this;
+  }
+
   public Tournament build() {
     Tournament tournament = new Tournament();
     tournament.setId(id);
     tournament.setName(name);
     tournament.setTeamLimit(teamLimit);
     tournament.setTeams(teams);
+    tournament.setGender(gender);
     tournament.setPaypalButtonId(paypalButtonId);
     tournament.setSubscriptionsOpeningDate(subscriptionsOpeningDate);
     tournament.setSubscriptionsClosingDate(subscriptionsClosingDate);
