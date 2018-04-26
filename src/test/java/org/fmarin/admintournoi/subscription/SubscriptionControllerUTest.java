@@ -2,7 +2,6 @@ package org.fmarin.admintournoi.subscription;
 
 import org.assertj.core.groups.Tuple;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -21,11 +20,6 @@ public class SubscriptionControllerUTest {
 
   @Mock
   private TournamentRepository mockedTournamentRepository;
-
-  @Before
-  public void setUp() {
-    controller = new SubscriptionController(null, null, null, mockedTournamentRepository, null, null);
-  }
 
   @Test
   public void index_should_return_list_of_subscribed_teams_by_tournament() {
@@ -50,7 +44,7 @@ public class SubscriptionControllerUTest {
     when(mockedTournamentRepository.findByYearAndGender(2018, Gender.WOMEN)).thenReturn(womenTournament);
 
     // When
-    ModelAndView result = controller.index();
+    ModelAndView result = new SubscriptionController(null, null, mockedTournamentRepository, null, null).index();
 
     // Then
     List<TeamsByTournamentView> tournaments = (List<TeamsByTournamentView>) result.getModel().get("tournaments");
