@@ -24,7 +24,7 @@ public class SubscriptionControllerUTest {
 
   @Before
   public void setUp() {
-    controller = new SubscriptionController(null, null, null, mockedTournamentRepository, null, null);
+    controller = new SubscriptionController(null, null, mockedTournamentRepository, null, null);
   }
 
   @Test

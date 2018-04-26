@@ -35,7 +35,7 @@ public class SubscriptionController {
   private final MainProperties mainProperties;
 
   @Autowired
-  public SubscriptionController(SubscriptionService service, IpnAssistant ipnAssistant, SubscriptionProperties properties, TournamentRepository tournamentRepository, FeatureManager features, MainProperties mainProperties) {
+  public SubscriptionController(SubscriptionService service, IpnAssistant ipnAssistant, TournamentRepository tournamentRepository, FeatureManager features, MainProperties mainProperties) {
     this.service = service;
     this.ipnAssistant = ipnAssistant;
     this.tournamentRepository = tournamentRepository;
