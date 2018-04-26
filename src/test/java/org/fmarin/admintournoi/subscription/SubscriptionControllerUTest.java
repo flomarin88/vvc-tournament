@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.subscription;
 
 import org.assertj.core.groups.Tuple;
 import org.assertj.core.util.Lists;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -19,6 +20,7 @@ public class SubscriptionControllerUTest {
   @Mock
   private TournamentRepository mockedTournamentRepository;
 
+  @Ignore
   @Test
   public void index_should_return_list_of_subscribed_teams_by_tournament() {
     // Given
