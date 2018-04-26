@@ -4,6 +4,7 @@ import com.benfante.paypal.ipnassistant.IpnAssistant;
 import com.benfante.paypal.ipnassistant.IpnData;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Streams;
 import org.fmarin.admintournoi.MainProperties;
 import org.fmarin.admintournoi.features.FeatureManager;
 import org.fmarin.admintournoi.helper.TimeMachine;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -120,15 +122,19 @@ public class SubscriptionController {
 
 
   private TeamsByTournamentView build(Tournament tournament) {
+    List<SubscribedTeamView> teams = Streams.mapWithIndex(
+      tournament.getSubscribedTeams().stream(),
+      (team, index) -> build(index + 1, team))
+      .collect(Collectors.toList());
     return TeamsByTournamentViewBuilder.aView()
       .withName(tournament.getName() + ' ' + tournament.getGender().getTranslation())
-      .withTeams(tournament.getSubscribedTeams().stream().map(team -> build(0, team)).collect(Collectors.toList()))
+      .withTeams(teams)
       .build();
   }
 
-  private SubscribedTeamView build(Integer index, Team team) {
+  private SubscribedTeamView build(Long index, Team team) {
     return SubscribedTeamViewBuilder.aTeam()
-      .withIndex(index)
+      .withIndex(index.intValue())
       .withName(team.getName())
       .withPlayers(Lists.newArrayList(team.getCaptainName(), team.getPlayer2Name(), team.getPlayer3Name()))
       .build();
