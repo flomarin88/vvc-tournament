@@ -1,26 +1,34 @@
 {{#admin_layout}}
 
 <div class="page-header">
-    <h1>Dashboard</h1>
+  <h1>Dashboard</h1>
 </div>
 
 <div class="row">
-    <div class="col-xs-offset-3 col-xs-3">
-        <div class="tile-stats">
-            <div class="icon"><i class="fa fa-female"></i></div>
-            <div class="count">{{ women_teams_subscribed }} <span class="subcount">/ {{ women_teams_limit }}</span></div>
-            <h3>Inscriptions</h3>
-            <p>Tournoi féminin</p>
-        </div>
+  <div class="col-xs-3">
+    <div class="tile-stats">
+      <div class="icon"><i class="fa fa-female"></i></div>
+      <div class="count">{{ women_teams_subscribed }} <span class="subcount">/ {{ women_teams_limit }}</span></div>
+      <h3>Inscriptions</h3>
+      <p>Tournoi féminin</p>
     </div>
-    <div class="col-xs-3">
-        <div class="tile-stats">
-            <div class="icon"><i class="fa fa-male"></i></div>
-            <div class="count">{{ men_teams_subscribed }} <span class="subcount">/ {{ men_teams_limit }}</span></div>
-            <h3>Inscriptions</h3>
-            <p>Tournoi masculin</p>
-        </div>
+  </div>
+  <div class="col-xs-3">
+    <div class="tile-stats">
+      <div class="icon"><i class="fa fa-male"></i></div>
+      <div class="count">{{ men_teams_subscribed }} <span class="subcount">/ {{ men_teams_limit }}</span></div>
+      <h3>Inscriptions</h3>
+      <p>Tournoi masculin</p>
     </div>
+  </div>
+  <div class="col-xs-3">
+    <div class="tile-stats">
+      <div class="icon"><i class="fa fa-paypal"></i></div>
+      <div class="count">{{ paypal_sales_total }}</div>
+      <h3>Inscriptions</h3>
+      <p>Total des ventes</p>
+    </div>
+  </div>
 </div>
 
 {{/admin_layout}}
