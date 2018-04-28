@@ -8,7 +8,7 @@
 
 
 <div class="page-header">
-  <h1>Inscription</h1>
+  <h1>Inscriptions</h1>
   <h2>Tournoi {{tournamentName}}</h2>
 </div>
 
@@ -29,7 +29,7 @@
       {{#teams}}
       <tr>
         <td>{{name}}</td>
-        <td>{{level}}</td>
+        <td><span class="label label-{{ level.color }}">{{ level.label }}</span></td>
         {{#players}}
         <td>
           <ul class="list-invisible">

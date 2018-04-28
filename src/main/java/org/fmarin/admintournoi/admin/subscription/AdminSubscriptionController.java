@@ -40,7 +40,7 @@ public class AdminSubscriptionController {
   private AdminSubscribedTeamView build(Team team) {
     return new AdminSubscribedTeamView(
       team.getName(),
-      team.getLevel().getLabel(),
+      team.getLevel(),
       buildPlayers(team),
       team.getPaymentVerificationCode()
     );

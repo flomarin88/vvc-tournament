@@ -39,6 +39,7 @@ public class DashboardService {
   Map<String, Object> getCurrentSubscriptionsStats(Tournament tournament) {
     Map<String, Object> result = Maps.newHashMap();
     String prefix = tournament.getGender().name().toLowerCase();
+    result.put(prefix + "_tournament_id", tournament.getId());
     result.put(prefix + "_teams_limit", tournament.getTeamLimit());
     result.put(prefix + "_teams_subscribed", tournament.getSubscribedTeams().size());
     return result;

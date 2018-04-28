@@ -66,7 +66,9 @@ public class DashboardServiceUTest {
       entry("men_teams_subscribed", 2),
       entry("women_teams_limit", 6),
       entry("women_teams_subscribed", 3),
-      entry("paypal_sales_total", "158,15 €")
+      entry("paypal_sales_total", "158,15 €"),
+      entry("men_tournament_id", 1L),
+      entry("women_tournament_id", 2L)
     );
   }
 
