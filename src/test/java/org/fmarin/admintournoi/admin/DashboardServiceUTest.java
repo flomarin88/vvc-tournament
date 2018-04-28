@@ -19,49 +19,56 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DashboardServiceUTest {
 
-    private DashboardService dashboardService;
+  private DashboardService dashboardService;
 
-    @Mock
-    private TournamentRepository mockedTournamentRepository;
+  @Mock
+  private TournamentRepository mockedTournamentRepository;
 
-    @Before
-    public void setUp() {
-        dashboardService = new DashboardService(mockedTournamentRepository);
-    }
+  @Before
+  public void setUp() {
+    dashboardService = new DashboardService(mockedTournamentRepository);
+  }
 
-    @Test
-    public void getCurrentTournament_should_return_empty_map_without_data() {
-        // When
-        Map<String, Object> result = dashboardService.getCurrentSubscriptionsStats(Gender.MEN);
+  @Test
+  public void getCurrentSubscriptionsStats() {
+    // Given
+    TimeMachine.useFixedClockAt(LocalDateTime.of(2017, 1, 1, 0, 0));
 
-        // Then
-        assertThat(result).isEmpty();
-    }
+    Tournament menTournament = TournamentBuilder.aTournament()
+      .withId(1L)
+      .withGender(Gender.MEN)
+      .withTeamLimit(12)
+      .withTeams(Lists.newArrayList(
+        TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
+        TeamBuilder.aTeam().withPaymentStatus("In Progress").build(),
+        TeamBuilder.aTeam().withPaymentStatus("Completed").build()))
+      .build();
+    when(mockedTournamentRepository.findByYearAndGender(2017, Gender.MEN)).thenReturn(menTournament);
+    Tournament womenTournament = TournamentBuilder.aTournament()
+      .withId(2L)
+      .withGender(Gender.WOMEN)
+      .withTeamLimit(6)
+      .withTeams(Lists.newArrayList(
+        TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
+        TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
+        TeamBuilder.aTeam().withPaymentStatus("In Progress").build(),
+        TeamBuilder.aTeam().withPaymentStatus("Completed").build()))
+      .build();
+    when(mockedTournamentRepository.findByYearAndGender(2017, Gender.WOMEN)).thenReturn(womenTournament);
 
-    @Test
-    public void getCurrentTournament() {
-        // Given
-        TimeMachine.useFixedClockAt(LocalDateTime.of(2017, 1, 1, 0, 0));
 
-        Tournament tournament = TournamentBuilder.aTournament()
-                .withId(1L)
-                .withTeamLimit(12)
-                .withTeams(Lists.newArrayList(
-                        TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
-                        TeamBuilder.aTeam().withPaymentStatus("In Progress").build(),
-                        TeamBuilder.aTeam().withPaymentStatus("Completed").build()))
-                .build();
-        when(mockedTournamentRepository.findByYearAndGender(2017, Gender.MEN)).thenReturn(tournament);
+    // When
+    Map<String, Object> result = dashboardService.getCurrentSubscriptionsStats();
 
-        // When
-        Map<String, Object> result = dashboardService.getCurrentSubscriptionsStats(Gender.MEN);
-
-        // Then
-        assertThat(result).containsOnly(
-                entry("men_teams_limit", 12),
-                entry("men_teams_subscribed", 2L)
-        );
-    }
+    // Then
+    assertThat(result).containsOnly(
+      entry("men_teams_limit", 12),
+      entry("men_teams_subscribed", 2),
+      entry("women_teams_limit", 6),
+      entry("women_teams_subscribed", 3),
+      entry("paypal_sales_total", "158,15 €")
+    );
+  }
 
 
 }
