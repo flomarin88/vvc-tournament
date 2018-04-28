@@ -129,3 +129,9 @@ body {
 .fa.danger {
     color: #C0341C;
 }
+
+.list-invisible {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
