@@ -47,6 +47,10 @@ public class Tournament {
     return now.isAfter(subscriptionsOpeningDate) && now.isBefore(subscriptionsClosingDate);
   }
 
+  public String getFullName() {
+    return this.name + " " + this.gender.getTranslation();
+  }
+
   public Long getId() {
     return id;
   }
