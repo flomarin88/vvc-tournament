@@ -70,7 +70,7 @@ public class SubscriptionController extends LayoutController {
       try {
         Map<String, Object> model = getBaseModel();
         Team team = service.subscribe(subscription);
-        model.put("team", service.subscribe(subscription));
+        model.put("team", team);
         model.put("tournamentLabel", team.getTournament().getFullName());
         model.put("levelLabel", team.getLevel().getLabel());
         model.put("paypal_id", team.getTournament().getPaypalButtonId());
