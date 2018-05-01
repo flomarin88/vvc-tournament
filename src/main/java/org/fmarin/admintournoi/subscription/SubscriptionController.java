@@ -73,7 +73,7 @@ public class SubscriptionController {
       try {
         Team team = service.subscribe(subscription);
         ModelAndView modelAndView = new ModelAndView("subscription_payment", "team", team);
-        modelAndView.addObject("tournamentLabel", team.getTournament().getName());
+        modelAndView.addObject("tournamentLabel", team.getTournament().getFullName());
         modelAndView.addObject("levelLabel", team.getLevel().getLabel());
         modelAndView.addObject("paypal_id", team.getTournament().getPaypalButtonId());
         String paypalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
