@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.admin;
 
 import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.helper.TimeMachine;
+import org.fmarin.admintournoi.mailing.MailChimpService;
 import org.fmarin.admintournoi.subscription.Gender;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.fmarin.admintournoi.subscription.TournamentRepository;
@@ -17,12 +18,14 @@ import java.util.Map;
 public class DashboardService {
 
   private final TournamentRepository tournamentRepository;
+  private final MailChimpService mailChimpService;
 
   private final BigDecimal PAYPAL_UNIT_PRICE = new BigDecimal(31.63);
 
   @Autowired
-  public DashboardService(TournamentRepository tournamentRepository) {
+  public DashboardService(TournamentRepository tournamentRepository, MailChimpService mailChimpService) {
     this.tournamentRepository = tournamentRepository;
+    this.mailChimpService = mailChimpService;
   }
 
   public Map<String, Object> getCurrentSubscriptionsStats() {
@@ -33,6 +36,7 @@ public class DashboardService {
     result.putAll(getCurrentSubscriptionsStats(menTournament));
     result.putAll(getCurrentSubscriptionsStats(womenTournament));
     result.put("paypal_sales_total", getPaypalSalesTotal(menTournament, womenTournament));
+    mailChimpService.getCampaignStats();
     return result;
   }
 
