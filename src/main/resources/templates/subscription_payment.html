@@ -1,72 +1,83 @@
 {{#layout}}
 
 <div class="row">
-    <div class="panel panel-primary">
-        <div class="panel-heading text-center">
-            <h3 class="panel-title">Inscription à finaliser - Récapitulatif</h3>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
-                        <div class="panel panel-default height">
-                            <div class="panel-heading text-center">Equipe</div>
-                            <div class="panel-body">
-                                <strong>{{team.name}}</strong><br>
-                                {{tournamentLabel}}<br>
-                                {{levelLabel}}<br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
-                        <div class="panel panel-default height">
-                            <div class="panel-heading text-center">Capitaine</div>
-                            <div class="panel-body">
-                                <strong>{{team.captainName}}</strong><br>
-                                {{team.captainEmail}}<br>
-                                {{team.captainPhone}}<br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
-                        <div class="panel panel-default height">
-                            <div class="panel-heading text-center">Joueur 2</div>
-                            <div class="panel-body">
-                                <strong>{{team.player2Name}}</strong><br>
-                                {{team.player2Email}}<br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
-                        <div class="panel panel-default height">
-                            <div class="panel-heading text-center">Joueur 3</div>
-                            <div class="panel-body">
-                                <strong>{{team.player3Name}}</strong><br>
-                                {{team.player3Email}}<br>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row text-center">
-                <form action="{{paypal_url}}" method="post" target="_top">
-                    <input type="hidden" name="custom" value="{{team.id}}"/>
-                    <input type="hidden" name="cmd" value="_s-xclick">
-                    <input type="hidden" name="hosted_button_id" value="{{paypal_id}}">
-                    <input type="submit" value="Payer" name="submit"
-                           title="PayPal - The safer, easier way to pay online!" class="btn btn-primary btn-lg">
-                    <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1"
-                         height="1">
-                </form>
-            </div>
-        </div>
-        <div class="panel-footer text-center">
-            <p>
-                <i>Une fois le paiement effectué et validé, vous recevrez un email de confirmation.<br/>
-                    L'envoi de l'email peut prendre quelques heures, si vous ne le recevez pas, contactez nous sur Facebook.</i>
-            </p>
-        </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading text-center">
+      <h3 class="panel-title">Inscription à finaliser - Récapitulatif</h3>
     </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
+            <div class="panel panel-default height">
+              <div class="panel-heading text-center">Equipe</div>
+              <div class="panel-body">
+                <ul class="list-unstyled">
+                  <li><strong>{{team.name}}</strong></li>
+                  <li>{{tournamentLabel}}</li>
+                  <li>{{levelLabel}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
+            <div class="panel panel-default height">
+              <div class="panel-heading text-center">Capitaine</div>
+              <div class="panel-body">
+                <ul class="list-unstyled">
+                  <li><strong>{{team.captainName}}</strong></li>
+                  <li>{{team.captainEmail}}</li>
+                  <li>{{team.captainPhone}}</li>
+                  <li>{{team.captainClub}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
+            <div class="panel panel-default height">
+              <div class="panel-heading text-center">Joueur 2</div>
+              <div class="panel-body">
+                <ul class="list-unstyled">
+                  <li><strong>{{team.player2Name}}</strong></li>
+                  <li>{{team.player2Email}}</li>
+                  <li>{{team.player2Club}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
+            <div class="panel panel-default height">
+              <div class="panel-heading text-center">Joueur 3</div>
+              <div class="panel-body">
+                <ul class="list-unstyled">
+                  <li><strong>{{team.player3Name}}</strong></li>
+                  <li>{{team.player3Email}}</li>
+                  <li>{{team.player3Club}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row text-center">
+        <form action="{{paypal_url}}" method="post" target="_top">
+          <input type="hidden" name="custom" value="{{team.id}}"/>
+          <input type="hidden" name="cmd" value="_s-xclick">
+          <input type="hidden" name="hosted_button_id" value="{{paypal_id}}">
+          <input type="submit" value="Payer" name="submit"
+                 title="PayPal - The safer, easier way to pay online!" class="btn btn-primary btn-lg">
+          <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1"
+               height="1">
+        </form>
+      </div>
+    </div>
+    <div class="panel-footer text-center">
+      <p>
+        <i>Une fois le paiement effectué et validé, vous recevrez un email de confirmation.<br/>
+          L'envoi de l'email peut prendre quelques heures, si vous ne le recevez pas, contactez nous sur Facebook.</i>
+      </p>
+    </div>
+  </div>
 </div>
 
 {{/layout}}

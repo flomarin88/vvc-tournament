@@ -18,7 +18,7 @@ public class DashboardService {
 
   private final TournamentRepository tournamentRepository;
 
-  private final BigDecimal PAYPAL_UNIT_PRICE = new BigDecimal(31.63);
+  private final BigDecimal PAYPAL_UNIT_PRICE = new BigDecimal(31.36);
 
   @Autowired
   public DashboardService(TournamentRepository tournamentRepository) {
