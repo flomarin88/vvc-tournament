@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.admin.subscription;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.subscription.Team;
@@ -47,9 +48,9 @@ public class AdminSubscriptionController {
   }
 
   private List<PlayerView> buildPlayers(Team team) {
-    PlayerView captain = new PlayerView(team.getCaptainName(), team.getCaptainClub(), team.getCaptainEmail(), team.getCaptainEmail());
-    PlayerView player2 = new PlayerView(team.getPlayer2Name(), team.getPlayer2Club(), team.getPlayer2Email(), "");
-    PlayerView player3 = new PlayerView(team.getPlayer3Name(), team.getPlayer3Club(), team.getPlayer3Email(), "");
+    PlayerView captain = new PlayerView(team.getCaptainName(), Strings.nullToEmpty(team.getCaptainClub()), Strings.nullToEmpty(team.getCaptainEmail()), Strings.nullToEmpty(team.getCaptainEmail()));
+    PlayerView player2 = new PlayerView(team.getPlayer2Name(), Strings.nullToEmpty(team.getPlayer2Club()), Strings.nullToEmpty(team.getPlayer2Email()), "");
+    PlayerView player3 = new PlayerView(team.getPlayer3Name(), Strings.nullToEmpty(team.getPlayer3Club()), Strings.nullToEmpty(team.getPlayer3Email()), "");
     return Lists.newArrayList(captain, player2, player3);
   }
 }
