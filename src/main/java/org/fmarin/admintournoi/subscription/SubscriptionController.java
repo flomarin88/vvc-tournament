@@ -3,8 +3,8 @@ package org.fmarin.admintournoi.subscription;
 import com.benfante.paypal.ipnassistant.IpnAssistant;
 import com.benfante.paypal.ipnassistant.IpnData;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Streams;
+import org.fmarin.admintournoi.LayoutController;
 import org.fmarin.admintournoi.MainProperties;
 import org.fmarin.admintournoi.features.FeatureManager;
 import org.fmarin.admintournoi.helper.TimeMachine;
@@ -26,37 +26,34 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/subscriptions")
-public class SubscriptionController {
+public class SubscriptionController extends LayoutController {
 
   private final SubscriptionService service;
   private final IpnAssistant ipnAssistant;
-  private final TournamentRepository tournamentRepository;
-  private final FeatureManager features;
   private final MainProperties mainProperties;
 
   @Autowired
   public SubscriptionController(SubscriptionService service, IpnAssistant ipnAssistant, TournamentRepository tournamentRepository, FeatureManager features, MainProperties mainProperties) {
+    super(features, tournamentRepository);
     this.service = service;
     this.ipnAssistant = ipnAssistant;
-    this.tournamentRepository = tournamentRepository;
-    this.features = features;
     this.mainProperties = mainProperties;
   }
 
   @GetMapping
   public ModelAndView index() {
-    Tournament womenTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.WOMEN);
-    Tournament menTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.MEN);
-    Map<String, Object> model = Maps.newHashMap();
+    Tournament womenTournament = getTournamentRepository().findByYearAndGender(TimeMachine.now().getYear(), Gender.WOMEN);
+    Tournament menTournament = getTournamentRepository().findByYearAndGender(TimeMachine.now().getYear(), Gender.MEN);
+    Map<String, Object> model = getBaseModel();
     model.put("tournaments", Lists.newArrayList(build(womenTournament), build(menTournament)));
     return new ModelAndView("public/teams", model);
   }
 
   @GetMapping("/new")
   public ModelAndView newSubscription(Model model) {
-    Tournament womenTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.WOMEN);
-    Tournament menTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.MEN);
-    if (features.areSubscriptionsEnabled() && womenTournament.areSubscriptionsOpened() && (!womenTournament.isFull() || !menTournament.isFull())) {
+    Tournament womenTournament = getTournamentRepository().findByYearAndGender(TimeMachine.now().getYear(), Gender.WOMEN);
+    Tournament menTournament = getTournamentRepository().findByYearAndGender(TimeMachine.now().getYear(), Gender.MEN);
+    if (getFeatures().areSubscriptionsEnabled() && womenTournament.areSubscriptionsOpened() && (!womenTournament.isFull() || !menTournament.isFull())) {
       if (!model.containsAttribute("subscription")) {
         model.addAttribute("subscription", new Subscription());
       }
@@ -71,19 +68,20 @@ public class SubscriptionController {
       return getModelAndView(subscription, result);
     } else {
       try {
+        Map<String, Object> model = getBaseModel();
         Team team = service.subscribe(subscription);
-        ModelAndView modelAndView = new ModelAndView("subscription_payment", "team", team);
-        modelAndView.addObject("tournamentLabel", team.getTournament().getFullName());
-        modelAndView.addObject("levelLabel", team.getLevel().getLabel());
-        modelAndView.addObject("paypal_id", team.getTournament().getPaypalButtonId());
+        model.put("team", service.subscribe(subscription));
+        model.put("tournamentLabel", team.getTournament().getFullName());
+        model.put("levelLabel", team.getLevel().getLabel());
+        model.put("paypal_id", team.getTournament().getPaypalButtonId());
         String paypalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
         if (mainProperties.isProd()) {
           paypalUrl = "https://www.paypal.com/cgi-bin/webscr";
         }
-        modelAndView.addObject("paypal_url", paypalUrl);
-        return modelAndView;
+        model.put("paypal_url", paypalUrl);
+        return new ModelAndView("subscription_payment", model);
       } catch (TournamentIsFullException exception) {
-        return new ModelAndView("redirect:/subscriptions/full");
+        return new ModelAndView("redirect:/subscriptions/full", getBaseModel());
       } catch (TeamAlreadyExistsException exception) {
         ModelAndView modelAndView = getModelAndView(subscription, result);
         Map<String, Boolean> errors = (Map<String, Boolean>) modelAndView.getModel().get("errors");
@@ -107,7 +105,7 @@ public class SubscriptionController {
 
   @NotNull
   private ModelAndView getModelAndView(@Valid @ModelAttribute("subscription") Subscription subscription, BindingResult result) {
-    ModelAndView modelAndView = new ModelAndView("subscription_form");
+    ModelAndView modelAndView = new ModelAndView("subscription_form", getBaseModel());
     modelAndView.addObject("subscription", subscription);
     Map<String, Boolean> failingFields = result.getFieldErrors().stream().map(FieldError::getField).collect(Collectors.toMap(key -> key, value -> true));
     modelAndView.addObject("errors", failingFields);
