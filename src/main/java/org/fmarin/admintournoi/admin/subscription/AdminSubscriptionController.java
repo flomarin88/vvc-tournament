@@ -35,7 +35,7 @@ public class AdminSubscriptionController {
     model.put("tournamentId", tournament.getId());
     model.put("tournamentName", tournament.getFullName());
     model.put("teams", tournament.getSubscribedTeams().stream().map(this::build).collect(Collectors.toList()));
-    return new ModelAndView("/admin/subscriptions", model);
+    return new ModelAndView("admin/subscriptions", model);
   }
 
   private AdminSubscribedTeamView build(Team team) {
