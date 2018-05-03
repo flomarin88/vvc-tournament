@@ -4,6 +4,7 @@ import org.fmarin.admintournoi.subscription.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
@@ -35,6 +36,7 @@ public class GeneratorService {
         .withPlayer3Email("player3" + i + "@test.com")
         .withPaymentVerificationCode(i)
         .withPaymentStatus("Completed")
+        .withCreatedAt(LocalDateTime.now())
         .build();
       teamRepository.save(team);
       i++;

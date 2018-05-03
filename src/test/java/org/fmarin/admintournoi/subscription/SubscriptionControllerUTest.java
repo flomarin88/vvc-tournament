@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,8 +29,8 @@ public class SubscriptionControllerUTest {
       .withName("3x3")
       .withGender(Gender.MEN)
       .withTeams(Lists.newArrayList(
-        TeamBuilder.aTeam().withName("Team 1").withCaptainName("Player 11").withPlayer2Name("Player 12").withPlayer3Name("Player 13").withPaymentStatus("Completed").build(),
-        TeamBuilder.aTeam().withName("Team 2").withCaptainName("Player 21").withPlayer2Name("Player 22").withPlayer3Name("Player 23").withPaymentStatus("Completed").build(),
+        TeamBuilder.aTeam().withName("Team 1").withCaptainName("Player 11").withPlayer2Name("Player 12").withPlayer3Name("Player 13").withPaymentStatus("Completed").withCreatedAt(LocalDateTime.now()).build(),
+        TeamBuilder.aTeam().withName("Team 2").withCaptainName("Player 21").withPlayer2Name("Player 22").withPlayer3Name("Player 23").withPaymentStatus("Completed").withCreatedAt(LocalDateTime.now().minusHours(1)).build(),
         TeamBuilder.aTeam().withName("Team 3").withCaptainName("Player 31").withPlayer2Name("Player 32").withPlayer3Name("Player 33").withPaymentStatus("In progress").build()
         )
       )
@@ -54,9 +55,9 @@ public class SubscriptionControllerUTest {
       .containsExactly("3x3 Féminin", "3x3 Masculin");
     assertThat(tournaments.get(1).getTeams()).hasSize(2)
       .extracting("index", "name", "players")
-      .containsExactly(
-        Tuple.tuple(1, "Team 1", Lists.newArrayList("Player 11", "Player 12", "Player 13")),
-        Tuple.tuple(2, "Team 2", Lists.newArrayList("Player 21", "Player 22", "Player 23"))
+      .containsSequence(
+        Tuple.tuple(2, "Team 2", Lists.newArrayList("Player 21", "Player 22", "Player 23")),
+        Tuple.tuple(1, "Team 1", Lists.newArrayList("Player 11", "Player 12", "Player 13"))
       );
   }
 }
