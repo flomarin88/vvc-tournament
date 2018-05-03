@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -121,7 +122,8 @@ public class SubscriptionController extends LayoutController {
 
   private TeamsByTournamentView build(Tournament tournament) {
     List<SubscribedTeamView> teams = Streams.mapWithIndex(
-      tournament.getSubscribedTeams().stream(),
+      tournament.getSubscribedTeams().stream()
+        .sorted(Comparator.comparing(Team::getCreatedAt)),
       (team, index) -> build(index + 1, team))
       .collect(Collectors.toList());
     return TeamsByTournamentViewBuilder.aView()

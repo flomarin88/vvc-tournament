@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,7 +38,10 @@ public class AdminSubscriptionController {
     Map<String, Object> model = Maps.newHashMap();
     model.put("tournamentId", tournament.getId());
     model.put("tournamentName", tournament.getFullName());
-    model.put("teams", tournament.getSubscribedTeams().stream().map(this::build).collect(Collectors.toList()));
+    model.put("teams", tournament.getSubscribedTeams().stream()
+      .sorted(Comparator.comparing(Team::getCreatedAt))
+      .map(this::build)
+      .collect(Collectors.toList()));
     model.put("staging", !mainProperties.isProd());
     return new ModelAndView("admin/subscriptions", model);
   }
