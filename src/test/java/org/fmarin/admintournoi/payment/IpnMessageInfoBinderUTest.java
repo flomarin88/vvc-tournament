@@ -34,10 +34,9 @@ public class IpnMessageInfoBinderUTest {
     public void messageAlreadyExists_should_return_false_when_transaction_does_not_exist() {
         // Given
         String unknownTransactionId = "unknownTransactionId";
-        String paymentStatus = "Completed";
 
         // When
-        boolean result = binder.messageAlreadyExists(unknownTransactionId, paymentStatus);
+        boolean result = binder.messageAlreadyExists(unknownTransactionId, PaymentStatus.COMPLETED.getLabel());
 
         // Then
         assertThat(result).isFalse();
@@ -47,13 +46,13 @@ public class IpnMessageInfoBinderUTest {
     public void messageAlreadyExists_should_return_true_when_transaction_exists() {
         // Given
         String wellKnownTransactionId = "wellKnownTransactionId";
-        String paymentStatus = "Completed";
+        PaymentStatus paymentStatus = PaymentStatus.COMPLETED;
 
         when(mockedRepository.findByTransactionIdAndPaymentStatus(wellKnownTransactionId, paymentStatus))
                 .thenReturn(new IpnMessage());
 
         // When
-        boolean result = binder.messageAlreadyExists(wellKnownTransactionId, paymentStatus);
+        boolean result = binder.messageAlreadyExists(wellKnownTransactionId, paymentStatus.getLabel());
 
         // Then
         assertThat(result).isTrue();
@@ -66,7 +65,7 @@ public class IpnMessageInfoBinderUTest {
         params.put("txn_id", "TEDGSD1235");
         params.put("custom", "12345");
         params.put("payer_email", "flomarin@gmail.com");
-        params.put("payment_status", "Completed");
+        params.put("payment_status", PaymentStatus.COMPLETED.getLabel());
         IpnData ipnData = new IpnData(params);
 
         LocalDateTime now = LocalDateTime.of(2017, 4, 28, 19, 52, 20);
@@ -83,7 +82,7 @@ public class IpnMessageInfoBinderUTest {
         assertThat(result.getTransactionId()).isEqualTo("TEDGSD1235");
         assertThat(result.getSubscriptionId()).isEqualTo("12345");
         assertThat(result.getPayerEmail()).isEqualTo("flomarin@gmail.com");
-        assertThat(result.getPaymentStatus()).isEqualTo("Completed");
+        assertThat(result.getPaymentStatus()).isEqualTo(PaymentStatus.COMPLETED);
         assertThat(result.getReceivedAt()).isEqualTo(now);
     }
 

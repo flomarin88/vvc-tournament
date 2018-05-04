@@ -41,7 +41,7 @@ public class SubscriptionPaymentProcessor implements PaymentProcessor {
         if (team != null) {
             team.setPaymentProcessedAt(TimeMachine.now());
             team.setPaymentTransactionId(ipnData.getTransactionId());
-            team.setPaymentStatus(ipnData.getPaymentStatus());
+            team.setPaymentStatus(PaymentStatus.labelOf(ipnData.getPaymentStatus()));
             Random rnd = new Random();
             int code = 100000 + rnd.nextInt(900000);
             team.setPaymentVerificationCode(code);

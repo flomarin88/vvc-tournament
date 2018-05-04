@@ -1,5 +1,7 @@
 package org.fmarin.admintournoi.subscription;
 
+import org.fmarin.admintournoi.payment.PaymentStatus;
+
 import java.time.LocalDateTime;
 
 public final class TeamBuilder {
@@ -16,7 +18,7 @@ public final class TeamBuilder {
     private Tournament tournament;
     private LocalDateTime createdAt;
     private String paymentTransactionId;
-    private String paymentStatus;
+    private PaymentStatus paymentStatus;
     private LocalDateTime paymentProcessedAt;
     private Integer paymentVerificationCode;
     private boolean present;
@@ -93,7 +95,7 @@ public final class TeamBuilder {
         return this;
     }
 
-    public TeamBuilder withPaymentStatus(String paymentStatus) {
+    public TeamBuilder withPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
         return this;
     }

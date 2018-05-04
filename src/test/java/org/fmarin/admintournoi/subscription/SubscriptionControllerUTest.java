@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.subscription;
 
 import org.assertj.core.groups.Tuple;
 import org.assertj.core.util.Lists;
+import org.fmarin.admintournoi.payment.PaymentStatus;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,9 +29,9 @@ public class SubscriptionControllerUTest {
       .withName("3x3")
       .withGender(Gender.MEN)
       .withTeams(Lists.newArrayList(
-        TeamBuilder.aTeam().withName("Team 1").withCaptainName("Player 11").withPlayer2Name("Player 12").withPlayer3Name("Player 13").withPaymentStatus("Completed").build(),
-        TeamBuilder.aTeam().withName("Team 2").withCaptainName("Player 21").withPlayer2Name("Player 22").withPlayer3Name("Player 23").withPaymentStatus("Completed").build(),
-        TeamBuilder.aTeam().withName("Team 3").withCaptainName("Player 31").withPlayer2Name("Player 32").withPlayer3Name("Player 33").withPaymentStatus("In progress").build()
+        TeamBuilder.aTeam().withName("Team 1").withCaptainName("Player 11").withPlayer2Name("Player 12").withPlayer3Name("Player 13").withPaymentStatus(PaymentStatus.COMPLETED).build(),
+        TeamBuilder.aTeam().withName("Team 2").withCaptainName("Player 21").withPlayer2Name("Player 22").withPlayer3Name("Player 23").withPaymentStatus(PaymentStatus.COMPLETED).build(),
+        TeamBuilder.aTeam().withName("Team 3").withCaptainName("Player 31").withPlayer2Name("Player 32").withPlayer3Name("Player 33").withPaymentStatus(PaymentStatus.PENDING).build()
         )
       )
       .build();

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IpnMessageRepository extends CrudRepository<IpnMessage, Long> {
 
-    IpnMessage findByTransactionIdAndPaymentStatus(String transactionId, String paymentStatus);
+    IpnMessage findByTransactionIdAndPaymentStatus(String transactionId, PaymentStatus paymentStatus);
 }

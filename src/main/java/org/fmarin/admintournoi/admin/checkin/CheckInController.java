@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.admin.checkin;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import org.fmarin.admintournoi.payment.PaymentStatus;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
@@ -34,7 +35,7 @@ public class CheckInController {
     @GetMapping(("/admin/tournaments/{tournamentId}/checkin"))
     public ModelAndView index(@PathVariable(name = "tournamentId") Long id) {
         Tournament tournament = tournamentRepository.findOne(id);
-        List<Team> teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, "Completed");
+        List<Team> teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, PaymentStatus.COMPLETED);
         List<TeamToCheckInView> teamsToCheckin = teams.stream().map(this::convert).collect(Collectors.toList());
         long absenceCount = teams.parallelStream().filter(team -> !team.isPresent()).count();
         Map<String, Object> model = new ImmutableMap.Builder<String, Object>()

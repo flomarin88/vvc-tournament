@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.subscription;
 
 import org.fmarin.admintournoi.helper.TimeMachine;
+import org.fmarin.admintournoi.payment.PaymentStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,11 +35,11 @@ public class Tournament {
   private LocalDateTime subscriptionsClosingDate;
 
   public List<Team> getSubscribedTeams() {
-    return teams.stream().filter(team -> "Completed".equals(team.getPaymentStatus())).collect(Collectors.toList());
+    return teams.stream().filter(team -> PaymentStatus.COMPLETED.equals(team.getPaymentStatus())).collect(Collectors.toList());
   }
 
   public boolean isFull() {
-    long subscriptionCount = teams.stream().filter(team -> "Completed".equals(team.getPaymentStatus())).count();
+    long subscriptionCount = teams.stream().filter(team -> PaymentStatus.COMPLETED.equals(team.getPaymentStatus())).count();
     return subscriptionCount >= teamLimit;
   }
 

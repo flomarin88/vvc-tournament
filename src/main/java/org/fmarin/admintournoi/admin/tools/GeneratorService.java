@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.admin.tools;
 
+import org.fmarin.admintournoi.payment.PaymentStatus;
 import org.fmarin.admintournoi.subscription.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class GeneratorService {
         .withPlayer3Name("Player3 " + i)
         .withPlayer3Email("player3" + i + "@test.com")
         .withPaymentVerificationCode(i)
-        .withPaymentStatus("Completed")
+        .withPaymentStatus(PaymentStatus.COMPLETED)
         .build();
       teamRepository.save(team);
       i++;

@@ -16,7 +16,7 @@ public class IpnMessageInfoBinder implements IpnMessageBinder {
 
     @Override
     public boolean messageAlreadyExists(String transactionId, String paymentStatus) {
-        IpnMessage message = repository.findByTransactionIdAndPaymentStatus(transactionId, paymentStatus);
+        IpnMessage message = repository.findByTransactionIdAndPaymentStatus(transactionId, PaymentStatus.labelOf(paymentStatus));
         return message != null;
     }
 
@@ -26,7 +26,7 @@ public class IpnMessageInfoBinder implements IpnMessageBinder {
         message.setTransactionId(ipnData.getTransactionId());
         message.setSubscriptionId(ipnData.getParameter("custom"));
         message.setPayerEmail(ipnData.getParameter("payer_email"));
-        message.setPaymentStatus(ipnData.getPaymentStatus());
+        message.setPaymentStatus(PaymentStatus.labelOf(ipnData.getPaymentStatus()));
         message.setReceivedAt(TimeMachine.now());
         repository.save(message);
     }

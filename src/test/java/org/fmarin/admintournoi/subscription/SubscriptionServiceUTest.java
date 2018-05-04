@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.subscription;
 
+import org.fmarin.admintournoi.payment.PaymentStatus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class SubscriptionServiceUTest {
     Tournament tournament = new Tournament();
     tournament.setTeamLimit(2);
     Team teamCompleted = new Team();
-    teamCompleted.setPaymentStatus("Completed");
+    teamCompleted.setPaymentStatus(PaymentStatus.COMPLETED);
     tournament.setTeams(Arrays.asList(teamCompleted, new Team(), teamCompleted));
     Subscription subscriptionWithLimitReached = new Subscription();
     subscriptionWithLimitReached.setTournamentId(1L);
@@ -80,7 +81,7 @@ public class SubscriptionServiceUTest {
     subscription.setName("Toto");
 
     when(mockedTournamentRepository.findOne(1L)).thenReturn(tournament);
-    when(mockedTeamRepository.findByNameAndPaymentStatus("Toto", "Completed")).thenReturn(new Team());
+    when(mockedTeamRepository.findByNameAndPaymentStatus("Toto", PaymentStatus.COMPLETED)).thenReturn(new Team());
 
     expectedException.expect(TeamAlreadyExistsException.class);
 

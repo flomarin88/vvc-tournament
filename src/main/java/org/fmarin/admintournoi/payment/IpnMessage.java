@@ -16,7 +16,8 @@ public class IpnMessage {
     @Column(name = "subscription_id")
     private String subscriptionId;
     @Column(name = "payment_status")
-    private String paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
     @Column(name = "payer_email")
     private String payerEmail;
     @Column(name = "received_at")
@@ -46,11 +47,11 @@ public class IpnMessage {
         this.subscriptionId = subscriptionId;
     }
 
-    public String getPaymentStatus() {
+    public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 

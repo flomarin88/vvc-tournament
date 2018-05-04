@@ -4,5 +4,5 @@ public enum MatchStatus {
 
     VICTORY,
     DRAW,
-    DEFEAT;
+    DEFEAT
 }

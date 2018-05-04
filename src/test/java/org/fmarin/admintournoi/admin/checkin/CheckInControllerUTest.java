@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.admin.checkin;
 
 import org.fmarin.admintournoi.fixtures.FixtureTeam;
+import org.fmarin.admintournoi.payment.PaymentStatus;
 import org.fmarin.admintournoi.subscription.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,7 +72,7 @@ public class CheckInControllerUTest {
         List<Team> teams = Arrays.asList(
                 FixtureTeam.withDefaultValues().build(),
                 FixtureTeam.withDefaultValues().build());
-        when(mockedTeamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, "Completed"))
+        when(mockedTeamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, PaymentStatus.COMPLETED))
                 .thenReturn(teams);
 
         // When

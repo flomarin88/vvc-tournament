@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.subscription;
 
 import com.google.common.base.Objects;
+import org.fmarin.admintournoi.payment.PaymentStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -46,7 +47,8 @@ public class Team {
   @Column(name = "payment_transaction_id")
   private String paymentTransactionId;
   @Column(name = "payment_status")
-  private String paymentStatus;
+  @Enumerated(EnumType.STRING)
+  private PaymentStatus paymentStatus;
   @Column(name = "payment_processed_at")
   private LocalDateTime paymentProcessedAt;
   @Column(name = "payment_verification_code")
@@ -159,11 +161,11 @@ public class Team {
     this.paymentTransactionId = paymentTransactionId;
   }
 
-  public String getPaymentStatus() {
+  public PaymentStatus getPaymentStatus() {
     return paymentStatus;
   }
 
-  public void setPaymentStatus(String paymentStatus) {
+  public void setPaymentStatus(PaymentStatus paymentStatus) {
     this.paymentStatus = paymentStatus;
   }
 

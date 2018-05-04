@@ -32,7 +32,7 @@ public class SubscriptionPaymentProcessorUTest {
     private MailChimpService mockedMailChimpService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         processor = new SubscriptionPaymentProcessor(mockedTeamRepository, mockedMailChimpService);
     }
 
@@ -43,7 +43,7 @@ public class SubscriptionPaymentProcessorUTest {
         params.put("txn_id", "TEDGSD1235");
         params.put("custom", "12345");
         params.put("payer_email", "flomarin@gmail.com");
-        params.put("payment_status", "Completed");
+        params.put("payment_status", PaymentStatus.COMPLETED.getLabel());
         IpnData ipnData = new IpnData(params);
 
         LocalDateTime now = LocalDateTime.of(2017, 4, 28, 19, 52, 20);
@@ -59,7 +59,7 @@ public class SubscriptionPaymentProcessorUTest {
         verify(mockedTeamRepository).save(argumentCaptor.capture());
         Team updatedTeam = argumentCaptor.getValue();
         assertThat(updatedTeam.getPaymentTransactionId()).isEqualTo("TEDGSD1235");
-        assertThat(updatedTeam.getPaymentStatus()).isEqualTo("Completed");
+        assertThat(updatedTeam.getPaymentStatus()).isEqualTo(PaymentStatus.COMPLETED);
         assertThat(updatedTeam.getPaymentProcessedAt()).isEqualTo(now);
         assertThat(updatedTeam.getPaymentVerificationCode()).isNotNull();
     }

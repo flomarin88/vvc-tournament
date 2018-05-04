@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.subscription;
 
 import org.fmarin.admintournoi.helper.TimeMachine;
+import org.fmarin.admintournoi.payment.PaymentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class SubscriptionService {
   Team subscribe(Subscription subscription) throws TeamAlreadyExistsException, TournamentIsFullException {
     Tournament tournament = tournamentRepository.findOne(subscription.getTournamentId());
     if (tournament != null && !isFull(tournament)) {
-      if (teamRepository.findByNameAndPaymentStatus(subscription.getName(), "Completed") == null) {
+      if (teamRepository.findByNameAndPaymentStatus(subscription.getName(), PaymentStatus.COMPLETED) == null) {
         Team team = create(subscription, tournament);
         return teamRepository.save(team);
       }
@@ -29,7 +30,7 @@ public class SubscriptionService {
   }
 
   boolean isFull(Tournament tournament) {
-    long count = tournament.getTeams().stream().filter(team -> "Completed".equals(team.getPaymentStatus())).count();
+    long count = tournament.getTeams().stream().filter(team -> PaymentStatus.COMPLETED.equals(team.getPaymentStatus())).count();
     return count >= tournament.getTeamLimit();
   }
 

@@ -3,6 +3,7 @@ package org.fmarin.admintournoi.admin.round;
 import org.fmarin.admintournoi.admin.pool.PoolGenerationService;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.admin.ranking.RankingService;
+import org.fmarin.admintournoi.payment.PaymentStatus;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
@@ -61,7 +62,7 @@ public class RoundService {
     }
 
     private Round createFirstRound(Tournament tournament, RoundToCreateView roundToCreate) {
-        List<Team> teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, "Completed");
+        List<Team> teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, PaymentStatus.COMPLETED);
         return initRound(tournament, roundToCreate)
                 .withTeams(teams)
                 .build();

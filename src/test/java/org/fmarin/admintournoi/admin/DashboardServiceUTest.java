@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.admin;
 
 import com.google.common.collect.Lists;
 import org.fmarin.admintournoi.helper.TimeMachine;
+import org.fmarin.admintournoi.payment.PaymentStatus;
 import org.fmarin.admintournoi.subscription.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,9 +40,9 @@ public class DashboardServiceUTest {
       .withGender(Gender.MEN)
       .withTeamLimit(12)
       .withTeams(Lists.newArrayList(
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
-        TeamBuilder.aTeam().withPaymentStatus("In Progress").build(),
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build()))
+        TeamBuilder.aTeam().withPaymentStatus(PaymentStatus.COMPLETED).build(),
+        TeamBuilder.aTeam().withPaymentStatus(PaymentStatus.PENDING).build(),
+        TeamBuilder.aTeam().withPaymentStatus(PaymentStatus.COMPLETED).build()))
       .build();
     when(mockedTournamentRepository.findByYearAndGender(2017, Gender.MEN)).thenReturn(menTournament);
     Tournament womenTournament = TournamentBuilder.aTournament()
@@ -49,10 +50,10 @@ public class DashboardServiceUTest {
       .withGender(Gender.WOMEN)
       .withTeamLimit(6)
       .withTeams(Lists.newArrayList(
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
-        TeamBuilder.aTeam().withPaymentStatus("In Progress").build(),
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build()))
+        TeamBuilder.aTeam().withPaymentStatus(PaymentStatus.COMPLETED).build(),
+        TeamBuilder.aTeam().withPaymentStatus(PaymentStatus.COMPLETED).build(),
+        TeamBuilder.aTeam().withPaymentStatus(PaymentStatus.PENDING).build(),
+        TeamBuilder.aTeam().withPaymentStatus(PaymentStatus.COMPLETED).build()))
       .build();
     when(mockedTournamentRepository.findByYearAndGender(2017, Gender.WOMEN)).thenReturn(womenTournament);
 
