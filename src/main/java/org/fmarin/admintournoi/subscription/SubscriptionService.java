@@ -49,6 +49,7 @@ public class SubscriptionService {
     team.setPlayer3Name(subscription.getPlayer3Name());
     team.setPlayer3Email(subscription.getPlayer3Email());
     team.setPlayer3Club(subscription.getPlayer3Club());
+    team.setPaymentStatus(PaymentStatus.PENDING);
     team.setCreatedAt(TimeMachine.now());
     return team;
   }

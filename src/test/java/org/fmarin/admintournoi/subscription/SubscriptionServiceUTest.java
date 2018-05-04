@@ -149,5 +149,6 @@ public class SubscriptionServiceUTest {
     assertThat(result.getPlayer3Name()).isEqualTo("Player 3");
     assertThat(result.getPlayer3Email()).isEqualTo("Player 3 Email");
     assertThat(result.getPlayer3Club()).isEqualTo("VVC 3");
+    assertThat(result.getPaymentStatus()).isEqualTo(PaymentStatus.PENDING);
   }
 }
