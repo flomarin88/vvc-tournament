@@ -41,7 +41,7 @@ public class DashboardServiceUTest {
       .withTeams(Lists.newArrayList(
         TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
         TeamBuilder.aTeam().withPaymentStatus("In Progress").build(),
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build()))
+        TeamBuilder.aTeam().withPaymentStatus("Completed").withPresent(true).build()))
       .build();
     when(mockedTournamentRepository.findByYearAndGender(2017, Gender.MEN)).thenReturn(menTournament);
     Tournament womenTournament = TournamentBuilder.aTournament()
@@ -49,10 +49,10 @@ public class DashboardServiceUTest {
       .withGender(Gender.WOMEN)
       .withTeamLimit(6)
       .withTeams(Lists.newArrayList(
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
+        TeamBuilder.aTeam().withPaymentStatus("Completed").withPresent(true).build(),
         TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
         TeamBuilder.aTeam().withPaymentStatus("In Progress").build(),
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build()))
+        TeamBuilder.aTeam().withPaymentStatus("Completed").withPresent(true).build()))
       .build();
     when(mockedTournamentRepository.findByYearAndGender(2017, Gender.WOMEN)).thenReturn(womenTournament);
 
@@ -64,8 +64,10 @@ public class DashboardServiceUTest {
     assertThat(result).containsOnly(
       entry("men_teams_limit", 12),
       entry("men_teams_subscribed", 2),
+      entry("men_teams_checked", 1L),
       entry("women_teams_limit", 6),
       entry("women_teams_subscribed", 3),
+      entry("women_teams_checked", 2L),
       entry("paypal_sales_total", "158,15 €"),
       entry("men_tournament_id", 1L),
       entry("women_tournament_id", 2L)

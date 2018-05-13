@@ -26,7 +26,7 @@ public class CheckInControllerUTest {
     private TournamentRepository mockedTournamentRepository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         controller = new CheckInController(mockedTeamRepository, mockedTournamentRepository);
     }
 
@@ -53,7 +53,6 @@ public class CheckInControllerUTest {
         // Then
         assertThat(result.getId()).isEqualTo(1L);
         assertThat(result.getName()).isEqualTo("Popol");
-        assertThat(result.getTournamentLabel()).isEqualTo("3x3 Féminin");
         assertThat(result.getLevelLabel()).isEqualTo("Régional");
         assertThat(result.getCaptainName()).isEqualTo("Mister Paul");
         assertThat(result.getCaptainPhone()).isEqualTo("0123456789");
@@ -78,8 +77,7 @@ public class CheckInControllerUTest {
         ModelAndView result = controller.index(1L);
 
         // Then
-        assertThat(result.getViewName()).isEqualTo("teams");
-        assertThat(result.getModel())
-                .containsKeys("teams", "tournament", "absenceCount");
+        assertThat(result.getViewName()).isEqualTo("admin/checkin");
+        assertThat(result.getModel()).containsKeys("teams", "tournament", "absenceCount");
     }
 }

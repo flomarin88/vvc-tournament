@@ -31,5 +31,24 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-lg-3 col-xs-12">
+    <div class="tile-stats">
+      <div class="icon"><i class="fa fa-female"></i></div>
+      <div class="count">{{ women_teams_checked }} <span class="subcount">/ {{ women_teams_limit }}</span></div>
+      <h3><a href="/admin/tournaments/{{women_tournament_id}}/checkin">Présences</a></h3>
+      <p>Tournoi féminin</p>
+    </div>
+  </div>
+  <div class="col-lg-3 col-xs-12">
+    <div class="tile-stats">
+      <div class="icon"><i class="fa fa-male"></i></div>
+      <div class="count">{{ men_teams_checked }} <span class="subcount">/ {{ men_teams_limit }}</span></div>
+      <h3><a href="/admin/tournaments/{{men_tournament_id}}/checkin">Présences</a></h3>
+      <p>Tournoi masculin</p>
+    </div>
+  </div>
+</div>
+
 {{/admin_layout}}
 {{>admin_layout}}

@@ -30,18 +30,19 @@ public class DashboardService {
     Tournament menTournament = tournamentRepository.findByYearAndGender(currentYear, Gender.MEN);
     Tournament womenTournament = tournamentRepository.findByYearAndGender(currentYear, Gender.WOMEN);
     Map<String, Object> result = Maps.newHashMap();
-    result.putAll(getCurrentSubscriptionsStats(menTournament));
-    result.putAll(getCurrentSubscriptionsStats(womenTournament));
+    result.putAll(getCurrentStats(menTournament));
+    result.putAll(getCurrentStats(womenTournament));
     result.put("paypal_sales_total", getPaypalSalesTotal(menTournament, womenTournament));
     return result;
   }
 
-  Map<String, Object> getCurrentSubscriptionsStats(Tournament tournament) {
+  Map<String, Object> getCurrentStats(Tournament tournament) {
     Map<String, Object> result = Maps.newHashMap();
     String prefix = tournament.getGender().name().toLowerCase();
     result.put(prefix + "_tournament_id", tournament.getId());
     result.put(prefix + "_teams_limit", tournament.getTeamLimit());
     result.put(prefix + "_teams_subscribed", tournament.getSubscribedTeams().size());
+    result.put(prefix + "_teams_checked", tournament.getPresentTeamsCount());
     return result;
   }
 
