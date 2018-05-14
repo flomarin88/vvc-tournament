@@ -17,10 +17,12 @@ public class FeatureManagerUTest {
 
   @Mock
   private SubscriptionProperties mockedSubscriptionProperties;
+  @Mock
+  private FeatureRepository mockedFeatureRepository;
 
   @Before
   public void setUp() {
-    service = new FeatureManager(mockedSubscriptionProperties);
+    service = new FeatureManager(mockedSubscriptionProperties, mockedFeatureRepository);
   }
 
   @Test

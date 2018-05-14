@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.admin;
 
 import com.google.common.collect.Lists;
+import org.fmarin.admintournoi.features.FeatureManager;
 import org.fmarin.admintournoi.helper.TimeMachine;
 import org.fmarin.admintournoi.subscription.*;
 import org.junit.Before;
@@ -23,10 +24,12 @@ public class DashboardServiceUTest {
 
   @Mock
   private TournamentRepository mockedTournamentRepository;
+  @Mock
+  private FeatureManager mockedFeatureManager;
 
   @Before
   public void setUp() {
-    dashboardService = new DashboardService(mockedTournamentRepository);
+    dashboardService = new DashboardService(mockedTournamentRepository, mockedFeatureManager);
   }
 
   @Test
@@ -70,7 +73,8 @@ public class DashboardServiceUTest {
       entry("women_teams_checked", 2L),
       entry("paypal_sales_total", "158,15 €"),
       entry("men_tournament_id", 1L),
-      entry("women_tournament_id", 2L)
+      entry("women_tournament_id", 2L),
+      entry("checkin_enabled", false)
     );
   }
 

@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.admin;
 
 import com.google.common.collect.Maps;
+import org.fmarin.admintournoi.features.FeatureManager;
 import org.fmarin.admintournoi.helper.TimeMachine;
 import org.fmarin.admintournoi.subscription.Gender;
 import org.fmarin.admintournoi.subscription.Tournament;
@@ -17,12 +18,14 @@ import java.util.Map;
 public class DashboardService {
 
   private final TournamentRepository tournamentRepository;
+  private final FeatureManager featureManager;
 
   private final BigDecimal PAYPAL_UNIT_PRICE = new BigDecimal(31.63);
 
   @Autowired
-  public DashboardService(TournamentRepository tournamentRepository) {
+  public DashboardService(TournamentRepository tournamentRepository, FeatureManager featureManager) {
     this.tournamentRepository = tournamentRepository;
+    this.featureManager = featureManager;
   }
 
   public Map<String, Object> getCurrentSubscriptionsStats() {
@@ -33,6 +36,7 @@ public class DashboardService {
     result.putAll(getCurrentStats(menTournament));
     result.putAll(getCurrentStats(womenTournament));
     result.put("paypal_sales_total", getPaypalSalesTotal(menTournament, womenTournament));
+    result.put("checkin_enabled", featureManager.isCheckinEnabled());
     return result;
   }
 
