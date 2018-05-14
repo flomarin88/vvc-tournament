@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.admin;
 
 import com.google.common.collect.Lists;
+import org.fmarin.admintournoi.features.FeatureManager;
 import org.fmarin.admintournoi.helper.TimeMachine;
 import org.fmarin.admintournoi.subscription.*;
 import org.junit.Before;
@@ -23,10 +24,12 @@ public class DashboardServiceUTest {
 
   @Mock
   private TournamentRepository mockedTournamentRepository;
+  @Mock
+  private FeatureManager mockedFeatureManager;
 
   @Before
   public void setUp() {
-    dashboardService = new DashboardService(mockedTournamentRepository);
+    dashboardService = new DashboardService(mockedTournamentRepository, mockedFeatureManager);
   }
 
   @Test
@@ -41,7 +44,7 @@ public class DashboardServiceUTest {
       .withTeams(Lists.newArrayList(
         TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
         TeamBuilder.aTeam().withPaymentStatus("In Progress").build(),
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build()))
+        TeamBuilder.aTeam().withPaymentStatus("Completed").withPresent(true).build()))
       .build();
     when(mockedTournamentRepository.findByYearAndGender(2017, Gender.MEN)).thenReturn(menTournament);
     Tournament womenTournament = TournamentBuilder.aTournament()
@@ -49,10 +52,10 @@ public class DashboardServiceUTest {
       .withGender(Gender.WOMEN)
       .withTeamLimit(6)
       .withTeams(Lists.newArrayList(
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
+        TeamBuilder.aTeam().withPaymentStatus("Completed").withPresent(true).build(),
         TeamBuilder.aTeam().withPaymentStatus("Completed").build(),
         TeamBuilder.aTeam().withPaymentStatus("In Progress").build(),
-        TeamBuilder.aTeam().withPaymentStatus("Completed").build()))
+        TeamBuilder.aTeam().withPaymentStatus("Completed").withPresent(true).build()))
       .build();
     when(mockedTournamentRepository.findByYearAndGender(2017, Gender.WOMEN)).thenReturn(womenTournament);
 
@@ -64,11 +67,14 @@ public class DashboardServiceUTest {
     assertThat(result).containsOnly(
       entry("men_teams_limit", 12),
       entry("men_teams_subscribed", 2),
+      entry("men_teams_checked", 1L),
       entry("women_teams_limit", 6),
       entry("women_teams_subscribed", 3),
+      entry("women_teams_checked", 2L),
       entry("paypal_sales_total", "158,15 €"),
       entry("men_tournament_id", 1L),
-      entry("women_tournament_id", 2L)
+      entry("women_tournament_id", 2L),
+      entry("checkin_enabled", false)
     );
   }
 

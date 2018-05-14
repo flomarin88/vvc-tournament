@@ -34,7 +34,11 @@ public class Tournament {
   private LocalDateTime subscriptionsClosingDate;
 
   public List<Team> getSubscribedTeams() {
-    return teams.stream().filter(team -> "Completed".equals(team.getPaymentStatus())).collect(Collectors.toList());
+    return teams.parallelStream().filter(team -> "Completed".equals(team.getPaymentStatus())).collect(Collectors.toList());
+  }
+
+  public long getPresentTeamsCount() {
+    return teams.parallelStream().filter(Team::isPresent).count();
   }
 
   public boolean isFull() {
