@@ -78,11 +78,11 @@
         <li>
           <a href="https://www.instagram.com/vincennesvolleyclub/"><i class="fa fa-instagram"></i></a>
         </li>
-        {{#subscriptions_enabled}}{{#subscriptions_opened}}
+        {{^tournaments_full}}{{#subscriptions_enabled}}{{#subscriptions_opened}}
         <li>
           <a href="/subscriptions/new" class="call-to-action">Je m'inscris</a>
         </li>
-        {{/subscriptions_opened}}{{/subscriptions_enabled}}
+        {{/subscriptions_opened}}{{/subscriptions_enabled}}{{/tournaments_full}}
       </ul>
     </div>
   </div>
@@ -134,6 +134,7 @@
       <p>Les inscriptions et le paiement se font en ligne <strong>uniquement</strong></p>
       <p>Le tarif est de 33€ par équipe, soit 11€ par joueur</p>
       <p>Aucune inscription ne sera acceptée le jour du tournoi</p>
+      <h4>Places restantes : {{women_subscriptions_left_count}}<i class="fa fa-female"></i> {{men_subscriptions_left_count}}<i class="fa fa-male"></i></h4>
       {{#subscriptions_opened}}
       <ul class="list-unstyled">
         <li style="margin-bottom: 15px">
