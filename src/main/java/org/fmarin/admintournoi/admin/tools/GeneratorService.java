@@ -1,5 +1,9 @@
 package org.fmarin.admintournoi.admin.tools;
 
+import org.fmarin.admintournoi.admin.match.Match;
+import org.fmarin.admintournoi.admin.pool.Pool;
+import org.fmarin.admintournoi.admin.round.Round;
+import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.fmarin.admintournoi.subscription.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +16,13 @@ public class GeneratorService {
 
   private final TournamentRepository tournamentRepository;
   private final TeamRepository teamRepository;
+  private final RoundRepository roundRepository;
 
   @Autowired
-  public GeneratorService(TournamentRepository tournamentRepository, TeamRepository teamRepository) {
+  public GeneratorService(TournamentRepository tournamentRepository, TeamRepository teamRepository, RoundRepository roundRepository) {
     this.tournamentRepository = tournamentRepository;
     this.teamRepository = teamRepository;
+    this.roundRepository = roundRepository;
   }
 
   public boolean generateTeams(Long tournamentId) {
@@ -44,9 +50,38 @@ public class GeneratorService {
     return true;
   }
 
+  public boolean generateMatchResults(Long roundId) {
+    Round round = roundRepository.findOne(roundId);
+    for (Pool pool : round.getPools()) {
+      for (Match match : pool.getMatches()) {
+        int winner = randomWinner();
+        if (winner == 1) {
+          match.setScoreTeam1(25);
+          match.setScoreTeam2(randomScore());
+        }
+        else {
+          match.setScoreTeam1(randomScore());
+          match.setScoreTeam2(25);
+        }
+      }
+    }
+    roundRepository.save(round);
+    return true;
+  }
+
   private Level randomLevel() {
     Random r = new Random();
     int random = r.ints(0, 4).findFirst().getAsInt();
     return Level.valueOf(random + 1);
+  }
+
+  private int randomWinner() {
+    Random r = new Random();
+    return r.ints(0, 2).findFirst().getAsInt() + 1;
+  }
+
+  private int randomScore() {
+    Random r = new Random();
+    return r.ints(0, 24).findFirst().getAsInt();
   }
 }
