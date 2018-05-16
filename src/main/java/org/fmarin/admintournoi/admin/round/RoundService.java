@@ -16,64 +16,63 @@ import java.util.stream.Collectors;
 @Service
 public class RoundService {
 
-    private final TournamentRepository tournamentRepository;
-    private final TeamRepository teamRepository;
-    private final RoundRepository roundRepository;
-    private final PoolGenerationService poolGenerationService;
-    private final RankingService rankingService;
+  private final TournamentRepository tournamentRepository;
+  private final TeamRepository teamRepository;
+  private final RoundRepository roundRepository;
+  private final PoolGenerationService poolGenerationService;
+  private final RankingService rankingService;
 
-    @Autowired
-    public RoundService(TournamentRepository tournamentRepository, TeamRepository teamRepository,
-                        RoundRepository roundRepository, PoolGenerationService poolGenerationService,
-                        RankingService rankingService) {
-        this.tournamentRepository = tournamentRepository;
-        this.teamRepository = teamRepository;
-        this.roundRepository = roundRepository;
-        this.poolGenerationService = poolGenerationService;
-        this.rankingService = rankingService;
-    }
+  @Autowired
+  public RoundService(TournamentRepository tournamentRepository, TeamRepository teamRepository,
+                      RoundRepository roundRepository, PoolGenerationService poolGenerationService,
+                      RankingService rankingService) {
+    this.tournamentRepository = tournamentRepository;
+    this.teamRepository = teamRepository;
+    this.roundRepository = roundRepository;
+    this.poolGenerationService = poolGenerationService;
+    this.rankingService = rankingService;
+  }
 
-    public void create(Long tournamentId, RoundToCreateView roundToCreate) {
-        Tournament tournament = tournamentRepository.findOne(tournamentId);
-        Round round;
-        if (roundToCreate.getPreviousRoundId() == null) {
-            round = createFirstRound(tournament, roundToCreate);
-            roundRepository.save(round);
-            poolGenerationService.generatePools(round);
-        } else {
-            List<Ranking> rankings = rankingService.getRoundRanking(roundToCreate.getPreviousRoundId());
-            round = createNextRound(tournament, roundToCreate, rankings);
-            roundRepository.save(round);
-            poolGenerationService.generatePoolsWithRankings(round);
-        }
+  public void create(Long tournamentId, RoundToCreateView roundToCreate) {
+    Tournament tournament = tournamentRepository.findOne(tournamentId);
+    if (roundToCreate.getPreviousRoundId() == null) {
+      Round round = createFirstRound(tournament, roundToCreate);
+      roundRepository.save(round);
+      poolGenerationService.generatePoolsWithLevels(round);
+    } else {
+      List<Ranking> rankings = rankingService.getRoundRanking(roundToCreate.getPreviousRoundId());
+      Round round = createNextRound(tournament, roundToCreate, rankings);
+      roundRepository.save(round);
+      poolGenerationService.generatePoolsWithRankings(round);
     }
+  }
 
-    private Round createNextRound(Tournament tournament, RoundToCreateView roundToCreate, List<Ranking> rankings) {
-        Round previousRound = roundRepository.findOne(roundToCreate.getPreviousRoundId());
-        List<Team> teams = rankings.subList(roundToCreate.getTeamsFrom() - 1, roundToCreate.getTeamsTo())
-                .stream()
-                .map(Ranking::getTeam)
-                .collect(Collectors.toList());
-        return initRound(tournament, roundToCreate)
-                .withTeams(teams)
-                .withPreviousRound(previousRound)
-                .build();
-    }
+  private Round createNextRound(Tournament tournament, RoundToCreateView roundToCreate, List<Ranking> rankings) {
+    Round previousRound = roundRepository.findOne(roundToCreate.getPreviousRoundId());
+    List<Team> teams = rankings.subList(roundToCreate.getTeamsFrom() - 1, roundToCreate.getTeamsTo())
+      .stream()
+      .map(Ranking::getTeam)
+      .collect(Collectors.toList());
+    return create(roundToCreate)
+      .withTeams(teams)
+      .withTournament(tournament)
+      .withPreviousRound(previousRound)
+      .build();
+  }
 
-    private Round createFirstRound(Tournament tournament, RoundToCreateView roundToCreate) {
-        List<Team> teams = teamRepository.findAllByTournamentAndPaymentStatusOrderByNameAsc(tournament, "Completed");
-        return initRound(tournament, roundToCreate)
-                .withTeams(teams)
-                .build();
-    }
+  private Round createFirstRound(Tournament tournament, RoundToCreateView roundToCreate) {
+    return create(roundToCreate)
+      .withTournament(tournament)
+      .withTeams(tournament.getSubscribedTeams())
+      .build();
+  }
 
-    private RoundBuilder initRound(Tournament tournament, RoundToCreateView roundToCreate) {
-        return RoundBuilder.aRound()
-                .withName(roundToCreate.getName())
-                .withBranch(TournamentBranch.valueOf(roundToCreate.getTournamentBranch()))
-                .withType(RoundType.valueOf(roundToCreate.getType()))
-                .withStatus(RoundStatus.CREATED)
-                .withTournament(tournament)
-                .withFieldRanges(roundToCreate.getFieldRanges());
-    }
+  private RoundBuilder create(RoundToCreateView roundToCreate) {
+    return RoundBuilder.aRound()
+      .withName(roundToCreate.getName())
+      .withBranch(TournamentBranch.valueOf(roundToCreate.getTournamentBranch()))
+      .withType(RoundType.valueOf(roundToCreate.getType()))
+      .withStatus(RoundStatus.CREATED)
+      .withFieldRanges(roundToCreate.getFieldRanges());
+  }
 }

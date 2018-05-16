@@ -40,14 +40,14 @@ public class PoolGenerationServiceUTest {
   public void mapTeamsByLevel() {
     // Given
     // When
-    Map<Level, List<Team>> result = service.mapTeamsByLevel(teams);
+    Map<Integer, List<Team>> result = service.mapTeamsByLevel(teams);
 
     // Then
     assertThat(result).hasSize(4);
-    assertThat(result.get(Level.NATIONAL)).hasSize(3);
-    assertThat(result.get(Level.REGIONAL)).hasSize(2);
-    assertThat(result.get(Level.DEPARTEMENTAL)).hasSize(1);
-    assertThat(result.get(Level.LOISIRS)).hasSize(1);
+    assertThat(result.get(1)).hasSize(3);
+    assertThat(result.get(2)).hasSize(2);
+    assertThat(result.get(3)).hasSize(1);
+    assertThat(result.get(4)).hasSize(1);
   }
 
   @Test
