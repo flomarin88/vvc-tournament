@@ -157,7 +157,7 @@ public class RoundController {
       .withTeamsCount(round.getTeams().size())
       .withStatus(round.getStatus().getLabel())
       .withTournamentId(round.getTournament().getId())
-      .withTournamentName(round.getTournament().getName())
+      .withTournamentName(round.getTournament().getFullName())
       .withValidated(round.getStatus().equals(RoundStatus.STARTED))
       .build();
   }
