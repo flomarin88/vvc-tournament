@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.admin.round;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.fmarin.admintournoi.MainProperties;
 import org.fmarin.admintournoi.admin.match.MatchGenerationService;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolRepository;
@@ -41,12 +42,13 @@ public class RoundController {
   private final RankingService rankingService;
   private final TeamService teamService;
   private final GeneratorService generatorService;
+  private final MainProperties mainProperties;
 
   @Autowired
   public RoundController(TournamentRepository tournamentRepository, TeamRepository teamRepository,
                          RoundRepository roundRepository, PoolRepository poolRepository,
                          MatchGenerationService matchGenerationService, RoundService roundService,
-                         RankingService rankingService, TeamService teamService, GeneratorService generatorService) {
+                         RankingService rankingService, TeamService teamService, GeneratorService generatorService, MainProperties mainProperties) {
     this.tournamentRepository = tournamentRepository;
     this.teamRepository = teamRepository;
     this.roundRepository = roundRepository;
@@ -56,6 +58,7 @@ public class RoundController {
     this.rankingService = rankingService;
     this.teamService = teamService;
     this.generatorService = generatorService;
+    this.mainProperties = mainProperties;
   }
 
   @GetMapping("/tournaments/{tournamentId}/rounds")
@@ -95,6 +98,7 @@ public class RoundController {
     Map<String, Object> model = Maps.newHashMap();
     model.put("round", roundDetail);
     model.put("pools", pools);
+    model.put("isProd", mainProperties.isProd());
     return new ModelAndView("round_detail", model);
   }
 

@@ -16,7 +16,9 @@
   <button class="btn btn-primary pull-right switch-team-js">Échanger les équipes</button>
   {{/isValidated}}
   {{#isValidated}}
+  {{^isProd}}
   <a href="/admin/rounds/{{id}}/matches/generate" class="btn btn-danger pull-right">Générer résultats</a>
+  {{/isProd}}
   <a href="/admin/rounds/{{id}}/rankings" class="btn btn-lg btn-default pull-right"><i class="fa fa-table"
                                                                                        aria-hidden="true"></i>
     Classement</a>
