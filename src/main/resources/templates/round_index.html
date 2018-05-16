@@ -2,14 +2,14 @@
 
 <ol class="breadcrumb">
     <li><a href="/admin">Accueil</a></li>
-    <li><a href="/admin/tournaments/{{tournament.id}}/checkin">{{tournament.name}}</a></li>
+    <li><a href="/admin/tournaments/{{tournament.id}}/checkin">{{tournament.fullName}}</a></li>
     <li class="active">Tours</li>
 </ol>
 
 
 <div class="page-header">
     <h1>Tours</h1>
-    <p class="lead">Tournoi {{ tournament.name }}
+    <p class="lead">Tournoi {{ tournament.fullName }}
         <a class="btn btn-primary pull-right" href="/admin/tournaments/{{ tournament.id }}/rounds/new">Nouveau tour</a>
     </p>
 </div>
