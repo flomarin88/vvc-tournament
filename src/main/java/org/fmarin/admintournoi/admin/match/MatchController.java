@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.admin.match;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.round.Round;
@@ -40,8 +41,8 @@ public class MatchController {
     @GetMapping("/rounds/{roundId}/matches/papers")
     public ModelAndView getPaperMatches(@PathVariable(name = "roundId") Long roundId) {
         Round round = roundRepository.findOne(roundId);
-        ArrayList<String> elements = Lists.newArrayList(round.getTournament().getName(), round.getBranch().getLabel(), round.getName());
-        String roundName = String.join("/", elements);
+        ArrayList<String> elements = Lists.newArrayList(round.getTournament().getFullName(), round.getBranch().getLabel(), round.getName());
+        String roundName = String.join(" / ", elements);
         List<MatchPaper> matchPapers = round.getPools().stream()
                 .sorted(Comparator.comparing(Pool::getPosition))
                 .map(pool -> new MatchPaper(roundName, pool.getPosition(), pool.getField(),

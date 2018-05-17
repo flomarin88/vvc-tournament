@@ -148,7 +148,7 @@ public class RoundController {
   }
 
   RoundListView convertListItem(Round round) {
-    String previousRoundLabel = round.getPreviousRound() != null ? round.getPreviousRound().getName() : "-";
+    String previousRoundLabel = round.getPreviousRound() != null ? round.getPreviousRound().getBranch().getLabel() + " - " + round.getPreviousRound().getName() : "-";
     return RoundListViewBuilder.aRoundListView()
       .withId(round.getId())
       .withName(round.getBranch().getLabel() + " - " + round.getName())
