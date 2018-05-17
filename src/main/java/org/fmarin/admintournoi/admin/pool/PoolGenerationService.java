@@ -11,12 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 public class PoolGenerationService {
@@ -36,30 +32,17 @@ public class PoolGenerationService {
 
   @Async
   public void generatePoolsWithLevels(Round round) {
-    buildPools(round);
+    round.createPools();
     Map<Integer, List<Team>> teamsByLevel = mapTeamsByLevel(round.getTeams());
     affectTeams(round, teamsByLevel);
   }
 
   @Async
   public void generatePoolsWithRankings(Round round) {
-    buildPools(round);
+    round.createPools();
     List<Ranking> rankings = getAllPoolRankings(round);
     Map<Integer, List<Team>> teamsByRanking = mapTeamsByRanking(rankings);
     affectTeams(round, teamsByRanking);
-  }
-
-  void buildPools(Round round) {
-    List<Integer> fields = getFieldList(round.getFieldRanges());
-    Integer poolsCount = round.getTeams().size() / TEAMS_COUNT_BY_POOL;
-    List<Pool> pools = IntStream.range(0, poolsCount).mapToObj(index ->
-      PoolBuilder.aPool()
-        .withField(getField(fields, index + 1))
-        .withPosition(index + 1)
-        .withRound(round)
-        .build()
-    ).collect(Collectors.toList());
-    round.setPools(pools);
   }
 
   Pool getPool(Round round, int affectedTeams) {
@@ -67,8 +50,8 @@ public class PoolGenerationService {
     return round.getPools().get(index);
   }
 
-  Team getTeamToAffect(Map<Integer, List<Team>> teamsMap) {
-    Optional<Integer> keyToAffect = teamsMap.keySet().stream().filter(key-> !teamsMap.get(key).isEmpty()).findFirst();
+  Team getTeamToAffect(Map<Integer, List<Team>> teamsMap, List<Integer> positions) {
+    Optional<Integer> keyToAffect = positions.stream().filter(key-> !teamsMap.get(key).isEmpty()).findFirst();
     if (keyToAffect.isPresent()) {
       List<Team> teams = teamsMap.get(keyToAffect.get());
       Random random = new Random();
@@ -77,6 +60,15 @@ public class PoolGenerationService {
     } else {
       throw new RuntimeException("Generation failed - No team to affect");
     }
+  }
+
+  List<Integer> orderLevels(Set<Integer> levels, int loopCount) {
+    LinkedList<Integer> orderedLevels = new LinkedList<>(levels);
+    orderedLevels.sort(Comparator.naturalOrder());
+    if (loopCount == TEAMS_COUNT_BY_POOL) {
+      return Lists.reverse(orderedLevels);
+    }
+    return orderedLevels;
   }
 
   Map<Integer, Long> countTeamsByLevel(List<Team> teams) {
@@ -94,30 +86,13 @@ public class PoolGenerationService {
       .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().stream().map(Ranking::getTeam).collect(Collectors.toList())));
   }
 
-  Integer getField(List<Integer> fields, Integer position) {
-    Integer newPosition = position % fields.size();
-    if (newPosition == 0) {
-      newPosition = fields.size();
-    }
-    return fields.get(newPosition - 1);
-  }
-
-  List<Integer> getFieldList(String fieldRanges) {
-    List<Integer> result = Lists.newArrayList();
-    String[] ranges = fieldRanges.split(";");
-    for (String range1 : ranges) {
-      String[] range = range1.split("-");
-      Integer from = Integer.valueOf(range[0]);
-      Integer to = Integer.valueOf(range[1]);
-      result.addAll(IntStream.range(from, to + 1).boxed().collect(Collectors.toList()));
-    }
-    return result;
-  }
-
   private void affectTeams(Round round, Map<Integer, List<Team>> teamsMap) {
+    Set<Integer> positions = teamsMap.keySet();
     for (int i = 0; i < round.getTeams().size(); ++i) {
+      int loopCount = i / round.getPools().size() + 1;
       Pool pool = getPool(round, i);
-      pool.addTeam(getTeamToAffect(teamsMap));
+      Team team = getTeamToAffect(teamsMap, orderLevels(positions, loopCount));
+      pool.addTeam(team);
     }
     round.getPools().parallelStream().forEach(poolRepository::save);
     round.setStatus(RoundStatus.COMPOSED);

@@ -20,9 +20,9 @@ public class TeamServiceUTest {
     @Test
     public void getAllPreviousRounds() {
         // Given
-        Round first = aRound().build();
-        Round second = aRound().withPreviousRound(first).build();
-        Round round = aRound().withPreviousRound(second).build();
+        Round first = aRound().withFieldRanges("1-1").build();
+        Round second = aRound().withFieldRanges("1-1").withPreviousRound(first).build();
+        Round round = aRound().withFieldRanges("1-1").withPreviousRound(second).build();
 
         // When
         List<Round> result = service.getAllPreviousRounds(round);

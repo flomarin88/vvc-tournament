@@ -1,6 +1,7 @@
 package org.fmarin.admintournoi.admin.pool;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundBuilder;
 import org.fmarin.admintournoi.subscription.Level;
@@ -13,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -36,6 +38,34 @@ public class PoolGenerationServiceUTest {
     TeamBuilder.aTeam().withLevel(Level.DEPARTEMENTAL).build()
   );
 
+
+  @Test
+  public void orderLevels_with_all_levels() {
+    // Given
+    Set<Integer> levels = Sets.newHashSet(1, 2, 3, 4);
+    Set<Integer> levelsOther = Sets.newHashSet( 2, 4, 1, 3);
+
+    // When
+    List<Integer> result = service.orderLevels(levels, 1);
+    List<Integer> resultOther = service.orderLevels(levelsOther, 1);
+
+    // Then
+    assertThat(result).containsSequence(1, 2, 3, 4);
+    assertThat(resultOther).containsSequence(1, 2, 3, 4);
+  }
+
+  @Test
+  public void orderLevels_with_last_pool_count() {
+    // Given
+    Set<Integer> levels = Sets.newHashSet(2, 1, 3);
+
+    // When
+    List<Integer> result = service.orderLevels(levels, 3);
+
+    // Then
+    assertThat(result).containsSequence(3, 2, 1);
+  }
+
   @Test
   public void mapTeamsByLevel() {
     // Given
@@ -54,7 +84,7 @@ public class PoolGenerationServiceUTest {
   public void getPool() {
     // Given
     List<Pool> pools = LongStream.range(0, 16).mapToObj(index -> PoolBuilder.aPool().withId(index).build()).collect(Collectors.toList());
-    Round round = RoundBuilder.aRound().withPools(pools).build();
+    Round round = RoundBuilder.aRound().withFieldRanges("1-4").withPools(pools).build();
 
     // When
     Pool result0 = service.getPool(round, 0);
@@ -81,39 +111,6 @@ public class PoolGenerationServiceUTest {
         entry(3, 1L),
         entry(4, 1L)
       );
-  }
-
-  @Test
-  public void getFieldList() {
-    // Given
-    // When
-    List<Integer> result = service.getFieldList("4-11;20-22");
-
-    // Then
-    assertThat(result).hasSize(11)
-      .containsSequence(4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 22);
-  }
-
-  @Test
-  public void getField() {
-    // Given
-    List<Integer> fields = Lists.newArrayList(4, 5, 6, 7, 8, 9, 10, 11);
-
-    // When
-    Integer result1 = service.getField(fields, 1);
-    Integer result2 = service.getField(fields, 3);
-    Integer result3 = service.getField(fields, 8);
-    Integer result4 = service.getField(fields, 12);
-    Integer result5 = service.getField(fields, 16);
-    Integer result6 = service.getField(fields, 9);
-
-    // Then
-    assertThat(result1).isEqualTo(4);
-    assertThat(result2).isEqualTo(6);
-    assertThat(result3).isEqualTo(11);
-    assertThat(result4).isEqualTo(7);
-    assertThat(result5).isEqualTo(11);
-    assertThat(result6).isEqualTo(4);
   }
 
 }

@@ -17,53 +17,54 @@ import static org.fmarin.admintournoi.admin.round.RoundBuilder.aRound;
 @RunWith(MockitoJUnitRunner.class)
 public class MatchGenerationServiceUTest {
 
-    @InjectMocks
-    private MatchGenerationService service;
+  @InjectMocks
+  private MatchGenerationService service;
 
-    @Test
-    public void generatePoolMatches_should_generate_3_matches_AB_AC_BC() {
-        // Given
-        Pool pool = aPool()
-                .withTeam1(TeamBuilder.aTeam().withName("A").build())
-                .withTeam2(TeamBuilder.aTeam().withName("B").build())
-                .withTeam3(TeamBuilder.aTeam().withName("C").build())
-                .build();
+  @Test
+  public void generatePoolMatches_should_generate_3_matches_AB_AC_BC() {
+    // Given
+    Pool pool = aPool()
+      .withTeam1(TeamBuilder.aTeam().withName("A").build())
+      .withTeam2(TeamBuilder.aTeam().withName("B").build())
+      .withTeam3(TeamBuilder.aTeam().withName("C").build())
+      .build();
 
-        // When
-        service.generatePoolMatches(pool);
+    // When
+    service.generatePoolMatches(pool);
 
-        // Then
-        assertThat(pool.getMatches()).hasSize(3)
-                .extracting("team1.name", "team2.name", "pool")
-                .contains(Tuple.tuple("A", "B", pool),
-                        Tuple.tuple("A", "C", pool),
-                        Tuple.tuple("B", "C", pool));
-    }
+    // Then
+    assertThat(pool.getMatches()).hasSize(3)
+      .extracting("team1.name", "team2.name", "pool")
+      .contains(Tuple.tuple("A", "B", pool),
+        Tuple.tuple("A", "C", pool),
+        Tuple.tuple("B", "C", pool));
+  }
 
 
-    @Test
-    public void generate_should_return_matches_for_each_pool() {
-        // Given
-        Round round = aRound()
-                .withPools(Lists.newArrayList(
-                        aPool()
-                                .withTeam1(TeamBuilder.aTeam().withName("A1").build())
-                                .withTeam2(TeamBuilder.aTeam().withName("B1").build())
-                                .withTeam3(TeamBuilder.aTeam().withName("C1").build())
-                                .build(),
-                        aPool()
-                                .withTeam1(TeamBuilder.aTeam().withName("A2").build())
-                                .withTeam2(TeamBuilder.aTeam().withName("B2").build())
-                                .withTeam3(TeamBuilder.aTeam().withName("C2").build())
-                                .build()
-                ))
-                .build();
+  @Test
+  public void generate_should_return_matches_for_each_pool() {
+    // Given
+    Round round = aRound()
+      .withFieldRanges("1-2")
+      .withPools(Lists.newArrayList(
+        aPool()
+          .withTeam1(TeamBuilder.aTeam().withName("A1").build())
+          .withTeam2(TeamBuilder.aTeam().withName("B1").build())
+          .withTeam3(TeamBuilder.aTeam().withName("C1").build())
+          .build(),
+        aPool()
+          .withTeam1(TeamBuilder.aTeam().withName("A2").build())
+          .withTeam2(TeamBuilder.aTeam().withName("B2").build())
+          .withTeam3(TeamBuilder.aTeam().withName("C2").build())
+          .build()
+      ))
+      .build();
 
-        // When
-        service.generate(round);
+    // When
+    service.generate(round);
 
-        // Then
-        assertThat(round.getPools().get(0).getMatches()).hasSize(3);
-        assertThat(round.getPools().get(1).getMatches()).hasSize(3);
-    }
+    // Then
+    assertThat(round.getPools().get(0).getMatches()).hasSize(3);
+    assertThat(round.getPools().get(1).getMatches()).hasSize(3);
+  }
 }
