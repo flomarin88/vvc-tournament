@@ -1,12 +1,15 @@
 package org.fmarin.admintournoi.admin.pool;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.fmarin.admintournoi.admin.round.RoundStatus;
 import org.fmarin.admintournoi.subscription.Team;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PoolGenerationService {
+
+  private static final Logger logger = LoggerFactory.getLogger(PoolGenerationService.class);
 
   private static Integer TEAMS_COUNT_BY_POOL = 3;
 
@@ -50,18 +55,6 @@ public class PoolGenerationService {
     return round.getPools().get(index);
   }
 
-  Team getTeamToAffect(Map<Integer, List<Team>> teamsMap, List<Integer> positions) {
-    Optional<Integer> keyToAffect = positions.stream().filter(key-> !teamsMap.get(key).isEmpty()).findFirst();
-    if (keyToAffect.isPresent()) {
-      List<Team> teams = teamsMap.get(keyToAffect.get());
-      Random random = new Random();
-      int index = random.ints(0, teams.size()).findFirst().getAsInt();
-      return teams.remove(index);
-    } else {
-      throw new RuntimeException("Generation failed - No team to affect");
-    }
-  }
-
   List<Integer> orderLevels(Set<Integer> levels, int loopCount) {
     LinkedList<Integer> orderedLevels = new LinkedList<>(levels);
     orderedLevels.sort(Comparator.naturalOrder());
@@ -86,17 +79,57 @@ public class PoolGenerationService {
       .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().stream().map(Ranking::getTeam).collect(Collectors.toList())));
   }
 
+  boolean hasAlreadyPlayedAgainst(Team team, Pool pool, Set<TeamOpposition> oppositions) {
+    if (pool.getTeam1() != null) {
+      boolean team1 = contains(new TeamOpposition(team, pool.getTeam1()), oppositions);
+      if (!team1 && pool.getTeam2() != null) {
+        return contains(new TeamOpposition(team, pool.getTeam2()), oppositions);
+      }
+      return team1;
+    }
+    return false;
+  }
+
+  boolean contains(TeamOpposition teamOpposition, Set<TeamOpposition> oppositions) {
+    Optional<TeamOpposition> any = oppositions.parallelStream().filter(opposition -> opposition.equals(teamOpposition)).findAny();
+    return any.isPresent();
+  }
+
+  Set<TeamOpposition> getPreviousOppositions(Round round) {
+    Set<TeamOpposition> oppositions = Sets.newHashSet();
+    if (round != null && round.getPreviousRound() != null) {
+      Round previousRound = roundRepository.findOne(round.getPreviousRound().getId());
+      oppositions.addAll(previousRound.getOppositions());
+      oppositions.addAll(getPreviousOppositions(previousRound));
+    }
+    return oppositions;
+  }
+
   private void affectTeams(Round round, Map<Integer, List<Team>> teamsMap) {
+    logger.info("Affect teams for round {}", round.getId());
+    Map<Integer, List<Team>> savedTeamsMap = copy(teamsMap);
     Set<Integer> positions = teamsMap.keySet();
+    Set<TeamOpposition> oppositions = getPreviousOppositions(round);
     for (int i = 0; i < round.getTeams().size(); ++i) {
       int loopCount = i / round.getPools().size() + 1;
       Pool pool = getPool(round, i);
-      Team team = getTeamToAffect(teamsMap, orderLevels(positions, loopCount));
-      pool.addTeam(team);
+      Team team = getTeamToAffect(teamsMap, orderLevels(positions, loopCount), oppositions, pool);
+      if (team == null) {
+        round.createPools();
+        affectTeams(round, savedTeamsMap);
+      }
+      else {
+        pool.addTeam(team);
+      }
     }
     round.getPools().parallelStream().forEach(poolRepository::save);
     round.setStatus(RoundStatus.COMPOSED);
     roundRepository.save(round);
+  }
+
+  private Map<Integer, List<Team>> copy(Map<Integer, List<Team>> map) {
+    return map.entrySet().stream()
+      .collect(Collectors.toMap(Map.Entry::getKey, e -> new ArrayList(e.getValue())));
   }
 
   private List<Ranking> getAllPoolRankings(Round round) {
@@ -107,5 +140,30 @@ public class PoolGenerationService {
       .collect(Collectors.toList())
       .stream().filter(ranking -> round.getTeams().contains(ranking.getTeam()))
       .collect(Collectors.toList());
+  }
+
+  private Team getTeamToAffect(Map<Integer, List<Team>> teamsMap, List<Integer> positions, Set<TeamOpposition> oppositions, Pool pool) {
+    Optional<Integer> keyToAffect = positions.stream().filter(key -> !teamsMap.get(key).isEmpty()).findFirst();
+    List<Team> teams = teamsMap.get(keyToAffect.get());
+    Team team = getTeam(teams, teams.size(), pool, oppositions);
+    if (team == null) {
+      logger.info("Impossible to affect team");
+    }
+    return team;
+  }
+
+  private Team getTeam(List<Team> teams, int count, Pool pool, Set<TeamOpposition> oppositions) {
+    if (count == 0) {
+      return null;
+    }
+    Random random = new Random();
+    int index = random.ints(0, count).findFirst().getAsInt();
+    Team team = teams.remove(index);
+    if (hasAlreadyPlayedAgainst(team, pool, oppositions)) {
+      teams.add(team);
+      return getTeam(teams, count - 1, pool, oppositions);
+    }
+    return team;
+
   }
 }
