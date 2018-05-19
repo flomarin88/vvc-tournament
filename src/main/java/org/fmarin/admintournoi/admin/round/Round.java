@@ -1,13 +1,18 @@
 package org.fmarin.admintournoi.admin.round;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolBuilder;
+import org.fmarin.admintournoi.admin.pool.TeamOpposition;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.Tournament;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -45,7 +50,8 @@ public class Round {
   @Enumerated(value = EnumType.STRING)
   private RoundType type;
 
-  @OneToMany(mappedBy = "round")
+  @OneToMany(mappedBy = "round", fetch = FetchType.EAGER)
+  @Fetch(value = FetchMode.SELECT)
   private List<Pool> pools = Lists.newArrayList();
 
   @Column(name = "field_ranges")
@@ -63,6 +69,16 @@ public class Round {
         .withRound(this)
         .build()
     ).collect(Collectors.toList());
+  }
+
+  public Set<TeamOpposition> getOppositions() {
+    Set<TeamOpposition> oppositions = Sets.newHashSet();
+    for (Pool pool : pools) {
+      oppositions.add(new TeamOpposition(pool.getTeam1(), pool.getTeam2()));
+      oppositions.add(new TeamOpposition(pool.getTeam1(), pool.getTeam3()));
+      oppositions.add(new TeamOpposition(pool.getTeam2(), pool.getTeam3()));
+    }
+    return oppositions;
   }
 
   public Long getId() {
