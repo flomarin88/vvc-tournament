@@ -16,7 +16,7 @@ public final class RoundBuilder {
     private List<Team> teams;
     private List<Pool> pools;
     private RoundStatus status;
-    private String fieldRanges;
+    private String fieldRanges = "1-1";
 
     private RoundBuilder() {
     }
