@@ -126,25 +126,13 @@ public class RoundController {
     Team team1 = teamRepository.findOne(body.getTeam1Id());
     Pool pool2 = poolRepository.findOne(body.getPool2Id());
     Team team2 = teamRepository.findOne(body.getTeam2Id());
-    switchTeams(pool1, team1, team2);
-    switchTeams(pool2, team2, team1);
+    pool1.replace(team1, team2);
+    pool2.replace(team2, team1);
     poolRepository.save(pool1);
     poolRepository.save(pool2);
     Map<String, String> result = Maps.newHashMap();
     result.put("redirect", "/admin/rounds/" + roundId);
     return ResponseEntity.ok(result);
-  }
-
-  void switchTeams(Pool pool, Team team1, Team team2) {
-    if (team1.equals(pool.getTeam1())) {
-      pool.setTeam1(team2);
-    }
-    if (team1.equals(pool.getTeam2())) {
-      pool.setTeam2(team2);
-    }
-    if (team1.equals(pool.getTeam3())) {
-      pool.setTeam3(team2);
-    }
   }
 
   RoundListView convertListItem(Round round) {
