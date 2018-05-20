@@ -4,7 +4,6 @@ import org.fmarin.admintournoi.admin.pool.PoolGenerationService;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.subscription.Team;
-import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.fmarin.admintournoi.subscription.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +16,15 @@ import java.util.stream.Collectors;
 public class RoundService {
 
   private final TournamentRepository tournamentRepository;
-  private final TeamRepository teamRepository;
   private final RoundRepository roundRepository;
   private final PoolGenerationService poolGenerationService;
   private final RankingService rankingService;
 
   @Autowired
-  public RoundService(TournamentRepository tournamentRepository, TeamRepository teamRepository,
+  public RoundService(TournamentRepository tournamentRepository,
                       RoundRepository roundRepository, PoolGenerationService poolGenerationService,
                       RankingService rankingService) {
     this.tournamentRepository = tournamentRepository;
-    this.teamRepository = teamRepository;
     this.roundRepository = roundRepository;
     this.poolGenerationService = poolGenerationService;
     this.rankingService = rankingService;
