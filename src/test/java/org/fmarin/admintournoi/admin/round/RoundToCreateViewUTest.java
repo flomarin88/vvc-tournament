@@ -28,9 +28,9 @@ public class RoundToCreateViewUTest {
   public void getPreviousRounds_returns_1_element() {
     // Given
     RoundToCreateView round = new RoundToCreateView();
-    round.setPreviousRoundId(1L);
-    round.setTeamsFrom(4);
-    round.setTeamsTo(15);
+    round.setFirstPreviousRoundId(1L);
+    round.setFirstTeamsFrom(4);
+    round.setFirstTeamsTo(15);
 
     // When
     List<PreviousRound> result = round.getPreviousRounds();
@@ -45,9 +45,9 @@ public class RoundToCreateViewUTest {
   public void getPreviousRounds_returns_2_elements() {
     // Given
     RoundToCreateView round = new RoundToCreateView();
-    round.setPreviousRoundId(1L);
-    round.setTeamsFrom(4);
-    round.setTeamsTo(15);
+    round.setFirstPreviousRoundId(1L);
+    round.setFirstTeamsFrom(4);
+    round.setFirstTeamsTo(15);
     round.setSecondPreviousRoundId(2L);
     round.setSecondTeamsFrom(1);
     round.setSecondTeamsTo(3);

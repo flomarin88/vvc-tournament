@@ -20,32 +20,32 @@ import static org.fmarin.admintournoi.admin.round.RoundListViewBuilder.aRoundLis
 @RequestMapping("/admin")
 public class RankingController {
 
-    private final RankingService rankingService;
-    private final RoundRepository roundRepository;
+  private final RankingService rankingService;
+  private final RoundRepository roundRepository;
 
-    @Autowired
-    public RankingController(RankingService rankingService, RoundRepository roundRepository) {
-        this.rankingService = rankingService;
-        this.roundRepository = roundRepository;
-    }
+  @Autowired
+  public RankingController(RankingService rankingService, RoundRepository roundRepository) {
+    this.rankingService = rankingService;
+    this.roundRepository = roundRepository;
+  }
 
-    @GetMapping("/pools/{id}/rankings")
-    public ResponseEntity getPoolRankings(@PathVariable(name = "id") Long poolId) {
-        return ResponseEntity.ok(rankingService.getPoolRanking(poolId));
-    }
+  @GetMapping("/pools/{id}/rankings")
+  public ResponseEntity getPoolRankings(@PathVariable(name = "id") Long poolId) {
+    return ResponseEntity.ok(rankingService.getPoolRanking(poolId));
+  }
 
-    @GetMapping("/rounds/{id}/rankings")
-    public ModelAndView getRoundRankings(@PathVariable(name = "id") Long roundId) {
-        Round round = roundRepository.findOne(roundId);
-        Map<String, Object> model = Maps.newHashMap();
-        RoundListView roundView = aRoundListView()
-                .withId(roundId)
-                .withName(round.getBranch().getLabel() + " - " + round.getName())
-                .withTournamentId(round.getTournament().getId())
-                .withTournamentName(round.getTournament().getName())
-                .build();
-        model.put("round", roundView);
-        model.put("rankings", rankingService.getRoundRanking(roundId));
-        return new ModelAndView("rankings", model);
-    }
+  @GetMapping("/rounds/{id}/rankings")
+  public ModelAndView getRoundRankings(@PathVariable(name = "id") Long roundId) {
+    Round round = roundRepository.findOne(roundId);
+    Map<String, Object> model = Maps.newHashMap();
+    RoundListView roundView = aRoundListView()
+      .withId(roundId)
+      .withName(round.getBranch().getLabel() + " - " + round.getName())
+      .withTournamentId(round.getTournament().getId())
+      .withTournamentName(round.getTournament().getFullName())
+      .build();
+    model.put("round", roundView);
+    model.put("rankings", rankingService.getRoundRanking(roundId));
+    return new ModelAndView("rankings", model);
+  }
 }

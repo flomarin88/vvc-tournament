@@ -41,7 +41,7 @@ public class PoolController {
                 .withName("Poule " + pool.getPosition())
                 .withField(pool.getField())
                 .withTournamentId(tournament.getId())
-                .withTournamentName(tournament.getName())
+                .withTournamentName(tournament.getFullName())
                 .withRoundId(round.getId())
                 .withRoundName(round.getBranch().getLabel() + " - " + round.getName())
                 .withColor(status[0])

@@ -53,28 +53,16 @@ public class RoundToCreateView {
     this.type = type;
   }
 
-  public Long getPreviousRoundId() {
-    return firstPreviousRoundId;
+  public void setFirstPreviousRoundId(Long firstPreviousRoundId) {
+    this.firstPreviousRoundId = firstPreviousRoundId;
   }
 
-  public void setPreviousRoundId(Long previousRoundId) {
-    this.firstPreviousRoundId = previousRoundId;
+  public void setFirstTeamsFrom(Integer firstTeamsFrom) {
+    this.firstTeamsFrom = firstTeamsFrom;
   }
 
-  public Integer getTeamsFrom() {
-    return firstTeamsFrom;
-  }
-
-  public void setTeamsFrom(Integer teamsFrom) {
-    this.firstTeamsFrom = teamsFrom;
-  }
-
-  public Integer getTeamsTo() {
-    return firstTeamsTo;
-  }
-
-  public void setTeamsTo(Integer teamsTo) {
-    this.firstTeamsTo = teamsTo;
+  public void setFirstTeamsTo(Integer firstTeamsTo) {
+    this.firstTeamsTo = firstTeamsTo;
   }
 
   public String getFieldRanges() {
