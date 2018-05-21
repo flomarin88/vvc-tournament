@@ -27,6 +27,12 @@
 </div>
 {{/round}}
 
+{{#duplicatedTeams}}
+<div class="row">
+  <p class="lead">Tour invalide -> Des équipes en double</p>
+</div>
+{{/duplicatedTeams}}
+
 <div class="row switch-class-js" data-round-id="{{ round.id }}">
   {{#pools}}
   <div class="col-lg-6">

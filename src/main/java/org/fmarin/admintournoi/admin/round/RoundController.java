@@ -16,6 +16,8 @@ import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.fmarin.admintournoi.subscription.TournamentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +45,8 @@ public class RoundController {
   private final TeamService teamService;
   private final GeneratorService generatorService;
   private final MainProperties mainProperties;
+
+  private static final Logger logger = LoggerFactory.getLogger(RoundController.class);
 
   @Autowired
   public RoundController(TournamentRepository tournamentRepository, TeamRepository teamRepository,
@@ -99,6 +103,7 @@ public class RoundController {
     model.put("round", roundDetail);
     model.put("pools", pools);
     model.put("isProd", mainProperties.isProd());
+    model.put("duplicatedTeams", hasSameTeams(round));
     return new ModelAndView("round_detail", model);
   }
 
@@ -195,4 +200,17 @@ public class RoundController {
     return pool.getMatches().size() == 0 || count > 0 ? "primary" : "success";
   }
 
+  private boolean hasSameTeams(Round round) {
+    List<Team> teams = Lists.newArrayList();
+    for (Pool pool : round.getPools()) {
+      if (teams.contains(pool.getTeam1()) || teams.contains(pool.getTeam2()) || teams.contains(pool.getTeam3())) {
+        logger.error("In Round {}, Pool {} contains existing team", round.getId(), pool.getId());
+        return true;
+      }
+      teams.add(pool.getTeam1());
+      teams.add(pool.getTeam2());
+      teams.add(pool.getTeam3());
+    }
+    return false;
+  }
 }
