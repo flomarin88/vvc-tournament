@@ -1,12 +1,16 @@
 package org.fmarin.admintournoi.admin.round;
 
 import com.google.common.collect.Lists;
+import org.fmarin.admintournoi.admin.pool.PoolGenerationService;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
+import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.Tournament;
+import org.fmarin.admintournoi.subscription.TournamentRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -17,6 +21,7 @@ import static org.fmarin.admintournoi.admin.ranking.RankingBuilder.aRanking;
 import static org.fmarin.admintournoi.admin.round.RoundBuilder.aRound;
 import static org.fmarin.admintournoi.subscription.TeamBuilder.aTeam;
 import static org.fmarin.admintournoi.subscription.TournamentBuilder.aTournament;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -26,14 +31,22 @@ public class RoundServiceUTest {
 
   @Mock
   private RoundRepository mockedRoundRepository;
+  @Mock
+  private TournamentRepository mockedTournamentRepository;
+  @Mock
+  private PoolGenerationService mockedPoolGenerationService;
+  @Mock
+  private RankingService mockedRankingService;
 
   private RoundToCreateView view;
   private Tournament tournament;
   private Round expectedRound;
 
+  private ArgumentCaptor<Round> roundArgumentCaptor = ArgumentCaptor.forClass(Round.class);
+
   @Before
   public void setUp() {
-    service = new RoundService(null, mockedRoundRepository, null, null);
+    service = new RoundService(mockedTournamentRepository, mockedRoundRepository, mockedPoolGenerationService, mockedRankingService);
 
     view = new RoundToCreateView();
     view.setName("Tour 1");
@@ -43,10 +56,9 @@ public class RoundServiceUTest {
 
     tournament = aTournament()
       .withId(1L)
-      .withTeams(Lists.newArrayList(
-        aTeam().withId(12L).withPaymentStatus("Pending").build())
-      )
+      .withTeams(Lists.newArrayList(aTeam().withId(12L).withPaymentStatus("Pending").build()))
       .build();
+    when(mockedTournamentRepository.findOne(1L)).thenReturn(tournament);
 
     expectedRound = aRound()
       .withName("Tour 1")
@@ -59,21 +71,25 @@ public class RoundServiceUTest {
   }
 
   @Test
-  public void createFirstRound() {
+  public void create_first_round() {
     // Given
     Team subTeam = aTeam().withId(104L).withPaymentStatus("Completed").build();
     tournament.getTeams().add(subTeam);
 
     // When
-    Round result = service.createFirstRound(tournament, view);
+    service.create(1L, view);
 
     // Then
     expectedRound.setTeams(Lists.newArrayList(subTeam));
-    assertThat(result).isEqualToComparingFieldByField(expectedRound);
+    verify(mockedTournamentRepository).findOne(1L);
+    verify(mockedRoundRepository).save(roundArgumentCaptor.capture());
+    assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);
+    verify(mockedPoolGenerationService).generatePoolsWithLevels(roundArgumentCaptor.capture());
+    assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);
   }
 
   @Test
-  public void createNextRound() {
+  public void create_next_round() {
     // Given
     view.setFirstPreviousRoundId(10L);
     view.setFirstTeamsFrom(1);
@@ -87,15 +103,21 @@ public class RoundServiceUTest {
       aRanking().withPosition(2).withTeam(team2).build(),
       aRanking().withPosition(3).withTeam(team3).build()
     );
+    when(mockedRankingService.getRoundRanking(10L)).thenReturn(rankings);
+
     Round previousRound = RoundBuilder.aRound().withId(10L).build();
     when(mockedRoundRepository.findOne(10L)).thenReturn(previousRound);
 
     // When
-    Round result = service.createNextRound(tournament, view, rankings);
+    service.create(1L, view);
 
     // Then
     expectedRound.setTeams(Lists.newArrayList(team1, team2));
     expectedRound.setPreviousRound(previousRound);
-    assertThat(result).isEqualToComparingFieldByField(expectedRound);
+    verify(mockedTournamentRepository).findOne(1L);
+    verify(mockedRoundRepository).save(roundArgumentCaptor.capture());
+    assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);
+    verify(mockedPoolGenerationService).generatePoolsWithRankings(roundArgumentCaptor.capture());
+    assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);
   }
 }

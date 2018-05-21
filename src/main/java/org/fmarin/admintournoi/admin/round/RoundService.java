@@ -33,7 +33,7 @@ public class RoundService {
   public void create(Long tournamentId, RoundToCreateView roundToCreate) {
     Tournament tournament = tournamentRepository.findOne(tournamentId);
     if (roundToCreate.getPreviousRounds().isEmpty()) {
-      Round round = createFirstRound(tournament, roundToCreate);
+      Round round = convert(roundToCreate, tournament, tournament.getSubscribedTeams(), null);
       roundRepository.save(round);
       poolGenerationService.generatePoolsWithLevels(round);
     } else {
@@ -44,7 +44,7 @@ public class RoundService {
     }
   }
 
-  Round createNextRound(Tournament tournament, RoundToCreateView roundToCreate, List<Ranking> rankings) {
+  private Round createNextRound(Tournament tournament, RoundToCreateView roundToCreate, List<Ranking> rankings) {
     PreviousRound previousRoundView = roundToCreate.getPreviousRounds().get(0);
     Round previousRound = roundRepository.findOne(previousRoundView.getRoundId());
     List<Team> teams = rankings.subList(previousRoundView.getTeamsRange().lowerEndpoint() - 1, previousRoundView.getTeamsRange().upperEndpoint())
@@ -52,10 +52,6 @@ public class RoundService {
       .map(Ranking::getTeam)
       .collect(Collectors.toList());
     return convert(roundToCreate, tournament, teams, previousRound);
-  }
-
-  Round createFirstRound(Tournament tournament, RoundToCreateView roundToCreate) {
-    return convert(roundToCreate, tournament, tournament.getSubscribedTeams(), null);
   }
 
   private Round convert(RoundToCreateView roundToCreate, Tournament tournament, List<Team> teams, Round previousRound) {
