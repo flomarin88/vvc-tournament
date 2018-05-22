@@ -31,39 +31,39 @@ public class RoundService {
   }
 
   public void create(Long tournamentId, RoundToCreateView roundToCreate) {
+    Round round = convert(roundToCreate, tournamentId);
+    roundRepository.save(round);
+    poolGenerationService.generatePools(round);
+  }
+
+  private Round convert(RoundToCreateView roundToCreate, Long tournamentId) {
     Tournament tournament = tournamentRepository.findOne(tournamentId);
-    if (roundToCreate.getPreviousRounds().isEmpty()) {
-      Round round = convert(roundToCreate, tournament, tournament.getSubscribedTeams(), null);
-      roundRepository.save(round);
-      poolGenerationService.generatePoolsWithLevels(round);
-    } else {
-      List<Ranking> rankings = rankingService.getRoundRanking(roundToCreate.getPreviousRounds().get(0).getRoundId());
-      Round round = createNextRound(tournament, roundToCreate, rankings);
-      roundRepository.save(round);
-      poolGenerationService.generatePoolsWithRankings(round);
-    }
-  }
-
-  private Round createNextRound(Tournament tournament, RoundToCreateView roundToCreate, List<Ranking> rankings) {
-    PreviousRound previousRoundView = roundToCreate.getPreviousRounds().get(0);
-    Round previousRound = roundRepository.findOne(previousRoundView.getRoundId());
-    List<Team> teams = rankings.subList(previousRoundView.getTeamsRange().lowerEndpoint() - 1, previousRoundView.getTeamsRange().upperEndpoint())
-      .stream()
-      .map(Ranking::getTeam)
-      .collect(Collectors.toList());
-    return convert(roundToCreate, tournament, teams, previousRound);
-  }
-
-  private Round convert(RoundToCreateView roundToCreate, Tournament tournament, List<Team> teams, Round previousRound) {
-    return RoundBuilder.aRound()
+    RoundBuilder roundBuilder = RoundBuilder.aRound()
       .withName(roundToCreate.getName())
       .withBranch(TournamentBranch.valueOf(roundToCreate.getTournamentBranch()))
       .withType(RoundType.valueOf(roundToCreate.getType()))
       .withStatus(RoundStatus.CREATED)
       .withFieldRanges(roundToCreate.getFieldRanges())
-      .withTournament(tournament)
-      .withTeams(teams)
-      .withPreviousRound(previousRound)
-      .build();
+      .withTournament(tournament);
+    List<Team> teams = tournament.getSubscribedTeams();
+    if (!isFirstRound(roundToCreate)) {
+      teams = getTeamsForNextRound(roundToCreate);
+      roundBuilder.withPreviousRound(roundRepository.findOne(roundToCreate.getPreviousRounds().get(0).getRoundId()));
+    }
+    roundBuilder.withTeams(teams);
+    return roundBuilder.build();
+  }
+
+  private boolean isFirstRound(RoundToCreateView roundToCreate) {
+    return roundToCreate.getPreviousRounds().isEmpty();
+  }
+
+  private List<Team> getTeamsForNextRound(RoundToCreateView view) {
+    PreviousRound previousRoundView = view.getPreviousRounds().get(0);
+    List<Ranking> rankings = rankingService.getRoundRanking(previousRoundView.getRoundId());
+    return rankings.subList(previousRoundView.getTeamsRange().lowerEndpoint() - 1, previousRoundView.getTeamsRange().upperEndpoint())
+      .stream()
+      .map(Ranking::getTeam)
+      .collect(Collectors.toList());
   }
 }

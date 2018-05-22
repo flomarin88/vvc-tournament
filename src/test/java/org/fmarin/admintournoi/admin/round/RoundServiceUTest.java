@@ -84,7 +84,7 @@ public class RoundServiceUTest {
     verify(mockedTournamentRepository).findOne(1L);
     verify(mockedRoundRepository).save(roundArgumentCaptor.capture());
     assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);
-    verify(mockedPoolGenerationService).generatePoolsWithLevels(roundArgumentCaptor.capture());
+    verify(mockedPoolGenerationService).generatePools(roundArgumentCaptor.capture());
     assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);
   }
 
@@ -117,7 +117,7 @@ public class RoundServiceUTest {
     verify(mockedTournamentRepository).findOne(1L);
     verify(mockedRoundRepository).save(roundArgumentCaptor.capture());
     assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);
-    verify(mockedPoolGenerationService).generatePoolsWithRankings(roundArgumentCaptor.capture());
+    verify(mockedPoolGenerationService).generatePools(roundArgumentCaptor.capture());
     assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);
   }
 }
