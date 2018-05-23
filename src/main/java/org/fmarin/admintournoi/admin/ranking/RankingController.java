@@ -22,13 +22,11 @@ import static org.fmarin.admintournoi.admin.round.RoundListViewBuilder.aRoundLis
 @RequestMapping("/admin")
 public class RankingController {
 
-  private final RankingService rankingService;
   private final RoundRepository roundRepository;
   private final PoolRepository poolRepository;
 
   @Autowired
-  public RankingController(RankingService rankingService, RoundRepository roundRepository, PoolRepository poolRepository) {
-    this.rankingService = rankingService;
+  public RankingController(RoundRepository roundRepository, PoolRepository poolRepository) {
     this.roundRepository = roundRepository;
     this.poolRepository = poolRepository;
   }
@@ -50,7 +48,7 @@ public class RankingController {
       .withTournamentName(round.getTournament().getFullName())
       .build();
     model.put("round", roundView);
-    model.put("rankings", rankingService.getRoundRanking(roundId));
+    model.put("rankings", round.getRankings());
     return new ModelAndView("rankings", model);
   }
 }

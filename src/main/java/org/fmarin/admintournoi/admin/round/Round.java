@@ -5,12 +5,14 @@ import com.google.common.collect.Sets;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolBuilder;
 import org.fmarin.admintournoi.admin.pool.TeamOpposition;
+import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -80,6 +82,17 @@ public class Round {
       oppositions.add(new TeamOpposition(pool.getTeam2(), pool.getTeam3()));
     }
     return oppositions;
+  }
+
+  public List<Ranking> getRankings() {
+    List<Ranking> rankingsByPool = pools.parallelStream()
+      .map(Pool::getRankings)
+      .collect(Collectors.toList()).stream()
+      .flatMap(List::stream)
+      .collect(Collectors.toList());
+    rankingsByPool.sort(rankingComparator());
+    updatePosition(rankingsByPool);
+    return rankingsByPool;
   }
 
   public Long getId() {
@@ -193,7 +206,17 @@ public class Round {
 
   @Override
   public int hashCode() {
-
     return Objects.hash(id);
+  }
+
+  private Comparator<Ranking> rankingComparator() {
+    return Comparator.comparing(Ranking::getPosition)
+      .thenComparing(Pool.rankingComparator());
+  }
+
+  private void updatePosition(List<Ranking> rankingsOrdered) {
+    for (int i = 0; i < rankingsOrdered.size(); i++) {
+      rankingsOrdered.get(i).setPosition(i + 1);
+    }
   }
 }

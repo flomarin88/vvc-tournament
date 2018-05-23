@@ -3,7 +3,6 @@ package org.fmarin.admintournoi.admin.round;
 import com.google.common.collect.Lists;
 import org.fmarin.admintournoi.admin.pool.PoolGenerationService;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
-import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.fmarin.admintournoi.subscription.TournamentRepository;
@@ -35,8 +34,8 @@ public class RoundServiceUTest {
   private TournamentRepository mockedTournamentRepository;
   @Mock
   private PoolGenerationService mockedPoolGenerationService;
-  @Mock
-  private RankingService mockedRankingService;
+    @Mock
+  private Round mockedPreviousRound;
 
   private RoundToCreateView view;
   private Tournament tournament;
@@ -46,7 +45,7 @@ public class RoundServiceUTest {
 
   @Before
   public void setUp() {
-    service = new RoundService(mockedTournamentRepository, mockedRoundRepository, mockedPoolGenerationService, mockedRankingService);
+    service = new RoundService(mockedTournamentRepository, mockedRoundRepository, mockedPoolGenerationService);
 
     view = new RoundToCreateView();
     view.setName("Tour 1");
@@ -103,17 +102,15 @@ public class RoundServiceUTest {
       aRanking().withPosition(2).withTeam(team2).build(),
       aRanking().withPosition(3).withTeam(team3).build()
     );
-    when(mockedRankingService.getRoundRanking(10L)).thenReturn(rankings);
-
-    Round previousRound = RoundBuilder.aRound().withId(10L).build();
-    when(mockedRoundRepository.findOne(10L)).thenReturn(previousRound);
+    when(mockedRoundRepository.findOne(10L)).thenReturn(mockedPreviousRound);
+    when(mockedPreviousRound.getRankings()).thenReturn(rankings);
 
     // When
     service.create(1L, view);
 
     // Then
     expectedRound.setTeams(Lists.newArrayList(team1, team2));
-    expectedRound.setPreviousRound(previousRound);
+    expectedRound.setPreviousRound(mockedPreviousRound);
     verify(mockedTournamentRepository).findOne(1L);
     verify(mockedRoundRepository).save(roundArgumentCaptor.capture());
     assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);

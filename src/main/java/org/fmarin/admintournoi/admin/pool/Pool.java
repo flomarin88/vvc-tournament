@@ -76,6 +76,11 @@ public class Pool {
     return rankingsOrdered;
   }
 
+  public Ranking getRanking(Team team) {
+    List<Ranking> rankings = getRankings();
+    return rankings.parallelStream().filter(ranking -> ranking.getTeam().equals(team)).findFirst().get();
+  }
+
   public static Comparator<Ranking> rankingComparator() {
     return Comparator.comparing(Ranking::getVictories)
       .thenComparing(Ranking::getDifference)

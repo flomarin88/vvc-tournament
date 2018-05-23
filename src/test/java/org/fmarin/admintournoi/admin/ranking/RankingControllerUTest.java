@@ -22,8 +22,6 @@ public class RankingControllerUTest {
   private RankingController controller;
 
   @Mock
-  private RankingService mockedRankingService;
-  @Mock
   private PoolRepository mockedPoolRepository;
 
   @Mock
@@ -31,7 +29,7 @@ public class RankingControllerUTest {
 
   @Before
   public void setUp() {
-    controller = new RankingController(mockedRankingService, null, mockedPoolRepository);
+    controller = new RankingController(null, mockedPoolRepository);
   }
 
   @Test

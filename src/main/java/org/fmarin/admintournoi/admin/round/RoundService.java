@@ -2,7 +2,6 @@ package org.fmarin.admintournoi.admin.round;
 
 import org.fmarin.admintournoi.admin.pool.PoolGenerationService;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
-import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.fmarin.admintournoi.subscription.TournamentRepository;
@@ -18,16 +17,13 @@ public class RoundService {
   private final TournamentRepository tournamentRepository;
   private final RoundRepository roundRepository;
   private final PoolGenerationService poolGenerationService;
-  private final RankingService rankingService;
 
   @Autowired
   public RoundService(TournamentRepository tournamentRepository,
-                      RoundRepository roundRepository, PoolGenerationService poolGenerationService,
-                      RankingService rankingService) {
+                      RoundRepository roundRepository, PoolGenerationService poolGenerationService) {
     this.tournamentRepository = tournamentRepository;
     this.roundRepository = roundRepository;
     this.poolGenerationService = poolGenerationService;
-    this.rankingService = rankingService;
   }
 
   public void create(Long tournamentId, RoundToCreateView roundToCreate) {
@@ -60,7 +56,8 @@ public class RoundService {
 
   private List<Team> getTeamsForNextRound(RoundToCreateView view) {
     PreviousRound previousRoundView = view.getPreviousRounds().get(0);
-    List<Ranking> rankings = rankingService.getRoundRanking(previousRoundView.getRoundId());
+    Round previousRound = roundRepository.findOne(previousRoundView.getRoundId());
+    List<Ranking> rankings = previousRound.getRankings();
     return rankings.subList(previousRoundView.getTeamsRange().lowerEndpoint() - 1, previousRoundView.getTeamsRange().upperEndpoint())
       .stream()
       .map(Ranking::getTeam)
