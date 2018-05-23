@@ -2,11 +2,13 @@ package org.fmarin.admintournoi.admin.pool;
 
 import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.admin.match.MatchView;
-import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -21,15 +23,13 @@ import static org.fmarin.admintournoi.admin.pool.PoolDetailViewBuilder.aPoolDeta
 public class PoolController {
 
     private final PoolRepository poolRepository;
-    private final RankingService rankingService;
 
     @Autowired
-    public PoolController(PoolRepository poolRepository, RankingService rankingService) {
+    public PoolController(PoolRepository poolRepository) {
         this.poolRepository = poolRepository;
-        this.rankingService = rankingService;
     }
 
-    @GetMapping("{poolId}")
+    @GetMapping("/{poolId}")
     public ModelAndView get(@PathVariable(name = "poolId") Long poolId) {
         Pool pool = poolRepository.findOne(poolId);
         Round round = pool.getRound();
@@ -60,7 +60,7 @@ public class PoolController {
         Map<String, Object> model = Maps.newHashMap();
         model.put("pool", poolView);
         model.put("matches", matches);
-        model.put("rankings", rankingService.getPoolRanking(poolId));
+        model.put("rankings", pool.getRankings());
         return new ModelAndView("pool", model);
     }
 

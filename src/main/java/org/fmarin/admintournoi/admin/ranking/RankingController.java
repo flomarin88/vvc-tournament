@@ -1,6 +1,8 @@
 package org.fmarin.admintournoi.admin.ranking;
 
 import com.google.common.collect.Maps;
+import org.fmarin.admintournoi.admin.pool.Pool;
+import org.fmarin.admintournoi.admin.pool.PoolRepository;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundListView;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
@@ -22,16 +24,19 @@ public class RankingController {
 
   private final RankingService rankingService;
   private final RoundRepository roundRepository;
+  private final PoolRepository poolRepository;
 
   @Autowired
-  public RankingController(RankingService rankingService, RoundRepository roundRepository) {
+  public RankingController(RankingService rankingService, RoundRepository roundRepository, PoolRepository poolRepository) {
     this.rankingService = rankingService;
     this.roundRepository = roundRepository;
+    this.poolRepository = poolRepository;
   }
 
   @GetMapping("/pools/{id}/rankings")
   public ResponseEntity getPoolRankings(@PathVariable(name = "id") Long poolId) {
-    return ResponseEntity.ok(rankingService.getPoolRanking(poolId));
+    Pool pool = poolRepository.findOne(poolId);
+    return ResponseEntity.ok(pool.getRankings());
   }
 
   @GetMapping("/rounds/{id}/rankings")

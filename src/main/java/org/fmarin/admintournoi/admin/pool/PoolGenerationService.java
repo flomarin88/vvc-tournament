@@ -126,7 +126,7 @@ public class PoolGenerationService {
 
   private List<Ranking> getAllPoolRankings(Round round) {
     return round.getPreviousRound().getPools().stream()
-      .map(pool -> rankingService.getPoolRanking(pool.getId()))
+      .map(Pool::getRankings)
       .collect(Collectors.toList()).stream()
       .flatMap(List::stream)
       .collect(Collectors.toList())
