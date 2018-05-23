@@ -18,12 +18,12 @@ public class RoundToCreateView {
   private Integer secondTeamsTo;
   private String fieldRanges;
 
-  public List<PreviousRound> getPreviousRounds() {
-    List<PreviousRound> previousRounds = Lists.newArrayList();
+  public List<PreviousRoundView> getPreviousRounds() {
+    List<PreviousRoundView> previousRounds = Lists.newArrayList();
     if (firstPreviousRoundId != null) {
-      previousRounds.add(new PreviousRound(firstPreviousRoundId, Range.closed(firstTeamsFrom, firstTeamsTo)));
+      previousRounds.add(new PreviousRoundView(firstPreviousRoundId, Range.closed(firstTeamsFrom, firstTeamsTo)));
       if (secondPreviousRoundId != null) {
-        previousRounds.add(new PreviousRound(secondPreviousRoundId, Range.closed(secondTeamsFrom, secondTeamsTo)));
+        previousRounds.add(new PreviousRoundView(secondPreviousRoundId, Range.closed(secondTeamsFrom, secondTeamsTo)));
       }
     }
     return previousRounds;

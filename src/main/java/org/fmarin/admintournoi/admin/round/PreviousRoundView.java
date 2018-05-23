@@ -4,12 +4,12 @@ import com.google.common.collect.Range;
 
 import java.util.Objects;
 
-public class PreviousRound {
+public class PreviousRoundView {
 
   private final Long roundId;
   private final Range<Integer> teamsRange;
 
-  public PreviousRound(Long roundId, Range<Integer> teamsRange) {
+  public PreviousRoundView(Long roundId, Range<Integer> teamsRange) {
     this.roundId = roundId;
     this.teamsRange = teamsRange;
   }
@@ -26,7 +26,7 @@ public class PreviousRound {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    PreviousRound that = (PreviousRound) o;
+    PreviousRoundView that = (PreviousRoundView) o;
     return Objects.equals(roundId, that.roundId) &&
       Objects.equals(teamsRange, that.teamsRange);
   }

@@ -55,7 +55,7 @@ public class RoundService {
   }
 
   private List<Team> getTeamsForNextRound(RoundToCreateView view) {
-    PreviousRound previousRoundView = view.getPreviousRounds().get(0);
+    PreviousRoundView previousRoundView = view.getPreviousRounds().get(0);
     Round previousRound = roundRepository.findOne(previousRoundView.getRoundId());
     List<Ranking> rankings = previousRound.getRankings();
     return rankings.subList(previousRoundView.getTeamsRange().lowerEndpoint() - 1, previousRoundView.getTeamsRange().upperEndpoint())

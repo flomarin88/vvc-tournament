@@ -18,7 +18,7 @@ public class RoundToCreateViewUTest {
     RoundToCreateView round = new RoundToCreateView();
 
     // When
-    List<PreviousRound> result = round.getPreviousRounds();
+    List<PreviousRoundView> result = round.getPreviousRounds();
 
     // Then
     assertThat(result).isEmpty();
@@ -33,12 +33,12 @@ public class RoundToCreateViewUTest {
     round.setFirstTeamsTo(15);
 
     // When
-    List<PreviousRound> result = round.getPreviousRounds();
+    List<PreviousRoundView> result = round.getPreviousRounds();
 
     // Then
     assertThat(result)
       .hasSize(1)
-      .containsExactly(new PreviousRound(1L, Range.closed(4, 15)));
+      .containsExactly(new PreviousRoundView(1L, Range.closed(4, 15)));
   }
 
   @Test
@@ -53,14 +53,14 @@ public class RoundToCreateViewUTest {
     round.setSecondTeamsTo(3);
 
     // When
-    List<PreviousRound> result = round.getPreviousRounds();
+    List<PreviousRoundView> result = round.getPreviousRounds();
 
     // Then
     assertThat(result)
       .hasSize(2)
       .containsExactly(
-        new PreviousRound(1L, Range.closed(4, 15)),
-        new PreviousRound(2L, Range.closed(1, 3))
+        new PreviousRoundView(1L, Range.closed(4, 15)),
+        new PreviousRoundView(2L, Range.closed(1, 3))
       );
   }
 
