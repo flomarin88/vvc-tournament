@@ -49,7 +49,7 @@ public class PoolGenerationServiceUTest {
 
   @Before
   public void setUp() {
-    service = new PoolGenerationService(null, mockedRoundRepository, null);
+    service = new PoolGenerationService(null, mockedRoundRepository);
 
     Team teamA = aTeam().withId(1L).build();
     Team teamB = aTeam().withId(2L).build();

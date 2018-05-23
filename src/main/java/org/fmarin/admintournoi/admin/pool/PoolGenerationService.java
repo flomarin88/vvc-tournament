@@ -3,7 +3,6 @@ package org.fmarin.admintournoi.admin.pool;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
-import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.fmarin.admintournoi.admin.round.RoundStatus;
@@ -26,13 +25,11 @@ public class PoolGenerationService {
 
   private final PoolRepository poolRepository;
   private final RoundRepository roundRepository;
-  private final RankingService rankingService;
 
   @Autowired
-  public PoolGenerationService(PoolRepository poolRepository, RoundRepository roundRepository, RankingService rankingService) {
+  public PoolGenerationService(PoolRepository poolRepository, RoundRepository roundRepository) {
     this.poolRepository = poolRepository;
     this.roundRepository = roundRepository;
-    this.rankingService = rankingService;
   }
 
   @Async

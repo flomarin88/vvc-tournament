@@ -13,25 +13,25 @@ import java.util.List;
 @Service
 public class TeamService {
 
-    private final PoolRepository poolRepository;
+  private final PoolRepository poolRepository;
 
-    @Autowired
-    public TeamService(PoolRepository poolRepository) {
-        this.poolRepository = poolRepository;
-    }
+  @Autowired
+  public TeamService(PoolRepository poolRepository) {
+    this.poolRepository = poolRepository;
+  }
 
-    public boolean hasAlreadyPlayedAgainst(Round currentRound, Team team, Team team1, Team team2) {
-        List<Round> rounds = getAllPreviousRounds(currentRound);
-        List<Pool> pools = poolRepository.findByRoundsAndTeams(rounds, team, team1, team2);
-        return !pools.isEmpty();
-    }
+  public boolean hasAlreadyPlayedAgainst(Round currentRound, Team team, Team team1, Team team2) {
+    List<Round> rounds = getAllPreviousRounds(currentRound);
+    List<Pool> pools = poolRepository.findByRoundsAndTeams(rounds, team, team1, team2);
+    return !pools.isEmpty();
+  }
 
-    List<Round> getAllPreviousRounds(Round round) {
-        List<Round> rounds = Lists.newArrayList();
-        while (round.getPreviousRound() != null) {
-            rounds.add(round.getPreviousRound());
-            round = round.getPreviousRound();
-        }
-        return rounds;
+  List<Round> getAllPreviousRounds(Round round) {
+    List<Round> rounds = Lists.newArrayList();
+    while (round.getPreviousRound() != null) {
+      rounds.add(round.getPreviousRound());
+      round = round.getPreviousRound();
     }
+    return rounds;
+  }
 }

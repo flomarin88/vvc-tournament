@@ -7,7 +7,6 @@ import org.fmarin.admintournoi.admin.match.MatchGenerationService;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolRepository;
 import org.fmarin.admintournoi.admin.pool.PoolView;
-import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.admin.team.TeamOverviewView;
 import org.fmarin.admintournoi.admin.team.TeamOverviewViewBuilder;
 import org.fmarin.admintournoi.admin.team.TeamService;
@@ -41,7 +40,6 @@ public class RoundController {
   private final PoolRepository poolRepository;
   private final MatchGenerationService matchGenerationService;
   private final RoundService roundService;
-  private final RankingService rankingService;
   private final TeamService teamService;
   private final GeneratorService generatorService;
   private final MainProperties mainProperties;
@@ -52,14 +50,13 @@ public class RoundController {
   public RoundController(TournamentRepository tournamentRepository, TeamRepository teamRepository,
                          RoundRepository roundRepository, PoolRepository poolRepository,
                          MatchGenerationService matchGenerationService, RoundService roundService,
-                         RankingService rankingService, TeamService teamService, GeneratorService generatorService, MainProperties mainProperties) {
+                         TeamService teamService, GeneratorService generatorService, MainProperties mainProperties) {
     this.tournamentRepository = tournamentRepository;
     this.teamRepository = teamRepository;
     this.roundRepository = roundRepository;
     this.poolRepository = poolRepository;
     this.matchGenerationService = matchGenerationService;
     this.roundService = roundService;
-    this.rankingService = rankingService;
     this.teamService = teamService;
     this.generatorService = generatorService;
     this.mainProperties = mainProperties;
@@ -177,9 +174,8 @@ public class RoundController {
       .withLevel(team.getLevel())
       .withPlayedAlready(false);
     if (pool.getRound().getPreviousRound() != null) {
-      Integer previousRank = rankingService.getTeamRanking(team, pool.getRound().getPreviousRound())
-        .getPosition();
-      builder.withPreviousRank(previousRank);
+      Pool previousPool = poolRepository.findByRoundAndTeam(pool.getRound().getPreviousRound(), team);
+      builder.withPreviousRank(previousPool.getRanking(team).getPosition());
       Team team1 = pool.getTeam1();
       Team team2 = pool.getTeam2();
       if (team.equals(pool.getTeam1())) {
