@@ -61,11 +61,11 @@
           <a class="page-scroll" href="#subscriptions">Inscriptions</a>
         </li>
         {{/tournaments_full}}
-        {{#tournaments_full}}
+        {{#event_started}}
         <li>
           <a class="page-scroll" href="#pools">Poules</a>
         </li>
-        {{/tournaments_full}}
+        {{/event_started}}
         <!--<li>-->
           <!--<a class="page-scroll" href="#tournaments_info">Formules sportives</a>-->
         <!--</li>-->
@@ -152,7 +152,7 @@
 </section>
 {{/tournaments_full}}
 
-{{#tournaments_full}}
+{{#event_started}}
 <section id="pools" class="container content-section text-center subscriptions-section">
   <div class="row">
     <div class="col-xs-8 col-xs-offset-2">
@@ -170,7 +170,7 @@
     </div>
   </div>
 </section>
-{{/tournaments_full}}
+{{/event_started}}
 
 <section id="contact" class="container content-section text-center contact-section">
   <div class="row">
