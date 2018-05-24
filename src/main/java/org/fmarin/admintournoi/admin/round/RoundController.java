@@ -138,7 +138,7 @@ public class RoundController {
   }
 
   RoundListView convertListItem(Round round) {
-    String previousRoundLabel = round.getPreviousRound() != null ? round.getPreviousRound().getBranch().getLabel() + " - " + round.getPreviousRound().getName() : "-";
+    String previousRoundLabel = !round.getPreviousRounds().isEmpty() ? round.getPreviousRounds().get(0).getLabel() : "-";
     return RoundListViewBuilder.aRoundListView()
       .withId(round.getId())
       .withName(round.getBranch().getLabel() + " - " + round.getName())
@@ -173,8 +173,8 @@ public class RoundController {
       .withName(team.getName())
       .withLevel(team.getLevel())
       .withPlayedAlready(false);
-    if (pool.getRound().getPreviousRound() != null) {
-      Pool previousPool = poolRepository.findByRoundAndTeam(pool.getRound().getPreviousRound(), team);
+    if (!pool.getRound().getPreviousRounds().isEmpty()) {
+      Pool previousPool = poolRepository.findByRoundAndTeam(pool.getRound().getPreviousRounds().get(0).getPreviousRound(), team);
       builder.withPreviousRank(previousPool.getRanking(team).getPosition());
       Team team1 = pool.getTeam1();
       Team team2 = pool.getTeam2();

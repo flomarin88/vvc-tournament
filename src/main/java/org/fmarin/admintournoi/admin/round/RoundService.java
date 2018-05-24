@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.admin.round;
 
+import com.google.common.collect.Lists;
 import org.fmarin.admintournoi.admin.pool.PoolGenerationService;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.subscription.Team;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.fmarin.admintournoi.admin.round.PreviousRoundBuilder.*;
 
 @Service
 public class RoundService {
@@ -43,8 +46,13 @@ public class RoundService {
       .withTournament(tournament);
     List<Team> teams = tournament.getSubscribedTeams();
     if (!isFirstRound(roundToCreate)) {
-      teams = getTeamsForNextRound(roundToCreate);
-      roundBuilder.withPreviousRound(roundRepository.findOne(roundToCreate.getPreviousRounds().get(0).getRoundId()));
+      PreviousRound previousRound = aPreviousRound()
+        .withPreviousRound(roundRepository.findOne(roundToCreate.getPreviousRounds().get(0).getRoundId()))
+        .withTeamsFrom(roundToCreate.getPreviousRounds().get(0).getTeamsRange().lowerEndpoint() - 1)
+        .withTeamsTo(roundToCreate.getPreviousRounds().get(0).getTeamsRange().upperEndpoint())
+        .build();
+      roundBuilder.withPreviousRounds(Lists.newArrayList(previousRound));
+      teams = getTeamsForNextRound(previousRound);
     }
     roundBuilder.withTeams(teams);
     return roundBuilder.build();
@@ -54,11 +62,9 @@ public class RoundService {
     return roundToCreate.getPreviousRounds().isEmpty();
   }
 
-  private List<Team> getTeamsForNextRound(RoundToCreateView view) {
-    PreviousRoundView previousRoundView = view.getPreviousRounds().get(0);
-    Round previousRound = roundRepository.findOne(previousRoundView.getRoundId());
-    List<Ranking> rankings = previousRound.getRankings();
-    return rankings.subList(previousRoundView.getTeamsRange().lowerEndpoint() - 1, previousRoundView.getTeamsRange().upperEndpoint())
+  private List<Team> getTeamsForNextRound(PreviousRound previousRound) {
+    List<Ranking> rankings = previousRound.getPreviousRound().getRankings();
+    return rankings.subList(previousRound.getTeamsFrom(), previousRound.getTeamsTo())
       .stream()
       .map(Ranking::getTeam)
       .collect(Collectors.toList());

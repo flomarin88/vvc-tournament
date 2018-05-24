@@ -1,5 +1,8 @@
 package org.fmarin.admintournoi.admin.team;
 
+import org.assertj.core.util.Lists;
+import org.fmarin.admintournoi.admin.round.PreviousRound;
+import org.fmarin.admintournoi.admin.round.PreviousRoundBuilder;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,21 +17,23 @@ import static org.fmarin.admintournoi.admin.round.RoundBuilder.aRound;
 @RunWith(MockitoJUnitRunner.class)
 public class TeamServiceUTest {
 
-    @InjectMocks
-    private TeamService service;
+  @InjectMocks
+  private TeamService service;
 
-    @Test
-    public void getAllPreviousRounds() {
-        // Given
-        Round first = aRound().withFieldRanges("1-1").build();
-        Round second = aRound().withFieldRanges("1-1").withPreviousRound(first).build();
-        Round round = aRound().withFieldRanges("1-1").withPreviousRound(second).build();
+  @Test
+  public void getAllPreviousRounds() {
+    // Given
+    Round first = aRound().build();
+    PreviousRound previousRoundFirst = PreviousRoundBuilder.aPreviousRound().withPreviousRound(first).build();
+    Round second = aRound().withPreviousRounds(Lists.newArrayList(previousRoundFirst)).build();
+    PreviousRound previousRoundSecond = PreviousRoundBuilder.aPreviousRound().withPreviousRound(second).build();
+    Round round = aRound().withPreviousRounds(Lists.newArrayList(previousRoundSecond)).build();
 
-        // When
-        List<Round> result = service.getAllPreviousRounds(round);
+    // When
+    List<Round> result = service.getAllPreviousRounds(round);
 
-        // Then
-        assertThat(result).hasSize(2).contains(first, second);
+    // Then
+    assertThat(result).hasSize(2).contains(first, second);
 
-    }
+  }
 }

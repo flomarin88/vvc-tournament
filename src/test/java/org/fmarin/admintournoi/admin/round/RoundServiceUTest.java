@@ -94,6 +94,7 @@ public class RoundServiceUTest {
     view.setFirstTeamsFrom(1);
     view.setFirstTeamsTo(2);
 
+    when(mockedRoundRepository.findOne(10L)).thenReturn(mockedPreviousRound);
     Team team1 = aTeam().withId(101L).build();
     Team team2 = aTeam().withId(102L).build();
     Team team3 = aTeam().withId(103L).build();
@@ -102,7 +103,6 @@ public class RoundServiceUTest {
       aRanking().withPosition(2).withTeam(team2).build(),
       aRanking().withPosition(3).withTeam(team3).build()
     );
-    when(mockedRoundRepository.findOne(10L)).thenReturn(mockedPreviousRound);
     when(mockedPreviousRound.getRankings()).thenReturn(rankings);
 
     // When
@@ -110,7 +110,9 @@ public class RoundServiceUTest {
 
     // Then
     expectedRound.setTeams(Lists.newArrayList(team1, team2));
-    expectedRound.setPreviousRound(mockedPreviousRound);
+    PreviousRound expectedPreviousRound = PreviousRoundBuilder.aPreviousRound()
+      .withPreviousRound(mockedPreviousRound).withTeamsFrom(1).withTeamsTo(2).build();
+    expectedRound.setPreviousRounds(Lists.newArrayList(expectedPreviousRound));
     verify(mockedTournamentRepository).findOne(1L);
     verify(mockedRoundRepository).save(roundArgumentCaptor.capture());
     assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);

@@ -31,9 +31,9 @@ public class Round {
   private Long id;
   @Column(name = "name")
   private String name;
-  @ManyToOne
-  @JoinColumn(name = "previous_round_id")
-  private Round previousRound;
+  @OneToMany(mappedBy = "round", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+  @Fetch(FetchMode.SELECT)
+  private List<PreviousRound> previousRounds = Lists.newArrayList();
   @ManyToOne
   @JoinColumn(name = "tournament_id")
   private Tournament tournament;
@@ -44,7 +44,7 @@ public class Round {
   @JoinTable(name = "ROUND_TEAM",
     joinColumns = @JoinColumn(name = "round_id", referencedColumnName = "ID"),
     inverseJoinColumns = @JoinColumn(name = "team_id", referencedColumnName = "ID"))
-  private List<Team> teams;
+  private List<Team> teams = Lists.newArrayList();
   @Column(name = "status")
   @Enumerated(value = EnumType.STRING)
   private RoundStatus status;
@@ -111,14 +111,6 @@ public class Round {
     this.name = name;
   }
 
-  public Round getPreviousRound() {
-    return previousRound;
-  }
-
-  public void setPreviousRound(Round previousRound) {
-    this.previousRound = previousRound;
-  }
-
   public Tournament getTournament() {
     return tournament;
   }
@@ -133,6 +125,14 @@ public class Round {
 
   public void setTeams(List<Team> teams) {
     this.teams = teams;
+  }
+
+  public List<PreviousRound> getPreviousRounds() {
+    return previousRounds;
+  }
+
+  public void setPreviousRounds(List<PreviousRound> previousRounds) {
+    this.previousRounds = previousRounds;
   }
 
   public RoundStatus getStatus() {

@@ -58,7 +58,7 @@ public class PoolGenerationService {
   }
 
   private Map<Integer, List<Team>> groupTeams(Round round) {
-    if (round.getPreviousRound() == null) {
+    if (round.getPreviousRounds().isEmpty()) {
       return mapTeamsByLevel(round.getTeams());
     } else {
       List<Ranking> rankings = getAllPoolRankings(round);
@@ -113,8 +113,8 @@ public class PoolGenerationService {
 
   Set<TeamOpposition> getPreviousOppositions(Round round) {
     Set<TeamOpposition> oppositions = Sets.newHashSet();
-    if (round != null && round.getPreviousRound() != null) {
-      Round previousRound = roundRepository.findOne(round.getPreviousRound().getId());
+    if (round != null && !round.getPreviousRounds().isEmpty()) {
+      Round previousRound = roundRepository.findOne(round.getPreviousRounds().get(0).getPreviousRound().getId());
       oppositions.addAll(previousRound.getOppositions());
       oppositions.addAll(getPreviousOppositions(previousRound));
     }
@@ -122,7 +122,7 @@ public class PoolGenerationService {
   }
 
   private List<Ranking> getAllPoolRankings(Round round) {
-    return round.getPreviousRound().getPools().stream()
+    return round.getPreviousRounds().get(0).getPreviousRound().getPools().stream()
       .map(Pool::getRankings)
       .collect(Collectors.toList()).stream()
       .flatMap(List::stream)
