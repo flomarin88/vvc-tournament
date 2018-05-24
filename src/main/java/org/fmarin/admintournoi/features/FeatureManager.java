@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class FeatureManager {
 
   private final String CHECKIN_FEATURE = "checkin";
+  private final String EVENT_STARTED = "event_started";
 
   private final SubscriptionProperties subscriptionProperties;
   private final FeatureRepository featureRepository;
@@ -24,5 +25,9 @@ public class FeatureManager {
 
   public boolean isCheckinEnabled() {
     return featureRepository.findByName(CHECKIN_FEATURE).getEnabled();
+  }
+
+  public boolean isEventStarted() {
+    return featureRepository.findByName(EVENT_STARTED).getEnabled();
   }
 }

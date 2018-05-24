@@ -27,6 +27,7 @@ public class LandingController extends LayoutController {
     Tournament menTournament = getTournamentRepository().findByYearAndGender(TimeMachine.now().getYear(), Gender.MEN);
     model.put("women_subscriptions_left_count", getSubscriptionLeftCount(womenTournament));
     model.put("men_subscriptions_left_count", getSubscriptionLeftCount(menTournament));
+    model.put("event_started", getFeatures().isEventStarted());
     return new ModelAndView("landing", model);
   }
 

@@ -1,0 +1,1 @@
+INSERT INTO FEATURE (name, enabled) VALUES ('event_started', FALSE);
