@@ -48,7 +48,7 @@ public class RoundService {
     if (!isFirstRound(roundToCreate)) {
       PreviousRound previousRound = aPreviousRound()
         .withPreviousRound(roundRepository.findOne(roundToCreate.getPreviousRounds().get(0).getRoundId()))
-        .withTeamsFrom(roundToCreate.getPreviousRounds().get(0).getTeamsRange().lowerEndpoint() - 1)
+        .withTeamsFrom(roundToCreate.getPreviousRounds().get(0).getTeamsRange().lowerEndpoint())
         .withTeamsTo(roundToCreate.getPreviousRounds().get(0).getTeamsRange().upperEndpoint())
         .build();
       roundBuilder.withPreviousRounds(Lists.newArrayList(previousRound));
@@ -64,7 +64,7 @@ public class RoundService {
 
   private List<Team> getTeamsForNextRound(PreviousRound previousRound) {
     List<Ranking> rankings = previousRound.getPreviousRound().getRankings();
-    return rankings.subList(previousRound.getTeamsFrom(), previousRound.getTeamsTo())
+    return rankings.subList(previousRound.getTeamsFrom() - 1, previousRound.getTeamsTo())
       .stream()
       .map(Ranking::getTeam)
       .collect(Collectors.toList());
