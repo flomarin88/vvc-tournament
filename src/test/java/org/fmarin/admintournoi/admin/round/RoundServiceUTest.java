@@ -34,8 +34,10 @@ public class RoundServiceUTest {
   private TournamentRepository mockedTournamentRepository;
   @Mock
   private PoolGenerationService mockedPoolGenerationService;
-    @Mock
+  @Mock
   private Round mockedPreviousRound;
+  @Mock
+  private Round mockedSecondPreviousRound;
 
   private RoundToCreateView view;
   private Tournament tournament;
@@ -88,7 +90,7 @@ public class RoundServiceUTest {
   }
 
   @Test
-  public void create_next_round() {
+  public void create_with_one_previous_round() {
     // Given
     view.setFirstPreviousRoundId(10L);
     view.setFirstTeamsFrom(1);
@@ -113,6 +115,56 @@ public class RoundServiceUTest {
     PreviousRound expectedPreviousRound = PreviousRoundBuilder.aPreviousRound()
       .withPreviousRound(mockedPreviousRound).withTeamsFrom(1).withTeamsTo(2).build();
     expectedRound.setPreviousRounds(Lists.newArrayList(expectedPreviousRound));
+    verify(mockedTournamentRepository).findOne(1L);
+    verify(mockedRoundRepository).save(roundArgumentCaptor.capture());
+    assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);
+    verify(mockedPoolGenerationService).generatePools(roundArgumentCaptor.capture());
+    assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);
+  }
+
+  @Test
+  public void create_with_two_previous_round() {
+    // Given
+    view.setFirstPreviousRoundId(10L);
+    view.setFirstTeamsFrom(1);
+    view.setFirstTeamsTo(2);
+    when(mockedRoundRepository.findOne(10L)).thenReturn(mockedPreviousRound);
+
+    view.setSecondPreviousRoundId(11L);
+    view.setSecondTeamsFrom(2);
+    view.setSecondTeamsTo(3);
+    when(mockedRoundRepository.findOne(11L)).thenReturn(mockedSecondPreviousRound);
+
+    Team team1 = aTeam().withId(101L).build();
+    Team team2 = aTeam().withId(102L).build();
+    Team team3 = aTeam().withId(103L).build();
+    List<Ranking> rankings = Lists.newArrayList(
+      aRanking().withPosition(1).withTeam(team1).build(),
+      aRanking().withPosition(2).withTeam(team2).build(),
+      aRanking().withPosition(3).withTeam(team3).build()
+    );
+    when(mockedPreviousRound.getRankings()).thenReturn(rankings);
+
+    Team team4 = aTeam().withId(104L).build();
+    Team team5 = aTeam().withId(105L).build();
+    Team team6 = aTeam().withId(106L).build();
+    List<Ranking> secondRankings = Lists.newArrayList(
+      aRanking().withPosition(1).withTeam(team4).build(),
+      aRanking().withPosition(2).withTeam(team5).build(),
+      aRanking().withPosition(3).withTeam(team6).build()
+    );
+    when(mockedSecondPreviousRound.getRankings()).thenReturn(secondRankings);
+
+    // When
+    service.create(1L, view);
+
+    // Then
+    expectedRound.setTeams(Lists.newArrayList(team1, team2, team5, team6));
+    PreviousRound expectedFirstPreviousRound = PreviousRoundBuilder.aPreviousRound()
+      .withPreviousRound(mockedPreviousRound).withTeamsFrom(1).withTeamsTo(2).build();
+    PreviousRound expectedSecondPreviousRound = PreviousRoundBuilder.aPreviousRound()
+      .withPreviousRound(mockedSecondPreviousRound).withTeamsFrom(2).withTeamsTo(3).build();
+    expectedRound.setPreviousRounds(Lists.newArrayList(expectedFirstPreviousRound, expectedSecondPreviousRound));
     verify(mockedTournamentRepository).findOne(1L);
     verify(mockedRoundRepository).save(roundArgumentCaptor.capture());
     assertThat(roundArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedRound);

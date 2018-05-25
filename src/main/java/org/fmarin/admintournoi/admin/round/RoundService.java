@@ -1,6 +1,5 @@
 package org.fmarin.admintournoi.admin.round;
 
-import com.google.common.collect.Lists;
 import org.fmarin.admintournoi.admin.pool.PoolGenerationService;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.subscription.Team;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.fmarin.admintournoi.admin.round.PreviousRoundBuilder.*;
+import static org.fmarin.admintournoi.admin.round.PreviousRoundBuilder.aPreviousRound;
 
 @Service
 public class RoundService {
@@ -37,32 +36,51 @@ public class RoundService {
 
   private Round convert(RoundToCreateView roundToCreate, Long tournamentId) {
     Tournament tournament = tournamentRepository.findOne(tournamentId);
-    RoundBuilder roundBuilder = RoundBuilder.aRound()
-      .withName(roundToCreate.getName())
-      .withBranch(TournamentBranch.valueOf(roundToCreate.getTournamentBranch()))
-      .withType(RoundType.valueOf(roundToCreate.getType()))
-      .withStatus(RoundStatus.CREATED)
-      .withFieldRanges(roundToCreate.getFieldRanges())
-      .withTournament(tournament);
+    RoundBuilder roundBuilder = build(roundToCreate, tournament);
     List<Team> teams = tournament.getSubscribedTeams();
     if (!isFirstRound(roundToCreate)) {
-      PreviousRound previousRound = aPreviousRound()
-        .withPreviousRound(roundRepository.findOne(roundToCreate.getPreviousRounds().get(0).getRoundId()))
-        .withTeamsFrom(roundToCreate.getPreviousRounds().get(0).getTeamsRange().lowerEndpoint())
-        .withTeamsTo(roundToCreate.getPreviousRounds().get(0).getTeamsRange().upperEndpoint())
-        .build();
-      roundBuilder.withPreviousRounds(Lists.newArrayList(previousRound));
-      teams = getTeamsForNextRound(previousRound);
+      List<PreviousRound> previousRounds = getPreviousRounds(roundToCreate);
+      roundBuilder.withPreviousRounds(getPreviousRounds(roundToCreate));
+      teams = getTeams(previousRounds);
     }
     roundBuilder.withTeams(teams);
     return roundBuilder.build();
+  }
+
+  private RoundBuilder build(RoundToCreateView roundToCreate, Tournament tournament) {
+    return RoundBuilder.aRound()
+        .withName(roundToCreate.getName())
+        .withBranch(TournamentBranch.valueOf(roundToCreate.getTournamentBranch()))
+        .withType(RoundType.valueOf(roundToCreate.getType()))
+        .withStatus(RoundStatus.CREATED)
+        .withFieldRanges(roundToCreate.getFieldRanges())
+        .withTournament(tournament);
+  }
+
+  private List<PreviousRound> getPreviousRounds(RoundToCreateView roundToCreate) {
+    return roundToCreate.getPreviousRounds().parallelStream()
+          .map(previousRoundView ->
+            aPreviousRound()
+              .withPreviousRound(roundRepository.findOne(previousRoundView.getRoundId()))
+              .withTeamsFrom(previousRoundView.getTeamsRange().lowerEndpoint())
+              .withTeamsTo(previousRoundView.getTeamsRange().upperEndpoint())
+              .build())
+          .collect(Collectors.toList());
   }
 
   private boolean isFirstRound(RoundToCreateView roundToCreate) {
     return roundToCreate.getPreviousRounds().isEmpty();
   }
 
-  private List<Team> getTeamsForNextRound(PreviousRound previousRound) {
+  private List<Team> getTeams(List<PreviousRound> previousRounds) {
+    return previousRounds.parallelStream()
+      .map(this::getTeams)
+      .collect(Collectors.toList()).stream()
+      .flatMap(List::stream)
+      .collect(Collectors.toList());
+  }
+
+  private List<Team> getTeams(PreviousRound previousRound) {
     List<Ranking> rankings = previousRound.getPreviousRound().getRankings();
     return rankings.subList(previousRound.getTeamsFrom() - 1, previousRound.getTeamsTo())
       .stream()
