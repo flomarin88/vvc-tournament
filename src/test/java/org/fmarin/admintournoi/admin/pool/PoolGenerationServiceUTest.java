@@ -47,6 +47,7 @@ public class PoolGenerationServiceUTest {
   private Round firstRound;
   private Round secondRound;
   private Round lastRound;
+  private Round lastMultipleRound;
 
   @Before
   public void setUp() {
@@ -93,9 +94,23 @@ public class PoolGenerationServiceUTest {
       .withPreviousRounds(Lists.newArrayList(PreviousRoundBuilder.aPreviousRound().withPreviousRound(secondRound).build()))
       .build();
 
+    Round round = RoundBuilder.aRound().withId(5L).withPools(Lists.newArrayList(
+      PoolBuilder.aPool().withTeam1(teamA).withTeam2(teamE).withTeam3(teamD).build()
+    )).build();
+
+    lastMultipleRound = RoundBuilder.aRound()
+      .withId(4L)
+      .withFieldRanges("1-1")
+      .withPreviousRounds(Lists.newArrayList(
+        PreviousRoundBuilder.aPreviousRound().withPreviousRound(secondRound).build(),
+        PreviousRoundBuilder.aPreviousRound().withPreviousRound(round).build()))
+      .build();
+
     when(mockedRoundRepository.findOne(1L)).thenReturn(firstRound);
     when(mockedRoundRepository.findOne(2L)).thenReturn(secondRound);
     when(mockedRoundRepository.findOne(3L)).thenReturn(lastRound);
+    when(mockedRoundRepository.findOne(4L)).thenReturn(lastMultipleRound);
+    when(mockedRoundRepository.findOne(5L)).thenReturn(round);
   }
 
   @Test
@@ -200,6 +215,17 @@ public class PoolGenerationServiceUTest {
 
     // Then
     assertThat(result).hasSize(15);
+  }
+
+  @Test
+  public void getPreviousOppositions_with_2_previous_rounds_is_filled_with_already_opposed_team_with_multiple_previous_round() {
+    // Given
+
+    // When
+    Set<TeamOpposition> result = service.getPreviousOppositions(lastMultipleRound);
+
+    // Then
+    assertThat(result).hasSize(17);
   }
 
   @Test

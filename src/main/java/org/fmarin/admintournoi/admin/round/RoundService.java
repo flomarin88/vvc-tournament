@@ -37,13 +37,15 @@ public class RoundService {
   private Round convert(RoundToCreateView roundToCreate, Long tournamentId) {
     Tournament tournament = tournamentRepository.findOne(tournamentId);
     RoundBuilder roundBuilder = build(roundToCreate, tournament);
-    List<Team> teams = tournament.getSubscribedTeams();
-    if (!isFirstRound(roundToCreate)) {
-      List<PreviousRound> previousRounds = getPreviousRounds(roundToCreate);
-      roundBuilder.withPreviousRounds(getPreviousRounds(roundToCreate));
-      teams = getTeams(previousRounds);
+    if (isFirstRound(roundToCreate)) {
+      List<Team> teams = tournament.getSubscribedTeams();
+      roundBuilder.withTeams(teams);
     }
-    roundBuilder.withTeams(teams);
+    else {
+      List<PreviousRound> previousRounds = getPreviousRounds(roundToCreate);
+      roundBuilder.withPreviousRounds(previousRounds);
+      roundBuilder.withTeams(getTeams(previousRounds));
+    }
     return roundBuilder.build();
   }
 
@@ -75,7 +77,6 @@ public class RoundService {
   private List<Team> getTeams(List<PreviousRound> previousRounds) {
     return previousRounds.parallelStream()
       .map(this::getTeams)
-      .collect(Collectors.toList()).stream()
       .flatMap(List::stream)
       .collect(Collectors.toList());
   }

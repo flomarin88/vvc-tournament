@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
 @Table(name = "ROUND")
 public class Round {
 
-  private static Integer TEAMS_COUNT_BY_POOL = 3;
+  public static Integer TEAMS_COUNT_BY_POOL = 3;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class Round {
   @Column(name = "tournament_branch")
   @Enumerated(value = EnumType.STRING)
   private TournamentBranch branch;
-  @ManyToMany(cascade = CascadeType.PERSIST)
+  @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(name = "ROUND_TEAM",
     joinColumns = @JoinColumn(name = "round_id", referencedColumnName = "ID"),
     inverseJoinColumns = @JoinColumn(name = "team_id", referencedColumnName = "ID"))
@@ -87,7 +87,6 @@ public class Round {
   public List<Ranking> getRankings() {
     List<Ranking> rankingsByPool = pools.parallelStream()
       .map(Pool::getRankings)
-      .collect(Collectors.toList()).stream()
       .flatMap(List::stream)
       .collect(Collectors.toList());
     rankingsByPool.sort(rankingComparator());

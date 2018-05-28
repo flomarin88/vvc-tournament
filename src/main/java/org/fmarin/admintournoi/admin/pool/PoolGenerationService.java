@@ -3,6 +3,7 @@ package org.fmarin.admintournoi.admin.pool;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
+import org.fmarin.admintournoi.admin.round.PreviousRound;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.fmarin.admintournoi.admin.round.RoundStatus;
@@ -114,21 +115,31 @@ public class PoolGenerationService {
   Set<TeamOpposition> getPreviousOppositions(Round round) {
     Set<TeamOpposition> oppositions = Sets.newHashSet();
     if (round != null && !round.getPreviousRounds().isEmpty()) {
-      Round previousRound = roundRepository.findOne(round.getPreviousRounds().get(0).getPreviousRound().getId());
-      oppositions.addAll(previousRound.getOppositions());
-      oppositions.addAll(getPreviousOppositions(previousRound));
+      round.getPreviousRounds().parallelStream().forEach(item -> {
+        Round previousRound = roundRepository.findOne(item.getPreviousRound().getId());
+        oppositions.addAll(previousRound.getOppositions());
+        oppositions.addAll(getPreviousOppositions(previousRound));
+      });
     }
     return oppositions;
   }
 
   private List<Ranking> getAllPoolRankings(Round round) {
-    return round.getPreviousRounds().get(0).getPreviousRound().getPools().stream()
-      .map(Pool::getRankings)
-      .collect(Collectors.toList()).stream()
+    return round.getPreviousRounds().parallelStream()
+      .map(this::getPreviousRoundRankings)
       .flatMap(List::stream)
-      .collect(Collectors.toList())
-      .stream().filter(ranking -> round.getTeams().contains(ranking.getTeam()))
       .collect(Collectors.toList());
+  }
+
+  private List<Ranking> getPreviousRoundRankings(PreviousRound previousRound) {
+    int malus = previousRound.getPreviousRound().getBranch().getOrder() * Round.TEAMS_COUNT_BY_POOL;
+    List<Ranking> rankings = previousRound.getPreviousRound().getPools().stream()
+      .map(Pool::getRankings)
+      .flatMap(List::stream)
+      .filter(ranking -> previousRound.getRound().getTeams().contains(ranking.getTeam()))
+      .collect(Collectors.toList());
+    rankings.parallelStream().forEach(ranking -> ranking.setPosition(ranking.getPosition() + malus));
+    return rankings;
   }
 
   private Team getTeamToAffect(Map<Integer, List<Team>> teamsMap, List<Integer> positions, Set<TeamOpposition> oppositions, Pool pool) {

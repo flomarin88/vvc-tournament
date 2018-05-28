@@ -138,7 +138,7 @@ public class RoundController {
   }
 
   RoundListView convertListItem(Round round) {
-    String previousRoundLabel = !round.getPreviousRounds().isEmpty() ? round.getPreviousRounds().get(0).getLabel() : "-";
+    String previousRoundLabel = String.join(" / ", round.getPreviousRounds().stream().map(PreviousRound::getLabel).collect(Collectors.toList()));
     return RoundListViewBuilder.aRoundListView()
       .withId(round.getId())
       .withName(round.getBranch().getLabel() + " - " + round.getName())
@@ -173,21 +173,25 @@ public class RoundController {
       .withName(team.getName())
       .withLevel(team.getLevel())
       .withPlayedAlready(false);
-    if (!pool.getRound().getPreviousRounds().isEmpty()) {
-      Pool previousPool = poolRepository.findByRoundAndTeam(pool.getRound().getPreviousRounds().get(0).getPreviousRound(), team);
-      builder.withPreviousRank(previousPool.getRanking(team).getPosition());
-      Team team1 = pool.getTeam1();
-      Team team2 = pool.getTeam2();
-      if (team.equals(pool.getTeam1())) {
-        team1 = pool.getTeam2();
-        team2 = pool.getTeam3();
+
+    pool.getRound().getPreviousRounds().forEach(previousRound -> {
+      Pool previousPool = poolRepository.findByRoundAndTeam(previousRound.getPreviousRound(), team);
+      if (previousPool != null) {
+        builder.withPreviousRank(previousPool.getRanking(team).getPosition());
+        builder.withPreviousBranch(previousPool.getRound().getBranch().getLabel());
+        Team team1 = pool.getTeam1();
+        Team team2 = pool.getTeam2();
+        if (team.equals(pool.getTeam1())) {
+          team1 = pool.getTeam2();
+          team2 = pool.getTeam3();
+        }
+        if (team.equals(pool.getTeam2())) {
+          team2 = pool.getTeam3();
+        }
+        boolean hasAlreadyPlayedAgainst = teamService.hasAlreadyPlayedAgainst(pool.getRound(), team, team1, team2);
+        builder.withPlayedAlready(hasAlreadyPlayedAgainst);
       }
-      if (team.equals(pool.getTeam2())) {
-        team2 = pool.getTeam3();
-      }
-      boolean hasAlreadyPlayedAgainst = teamService.hasAlreadyPlayedAgainst(pool.getRound(), team, team1, team2);
-      builder.withPlayedAlready(hasAlreadyPlayedAgainst);
-    }
+    });
     return builder.build();
   }
 
