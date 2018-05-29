@@ -43,19 +43,26 @@ public class PoolGenerationService {
     logger.info("Affect teams for round {}", round.getId());
     Set<Integer> positions = teamsMap.keySet();
     Set<TeamOpposition> oppositions = getPreviousOppositions(round);
+    boolean retry = false;
     for (int i = 0; i < round.getTeams().size(); ++i) {
       int loopCount = i / round.getPools().size() + 1;
       Pool pool = getPool(round, i);
       Team team = getTeamToAffect(teamsMap, orderLevels(positions, loopCount), oppositions, pool);
       if (team == null) {
-        generatePools(round);
+        retry = true;
+        break;
       } else {
         pool.addTeam(team);
       }
     }
-    round.getPools().parallelStream().forEach(poolRepository::save);
-    round.setStatus(RoundStatus.COMPOSED);
-    roundRepository.save(round);
+    if (retry) {
+      generatePools(round);
+    }
+    else {
+      round.getPools().parallelStream().forEach(poolRepository::save);
+      round.setStatus(RoundStatus.COMPOSED);
+      roundRepository.save(round);
+    }
   }
 
   private Map<Integer, List<Team>> groupTeams(Round round) {
