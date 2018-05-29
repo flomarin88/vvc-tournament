@@ -178,7 +178,7 @@ public class RoundController {
       Pool previousPool = poolRepository.findByRoundAndTeam(previousRound.getPreviousRound(), team);
       if (previousPool != null) {
         builder.withPreviousRank(previousPool.getRanking(team).getPosition());
-        builder.withPreviousBranch(previousPool.getRound().getBranch().getLabel());
+        builder.withPreviousRankColor(previousPool.getRound().getBranch().getColor());
         Team team1 = pool.getTeam1();
         Team team2 = pool.getTeam2();
         if (team.equals(pool.getTeam1())) {

@@ -9,16 +9,16 @@ public class TeamOverviewView {
   private final String name;
   private final Level level;
   private final Integer previousRank;
-  private final String previousBranch;
+  private final String previousRankColor;
   private final boolean playedAlready;
 
-  public TeamOverviewView(Long id, String letter, String name, Level level, Integer previousRank, String previousBranch, boolean playedAlready) {
+  public TeamOverviewView(Long id, String letter, String name, Level level, Integer previousRank, String previousRankColor, boolean playedAlready) {
     this.id = id;
     this.letter = letter;
     this.name = name;
     this.level = level;
     this.previousRank = previousRank;
-    this.previousBranch = previousBranch;
+    this.previousRankColor = previousRankColor;
     this.playedAlready = playedAlready;
   }
 
@@ -50,7 +50,7 @@ public class TeamOverviewView {
     return level.getColor();
   }
 
-  public String getPreviousBranch() {
-    return previousBranch;
+  public String getPreviousRankColor() {
+    return previousRankColor;
   }
 }

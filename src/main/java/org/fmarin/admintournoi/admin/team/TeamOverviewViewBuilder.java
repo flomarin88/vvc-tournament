@@ -8,7 +8,7 @@ public final class TeamOverviewViewBuilder {
   private String name;
   private Level level;
   private Integer previousRank;
-  private String previousBranch;
+  private String previousRankColor;
   private boolean playedAlready;
 
   private TeamOverviewViewBuilder() {
@@ -43,8 +43,8 @@ public final class TeamOverviewViewBuilder {
     return this;
   }
 
-  public TeamOverviewViewBuilder withPreviousBranch(String branch) {
-    this.previousBranch = branch;
+  public TeamOverviewViewBuilder withPreviousRankColor(String color) {
+    this.previousRankColor = color;
     return this;
   }
 
@@ -55,6 +55,6 @@ public final class TeamOverviewViewBuilder {
   }
 
   public TeamOverviewView build() {
-    return new TeamOverviewView(id, letter, name, level, previousRank, previousBranch, playedAlready);
+    return new TeamOverviewView(id, letter, name, level, previousRank, previousRankColor, playedAlready);
   }
 }
