@@ -21,7 +21,19 @@ public class TeamServiceUTest {
   private TeamService service;
 
   @Test
-  public void getAllPreviousRounds() {
+  public void getAllPreviousRounds_empty() {
+    // Given
+    Round first = aRound().build();
+
+    // When
+    List<Round> result = service.getAllPreviousRounds(first);
+
+    // Then
+    assertThat(result).isEmpty();
+  }
+
+  @Test
+  public void getAllPreviousRounds_with_multiple_level() {
     // Given
     Round first = aRound().build();
     PreviousRound previousRoundFirst = PreviousRoundBuilder.aPreviousRound().withPreviousRound(first).build();
@@ -34,6 +46,23 @@ public class TeamServiceUTest {
 
     // Then
     assertThat(result).hasSize(2).contains(first, second);
+  }
 
+  @Test
+  public void getAllPreviousRounds_with_multiple_at_same_level() {
+    // Given
+    Round first = aRound().build();
+    PreviousRound previousRoundFirst = PreviousRoundBuilder.aPreviousRound().withPreviousRound(first).build();
+    Round second = aRound().withPreviousRounds(Lists.newArrayList(previousRoundFirst)).build();
+    PreviousRound previousRoundSecond = PreviousRoundBuilder.aPreviousRound().withPreviousRound(second).build();
+    Round third = aRound().build();
+    PreviousRound previousRoundSecond2 = PreviousRoundBuilder.aPreviousRound().withPreviousRound(third).build();
+    Round round = aRound().withPreviousRounds(Lists.newArrayList(previousRoundSecond, previousRoundSecond2)).build();
+
+    // When
+    List<Round> result = service.getAllPreviousRounds(round);
+
+    // Then
+    assertThat(result).hasSize(3).contains(first, second, third);
   }
 }

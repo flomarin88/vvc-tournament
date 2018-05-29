@@ -28,10 +28,10 @@ public class TeamService {
 
   List<Round> getAllPreviousRounds(Round round) {
     List<Round> rounds = Lists.newArrayList();
-    while (!round.getPreviousRounds().isEmpty()) {
-      round = round.getPreviousRounds().get(0).getPreviousRound();
-      rounds.add(round);
-    }
+    round.getPreviousRounds().forEach(previousRound -> {
+      rounds.add(previousRound.getPreviousRound());
+      rounds.addAll(getAllPreviousRounds(previousRound.getPreviousRound()));
+    });
     return rounds;
   }
 }
