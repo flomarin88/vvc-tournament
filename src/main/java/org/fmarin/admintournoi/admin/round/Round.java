@@ -5,13 +5,16 @@ import com.google.common.collect.Sets;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolBuilder;
 import org.fmarin.admintournoi.admin.pool.TeamOpposition;
+import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,7 +23,7 @@ import java.util.stream.IntStream;
 @Table(name = "ROUND")
 public class Round {
 
-  private static Integer TEAMS_COUNT_BY_POOL = 3;
+  public static Integer TEAMS_COUNT_BY_POOL = 3;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,20 +31,20 @@ public class Round {
   private Long id;
   @Column(name = "name")
   private String name;
-  @ManyToOne
-  @JoinColumn(name = "previous_round_id")
-  private Round previousRound;
+  @OneToMany(mappedBy = "round", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+  @Fetch(FetchMode.SELECT)
+  private List<PreviousRound> previousRounds = Lists.newArrayList();
   @ManyToOne
   @JoinColumn(name = "tournament_id")
   private Tournament tournament;
   @Column(name = "tournament_branch")
   @Enumerated(value = EnumType.STRING)
   private TournamentBranch branch;
-  @ManyToMany(cascade = CascadeType.PERSIST)
+  @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(name = "ROUND_TEAM",
     joinColumns = @JoinColumn(name = "round_id", referencedColumnName = "ID"),
     inverseJoinColumns = @JoinColumn(name = "team_id", referencedColumnName = "ID"))
-  private List<Team> teams;
+  private List<Team> teams = Lists.newArrayList();
   @Column(name = "status")
   @Enumerated(value = EnumType.STRING)
   private RoundStatus status;
@@ -81,6 +84,16 @@ public class Round {
     return oppositions;
   }
 
+  public List<Ranking> getRankings() {
+    List<Ranking> rankingsByPool = pools.parallelStream()
+      .map(Pool::getRankings)
+      .flatMap(List::stream)
+      .collect(Collectors.toList());
+    rankingsByPool.sort(rankingComparator());
+    updatePosition(rankingsByPool);
+    return rankingsByPool;
+  }
+
   public Long getId() {
     return id;
   }
@@ -97,14 +110,6 @@ public class Round {
     this.name = name;
   }
 
-  public Round getPreviousRound() {
-    return previousRound;
-  }
-
-  public void setPreviousRound(Round previousRound) {
-    this.previousRound = previousRound;
-  }
-
   public Tournament getTournament() {
     return tournament;
   }
@@ -119,6 +124,14 @@ public class Round {
 
   public void setTeams(List<Team> teams) {
     this.teams = teams;
+  }
+
+  public List<PreviousRound> getPreviousRounds() {
+    return previousRounds;
+  }
+
+  public void setPreviousRounds(List<PreviousRound> previousRounds) {
+    this.previousRounds = previousRounds;
   }
 
   public RoundStatus getStatus() {
@@ -182,4 +195,27 @@ public class Round {
     return fields.get(newPosition - 1);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Round round = (Round) o;
+    return Objects.equals(id, round.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
+  private Comparator<Ranking> rankingComparator() {
+    return Comparator.comparing(Ranking::getPosition)
+      .thenComparing(Pool.rankingComparator());
+  }
+
+  private void updatePosition(List<Ranking> rankingsOrdered) {
+    for (int i = 0; i < rankingsOrdered.size(); i++) {
+      rankingsOrdered.get(i).setPosition(i + 1);
+    }
+  }
 }

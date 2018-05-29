@@ -4,47 +4,53 @@ import org.fmarin.admintournoi.subscription.Level;
 
 public class TeamOverviewView {
 
-    private final Long id;
-    private final String letter;
-    private final String name;
-    private final Level level;
-    private final Integer previousRank;
-    private final boolean playedAlready;
+  private final Long id;
+  private final String letter;
+  private final String name;
+  private final Level level;
+  private final Integer previousRank;
+  private final String previousRankColor;
+  private final boolean playedAlready;
 
-    public TeamOverviewView(Long id, String letter, String name, Level level, Integer previousRank, boolean playedAlready) {
-        this.id = id;
-        this.letter = letter;
-        this.name = name;
-        this.level = level;
-        this.previousRank = previousRank;
-        this.playedAlready = playedAlready;
-    }
+  public TeamOverviewView(Long id, String letter, String name, Level level, Integer previousRank, String previousRankColor, boolean playedAlready) {
+    this.id = id;
+    this.letter = letter;
+    this.name = name;
+    this.level = level;
+    this.previousRank = previousRank;
+    this.previousRankColor = previousRankColor;
+    this.playedAlready = playedAlready;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getLetter() {
-        return letter;
-    }
+  public String getLetter() {
+    return letter;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public Integer getPreviousRank() {
-        return previousRank;
-    }
+  public Integer getPreviousRank() {
+    return previousRank;
+  }
 
-    public boolean isPlayedAlready() {
-        return playedAlready;
-    }
+  public boolean isPlayedAlready() {
+    return playedAlready;
+  }
 
-    public String getLevelName() {
-        return level.getLabel();
-    }
+  public String getLevelName() {
+    return level.getLabel();
+  }
 
-    public String getLevelColor() {
-        return level.getColor();
-    }
+  public String getLevelColor() {
+    return level.getColor();
+  }
+
+  public String getPreviousRankColor() {
+    return previousRankColor;
+  }
 }

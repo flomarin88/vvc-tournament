@@ -127,7 +127,7 @@ public class SubscriptionController extends LayoutController {
       (team, index) -> build(index + 1, team))
       .collect(Collectors.toList());
     return TeamsByTournamentViewBuilder.aView()
-      .withName(tournament.getName() + ' ' + tournament.getGender().getTranslation())
+      .withName(tournament.getFullName())
       .withTeams(teams)
       .build();
   }

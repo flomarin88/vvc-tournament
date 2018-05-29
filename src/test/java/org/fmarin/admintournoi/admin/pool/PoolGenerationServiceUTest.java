@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.admin.pool;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.fmarin.admintournoi.admin.round.PreviousRoundBuilder;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundBuilder;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
@@ -46,10 +47,11 @@ public class PoolGenerationServiceUTest {
   private Round firstRound;
   private Round secondRound;
   private Round lastRound;
+  private Round lastMultipleRound;
 
   @Before
   public void setUp() {
-    service = new PoolGenerationService(null, mockedRoundRepository, null);
+    service = new PoolGenerationService(null, mockedRoundRepository);
 
     Team teamA = aTeam().withId(1L).build();
     Team teamB = aTeam().withId(2L).build();
@@ -78,7 +80,7 @@ public class PoolGenerationServiceUTest {
     secondRound = RoundBuilder.aRound()
       .withId(2L)
       .withFieldRanges("1-1")
-      .withPreviousRound(firstRound)
+      .withPreviousRounds(Lists.newArrayList(PreviousRoundBuilder.aPreviousRound().withPreviousRound(firstRound).build()))
       .withTeams(second)
       .withPools(Lists.newArrayList(
         PoolBuilder.aPool().withTeam1(teamA).withTeam2(teamB).withTeam3(teamC).build(),
@@ -89,12 +91,26 @@ public class PoolGenerationServiceUTest {
     lastRound = RoundBuilder.aRound()
       .withId(3L)
       .withFieldRanges("1-1")
-      .withPreviousRound(secondRound)
+      .withPreviousRounds(Lists.newArrayList(PreviousRoundBuilder.aPreviousRound().withPreviousRound(secondRound).build()))
+      .build();
+
+    Round round = RoundBuilder.aRound().withId(5L).withPools(Lists.newArrayList(
+      PoolBuilder.aPool().withTeam1(teamA).withTeam2(teamE).withTeam3(teamD).build()
+    )).build();
+
+    lastMultipleRound = RoundBuilder.aRound()
+      .withId(4L)
+      .withFieldRanges("1-1")
+      .withPreviousRounds(Lists.newArrayList(
+        PreviousRoundBuilder.aPreviousRound().withPreviousRound(secondRound).build(),
+        PreviousRoundBuilder.aPreviousRound().withPreviousRound(round).build()))
       .build();
 
     when(mockedRoundRepository.findOne(1L)).thenReturn(firstRound);
     when(mockedRoundRepository.findOne(2L)).thenReturn(secondRound);
     when(mockedRoundRepository.findOne(3L)).thenReturn(lastRound);
+    when(mockedRoundRepository.findOne(4L)).thenReturn(lastMultipleRound);
+    when(mockedRoundRepository.findOne(5L)).thenReturn(round);
   }
 
   @Test
@@ -199,6 +215,17 @@ public class PoolGenerationServiceUTest {
 
     // Then
     assertThat(result).hasSize(15);
+  }
+
+  @Test
+  public void getPreviousOppositions_with_2_previous_rounds_is_filled_with_already_opposed_team_with_multiple_previous_round() {
+    // Given
+
+    // When
+    Set<TeamOpposition> result = service.getPreviousOppositions(lastMultipleRound);
+
+    // Then
+    assertThat(result).hasSize(17);
   }
 
   @Test

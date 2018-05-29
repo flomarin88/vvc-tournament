@@ -7,7 +7,6 @@ import org.fmarin.admintournoi.admin.match.MatchGenerationService;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolRepository;
 import org.fmarin.admintournoi.admin.pool.PoolView;
-import org.fmarin.admintournoi.admin.ranking.RankingService;
 import org.fmarin.admintournoi.admin.team.TeamOverviewView;
 import org.fmarin.admintournoi.admin.team.TeamOverviewViewBuilder;
 import org.fmarin.admintournoi.admin.team.TeamService;
@@ -16,6 +15,8 @@ import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.fmarin.admintournoi.subscription.TournamentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,23 +40,23 @@ public class RoundController {
   private final PoolRepository poolRepository;
   private final MatchGenerationService matchGenerationService;
   private final RoundService roundService;
-  private final RankingService rankingService;
   private final TeamService teamService;
   private final GeneratorService generatorService;
   private final MainProperties mainProperties;
+
+  private static final Logger logger = LoggerFactory.getLogger(RoundController.class);
 
   @Autowired
   public RoundController(TournamentRepository tournamentRepository, TeamRepository teamRepository,
                          RoundRepository roundRepository, PoolRepository poolRepository,
                          MatchGenerationService matchGenerationService, RoundService roundService,
-                         RankingService rankingService, TeamService teamService, GeneratorService generatorService, MainProperties mainProperties) {
+                         TeamService teamService, GeneratorService generatorService, MainProperties mainProperties) {
     this.tournamentRepository = tournamentRepository;
     this.teamRepository = teamRepository;
     this.roundRepository = roundRepository;
     this.poolRepository = poolRepository;
     this.matchGenerationService = matchGenerationService;
     this.roundService = roundService;
-    this.rankingService = rankingService;
     this.teamService = teamService;
     this.generatorService = generatorService;
     this.mainProperties = mainProperties;
@@ -99,6 +100,7 @@ public class RoundController {
     model.put("round", roundDetail);
     model.put("pools", pools);
     model.put("isProd", mainProperties.isProd());
+    model.put("duplicatedTeams", hasSameTeams(round));
     return new ModelAndView("round_detail", model);
   }
 
@@ -126,8 +128,8 @@ public class RoundController {
     Team team1 = teamRepository.findOne(body.getTeam1Id());
     Pool pool2 = poolRepository.findOne(body.getPool2Id());
     Team team2 = teamRepository.findOne(body.getTeam2Id());
-    switchTeams(pool1, team1, team2);
-    switchTeams(pool2, team2, team1);
+    pool1.replace(team1, team2);
+    pool2.replace(team2, team1);
     poolRepository.save(pool1);
     poolRepository.save(pool2);
     Map<String, String> result = Maps.newHashMap();
@@ -135,20 +137,8 @@ public class RoundController {
     return ResponseEntity.ok(result);
   }
 
-  void switchTeams(Pool pool, Team team1, Team team2) {
-    if (team1.equals(pool.getTeam1())) {
-      pool.setTeam1(team2);
-    }
-    if (team1.equals(pool.getTeam2())) {
-      pool.setTeam2(team2);
-    }
-    if (team1.equals(pool.getTeam3())) {
-      pool.setTeam3(team2);
-    }
-  }
-
   RoundListView convertListItem(Round round) {
-    String previousRoundLabel = round.getPreviousRound() != null ? round.getPreviousRound().getBranch().getLabel() + " - " + round.getPreviousRound().getName() : "-";
+    String previousRoundLabel = String.join(" / ", round.getPreviousRounds().stream().map(PreviousRound::getLabel).collect(Collectors.toList()));
     return RoundListViewBuilder.aRoundListView()
       .withId(round.getId())
       .withName(round.getBranch().getLabel() + " - " + round.getName())
@@ -183,22 +173,25 @@ public class RoundController {
       .withName(team.getName())
       .withLevel(team.getLevel())
       .withPlayedAlready(false);
-    if (pool.getRound().getPreviousRound() != null) {
-      Integer previousRank = rankingService.getTeamRanking(team, pool.getRound().getPreviousRound())
-        .getPosition();
-      builder.withPreviousRank(previousRank);
-      Team team1 = pool.getTeam1();
-      Team team2 = pool.getTeam2();
-      if (team.equals(pool.getTeam1())) {
-        team1 = pool.getTeam2();
-        team2 = pool.getTeam3();
+
+    pool.getRound().getPreviousRounds().forEach(previousRound -> {
+      Pool previousPool = poolRepository.findByRoundAndTeam(previousRound.getPreviousRound(), team);
+      if (previousPool != null) {
+        builder.withPreviousRank(previousPool.getRanking(team).getPosition());
+        builder.withPreviousRankColor(previousPool.getRound().getBranch().getColor());
+        Team team1 = pool.getTeam1();
+        Team team2 = pool.getTeam2();
+        if (team.equals(pool.getTeam1())) {
+          team1 = pool.getTeam2();
+          team2 = pool.getTeam3();
+        }
+        if (team.equals(pool.getTeam2())) {
+          team2 = pool.getTeam3();
+        }
+        boolean hasAlreadyPlayedAgainst = teamService.hasAlreadyPlayedAgainst(pool.getRound(), team, team1, team2);
+        builder.withPlayedAlready(hasAlreadyPlayedAgainst);
       }
-      if (team.equals(pool.getTeam2())) {
-        team2 = pool.getTeam3();
-      }
-      boolean hasAlreadyPlayedAgainst = teamService.hasAlreadyPlayedAgainst(pool.getRound(), team, team1, team2);
-      builder.withPlayedAlready(hasAlreadyPlayedAgainst);
-    }
+    });
     return builder.build();
   }
 
@@ -207,4 +200,17 @@ public class RoundController {
     return pool.getMatches().size() == 0 || count > 0 ? "primary" : "success";
   }
 
+  private boolean hasSameTeams(Round round) {
+    List<Team> teams = Lists.newArrayList();
+    for (Pool pool : round.getPools()) {
+      if (teams.contains(pool.getTeam1()) || teams.contains(pool.getTeam2()) || teams.contains(pool.getTeam3())) {
+        logger.error("In Round {}, Pool {} contains existing team", round.getId(), pool.getId());
+        return true;
+      }
+      teams.add(pool.getTeam1());
+      teams.add(pool.getTeam2());
+      teams.add(pool.getTeam3());
+    }
+    return false;
+  }
 }

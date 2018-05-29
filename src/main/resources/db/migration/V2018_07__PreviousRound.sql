@@ -1,0 +1,12 @@
+CREATE TABLE PREVIOUS_ROUND
+(
+  id                BIGSERIAL PRIMARY KEY,
+  round_id          BIGINT REFERENCES ROUND,
+  previous_round_id BIGINT REFERENCES ROUND,
+  teams_from        INT,
+  teams_to         INT
+
+);
+CREATE UNIQUE INDEX PREVIOUS_ROUND_ID_UINDEX
+  ON PREVIOUS_ROUND (id);
+

@@ -1,7 +1,7 @@
 {{#admin_layout}}
 
 <ol class="breadcrumb">
-  <li><a href="/admin">Accueil</a></li>
+  <li><a href="/admin">Dashboard</a></li>
   <li><a href="/admin/tournaments/{{round.tournamentId}}/checkin">{{round.tournamentName}}</a></li>
   <li><a href="/admin/tournaments/{{round.tournamentId}}/rounds">Tours</a></li>
   <li class="active">{{ round.name }}</li>
@@ -27,6 +27,12 @@
 </div>
 {{/round}}
 
+{{#duplicatedTeams}}
+<div class="row">
+  <p class="lead">Tour invalide -> Des équipes en double</p>
+</div>
+{{/duplicatedTeams}}
+
 <div class="row switch-class-js" data-round-id="{{ round.id }}">
   {{#pools}}
   <div class="col-lg-6">
@@ -47,7 +53,7 @@
             <td>{{ name }}</td>
             <td align="center"><span class="label label-{{ levelColor }}">{{ levelName }}</span></td>
             {{#previousRank}}
-            <td align="center"><span class="badge ">{{ previousRank }}</span></td>
+            <td align="center"><span class="badge label-{{ previousRankColor }}">{{ previousRank }}</span></td>
             {{/previousRank}}
             <td align="center">{{#isPlayedAlready}}<i class="fa fa-exclamation-triangle danger" aria-hidden="true"></i>{{/isPlayedAlready}}
             </td>

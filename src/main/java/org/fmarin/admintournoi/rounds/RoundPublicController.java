@@ -40,7 +40,7 @@ public class RoundPublicController {
         Map<String, Object> model = Maps.newHashMap();
         Map<String, Object> roundMap = Maps.newHashMap();
         roundMap.put("name", round.getBranch().getLabel() + " / " + round.getName());
-        roundMap.put("tournamentName", round.getTournament().getName());
+        roundMap.put("tournamentName", round.getTournament().getFullName());
         model.put("round", roundMap);
         model.put("pools", pools);
         return new ModelAndView("round_detail_public", model);
