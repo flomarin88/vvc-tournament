@@ -2,6 +2,7 @@ package org.fmarin.admintournoi.admin.pool;
 
 import com.google.common.collect.Lists;
 import org.fmarin.admintournoi.admin.match.Match;
+import org.fmarin.admintournoi.admin.match.MatchBuilder;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamBuilder;
@@ -126,5 +127,39 @@ public class PoolUTest {
       .build();
     assertThat(result).hasSize(3)
       .containsSequence(ranking1, ranking2, ranking3);
+  }
+
+  @Test
+  public void isFinished_return_false_when_a_match_is_not_finished() {
+      // Given
+    Pool pool = PoolBuilder.aPool()
+      .withMatches(Lists.newArrayList(
+        MatchBuilder.aMatch().withScoreTeam1(0).withScoreTeam2(0).build(),
+        MatchBuilder.aMatch().withScoreTeam1(12).withScoreTeam2(25).build()
+      ))
+      .build();
+
+      // When
+      boolean result = pool.isFinished();
+
+      // Then
+      assertThat(result).isFalse();
+  }
+
+  @Test
+  public void isFinished_return_true_when_all_matches_are_finished() {
+    // Given
+    Pool pool = PoolBuilder.aPool()
+      .withMatches(Lists.newArrayList(
+        MatchBuilder.aMatch().withScoreTeam1(25).withScoreTeam2(10).build(),
+        MatchBuilder.aMatch().withScoreTeam1(12).withScoreTeam2(25).build()
+      ))
+      .build();
+
+    // When
+    boolean result = pool.isFinished();
+
+    // Then
+    assertThat(result).isTrue();
   }
 }

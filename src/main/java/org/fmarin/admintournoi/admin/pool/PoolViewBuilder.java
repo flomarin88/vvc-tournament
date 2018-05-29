@@ -8,7 +8,7 @@ public final class PoolViewBuilder {
     private Long id;
     private String name;
     private Integer field;
-    private String color;
+    private boolean finished;
     private List<TeamOverviewView> teams;
 
     private PoolViewBuilder() {
@@ -28,8 +28,8 @@ public final class PoolViewBuilder {
         return this;
     }
 
-    public PoolViewBuilder withColor(String color) {
-        this.color = color;
+    public PoolViewBuilder isFinished() {
+        this.finished = true;
         return this;
     }
 
@@ -40,17 +40,10 @@ public final class PoolViewBuilder {
 
     public PoolViewBuilder withTeams(List<TeamOverviewView> teams) {
         this.teams = teams;
-        return this;
+      return this;
     }
 
     public PoolView build() {
-        PoolView poolView = new PoolView();
-        poolView.setId(id);
-        poolView.setName(name);
-        poolView.setTeams(teams);
-        poolView.setColor(color);
-        poolView.setField(field);
-        return poolView;
+        return new PoolView(id, name, field, finished, teams);
     }
-
 }

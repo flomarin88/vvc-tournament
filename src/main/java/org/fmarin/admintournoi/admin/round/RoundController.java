@@ -7,6 +7,7 @@ import org.fmarin.admintournoi.admin.match.MatchGenerationService;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolRepository;
 import org.fmarin.admintournoi.admin.pool.PoolView;
+import org.fmarin.admintournoi.admin.pool.PoolViewBuilder;
 import org.fmarin.admintournoi.admin.team.TeamOverviewView;
 import org.fmarin.admintournoi.admin.team.TeamOverviewViewBuilder;
 import org.fmarin.admintournoi.admin.team.TeamService;
@@ -153,16 +154,19 @@ public class RoundController {
   }
 
   private PoolView convert(Pool pool) {
-    return aPoolView()
+    PoolViewBuilder poolViewBuilder = aPoolView()
       .withId(pool.getId())
       .withName("Poule " + pool.getPosition())
       .withField(pool.getField())
-      .withColor(getColorStatus(pool))
       .withTeams(Lists.newArrayList(
         getTeamOverview(pool.getTeam1(), "A", pool),
         getTeamOverview(pool.getTeam2(), "B", pool),
         getTeamOverview(pool.getTeam3(), "C", pool)
-      ))
+      ));
+    if (pool.isFinished()) {
+      poolViewBuilder.isFinished();
+    }
+    return poolViewBuilder
       .build();
   }
 
@@ -193,11 +197,6 @@ public class RoundController {
       }
     });
     return builder.build();
-  }
-
-  String getColorStatus(Pool pool) {
-    long count = pool.getMatches().parallelStream().filter(match -> !match.isFinished()).count();
-    return pool.getMatches().size() == 0 || count > 0 ? "primary" : "success";
   }
 
   private boolean hasSameTeams(Round round) {
