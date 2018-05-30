@@ -36,7 +36,7 @@
 <div class="row switch-class-js" data-round-id="{{ round.id }}">
   {{#pools}}
   <div class="col-lg-6">
-    <div class="panel panel-{{color}}">
+    <div class="panel {{#isFinished}}panel-success{{/isFinished}}{{^isFinished}}panel-primary{{/isFinished}}">
       <div class="panel-heading">
         <h3 class="panel-title"><a href="/admin/pools/{{id}}" class="btn-block">{{ name }} - Terrain {{ field }}</a>
         </h3>

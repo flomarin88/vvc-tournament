@@ -6,49 +6,37 @@ import java.util.List;
 
 public class PoolView {
 
-    private Long id;
-    private String name;
-    private Integer field;
-    private String color;
-    private List<TeamOverviewView> teams;
+  private final Long id;
+  private final String name;
+  private final Integer field;
+  private final boolean finished;
+  private final List<TeamOverviewView> teams;
 
-    public Long getId() {
-        return id;
-    }
+  public PoolView(Long id, String name, Integer field, boolean finished, List<TeamOverviewView> teams) {
+    this.id = id;
+    this.name = name;
+    this.field = field;
+    this.finished = finished;
+    this.teams = teams;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public Integer getField() {
+    return field;
+  }
 
-    public String getColor() {
-        return color;
-    }
+  public boolean isFinished() {
+    return finished;
+  }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public Integer getField() {
-        return field;
-    }
-
-    public void setField(Integer field) {
-        this.field = field;
-    }
-
-    public List<TeamOverviewView> getTeams() {
-        return teams;
-    }
-
-    public void setTeams(List<TeamOverviewView> teams) {
-        this.teams = teams;
-    }
+  public List<TeamOverviewView> getTeams() {
+    return teams;
+  }
 }

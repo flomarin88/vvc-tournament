@@ -1,4 +1,4 @@
-package org.fmarin.admintournoi.admin.pool;
+ package org.fmarin.admintournoi.admin.pool;
 
 import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.admin.match.Match;
@@ -86,6 +86,10 @@ public class Pool {
       .thenComparing(Ranking::getDifference)
       .thenComparing(Ranking::getPointsFor)
       .reversed();
+  }
+
+  public boolean isFinished() {
+    return matches.parallelStream().filter(match -> !match.isFinished()).count() == 0;
   }
 
   public Long getId() {

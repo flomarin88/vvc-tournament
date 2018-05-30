@@ -8,8 +8,7 @@ public final class PoolDetailViewBuilder {
     private String tournamentName;
     private Long roundId;
     private String roundName;
-    private String color;
-    private String status;
+    private boolean finished;
 
     private PoolDetailViewBuilder() {
     }
@@ -53,18 +52,13 @@ public final class PoolDetailViewBuilder {
         return this;
     }
 
-    public PoolDetailViewBuilder withColor(String color) {
-        this.color = color;
-        return this;
-    }
-
-    public PoolDetailViewBuilder withStatus(String status) {
-        this.status = status;
+    public PoolDetailViewBuilder isFinished() {
+        this.finished = true;
         return this;
     }
 
 
     public PoolDetailView build() {
-        return new PoolDetailView(id, field, name, tournamentId, tournamentName, roundId, roundName, color, status);
+        return new PoolDetailView(id, field, name, tournamentId, tournamentName, roundId, roundName, finished);
     }
 }
