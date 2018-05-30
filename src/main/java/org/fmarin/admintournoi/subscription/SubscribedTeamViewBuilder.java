@@ -1,11 +1,8 @@
 package org.fmarin.admintournoi.subscription;
 
-import java.util.List;
-
 public final class SubscribedTeamViewBuilder {
   private Integer index;
   private String name;
-  private List<String> players;
 
   private SubscribedTeamViewBuilder() {
   }
@@ -24,12 +21,7 @@ public final class SubscribedTeamViewBuilder {
     return this;
   }
 
-  public SubscribedTeamViewBuilder withPlayers(List<String> players) {
-    this.players = players;
-    return this;
-  }
-
   public SubscribedTeamView build() {
-    return new SubscribedTeamView(index, name, players);
+    return new SubscribedTeamView(index, name);
   }
 }
