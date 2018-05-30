@@ -89,7 +89,7 @@ public class Pool {
   }
 
   public boolean isFinished() {
-    return matches.parallelStream().filter(match -> !match.isFinished()).count() == 0;
+    return !matches.isEmpty() && matches.parallelStream().allMatch(Match::isFinished);
   }
 
   public Long getId() {

@@ -116,6 +116,14 @@ public class RoundController {
     return new ModelAndView("redirect:/admin/rounds/" + roundId + "/matches/papers");
   }
 
+  @GetMapping("/rounds/{roundId}/finish")
+  public ModelAndView finishRound(@PathVariable(name = "roundId") Long roundId) {
+    Round round = roundRepository.findOne(roundId);
+    round.setStatus(RoundStatus.FINISHED);
+    roundRepository.save(round);
+    return new ModelAndView("redirect:/admin/tournaments/" + round.getTournament().getId() + "/rounds");
+  }
+
   @GetMapping("/rounds/{roundId}/matches/generate")
   public ModelAndView generateMatchResults(@PathVariable(name = "roundId") Long roundId) {
     generatorService.generateMatchResults(roundId);

@@ -130,6 +130,18 @@ public class PoolUTest {
   }
 
   @Test
+  public void isFinished_return_false_when_no_match() {
+    // Given
+    Pool pool = PoolBuilder.aPool().build();
+
+    // When
+    boolean result = pool.isFinished();
+
+    // Then
+    assertThat(result).isFalse();
+  }
+
+  @Test
   public void isFinished_return_false_when_a_match_is_not_finished() {
       // Given
     Pool pool = PoolBuilder.aPool()
