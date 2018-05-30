@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.fmarin.admintournoi.subscription.SubscribedTeamViewBuilder.*;
+import static org.fmarin.admintournoi.subscription.TeamsByTournamentViewBuilder.*;
+
 @RestController
 @RequestMapping("/subscriptions")
 public class SubscriptionController extends LayoutController {
@@ -119,24 +122,22 @@ public class SubscriptionController extends LayoutController {
     return key + value.toString();
   }
 
-
   private TeamsByTournamentView build(Tournament tournament) {
     List<SubscribedTeamView> teams = Streams.mapWithIndex(
       tournament.getSubscribedTeams().stream()
         .sorted(Comparator.comparing(Team::getCreatedAt)),
       (team, index) -> build(index + 1, team))
       .collect(Collectors.toList());
-    return TeamsByTournamentViewBuilder.aView()
+    return aView()
       .withName(tournament.getFullName())
       .withTeams(teams)
       .build();
   }
 
   private SubscribedTeamView build(Long index, Team team) {
-    return SubscribedTeamViewBuilder.aTeam()
+    return aTeam()
       .withIndex(index.intValue())
       .withName(team.getName())
-      .withPlayers(Lists.newArrayList(team.getCaptainName(), team.getPlayer2Name(), team.getPlayer3Name()))
       .build();
   }
 }
