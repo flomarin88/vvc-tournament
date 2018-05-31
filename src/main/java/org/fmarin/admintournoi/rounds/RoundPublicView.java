@@ -46,4 +46,14 @@ public class RoundPublicView {
   public int hashCode() {
     return Objects.hash(branch, name, disabled);
   }
+
+  @Override
+  public String toString() {
+    return "RoundPublicView{" +
+      "branch='" + branch + '\'' +
+      ", color='" + color + '\'' +
+      ", name='" + name + '\'' +
+      ", disabled=" + disabled +
+      '}';
+  }
 }

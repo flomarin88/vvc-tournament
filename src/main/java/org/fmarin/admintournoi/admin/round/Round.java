@@ -94,6 +94,10 @@ public class Round {
     return rankingsByPool;
   }
 
+  public String getFullName() {
+    return branch.getLabel() + " - " + name;
+  }
+
   public boolean isStarted() {
     return RoundStatus.STARTED.equals(status);
   }

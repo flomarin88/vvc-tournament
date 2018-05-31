@@ -49,8 +49,8 @@ public class RoundPublicController {
     model.put("tournamentName", tournament.getFullName());
     List<Round> startedRounds = roundRepository.findAllByTournamentAndStatus(tournament, RoundStatus.STARTED);
     List<RoundPublicView> roundViews = Arrays.stream(TournamentBranch.values())
-      .map(branch -> getRound(startedRounds, branch).map(round -> new RoundPublicView(branch.getLabel().toLowerCase(), branch.getColor(), round.getName(), false))
-        .orElseGet(() -> new RoundPublicView(branch.getLabel().toLowerCase(), branch.getColor(), "Aucun tour", true))).collect(Collectors.toList());
+      .map(branch -> getRound(startedRounds, branch).map(round -> new RoundPublicView(branch.name().toLowerCase(), branch.getColor(), round.getFullName(), false))
+        .orElseGet(() -> new RoundPublicView(branch.name().toLowerCase(), branch.getColor(), branch.getLabel() + " - Aucun tour", true))).collect(Collectors.toList());
     model.put("rounds", roundViews);
     return new ModelAndView("/public/rounds", model);
   }

@@ -17,9 +17,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
-import static org.fmarin.admintournoi.admin.round.TournamentBranch.CONSOLANTE;
-import static org.fmarin.admintournoi.admin.round.TournamentBranch.PRINCIPALE;
-import static org.fmarin.admintournoi.admin.round.TournamentBranch.SUPER_CONSOLANTE;
 import static org.fmarin.admintournoi.subscription.TournamentBuilder.aTournament;
 import static org.mockito.Mockito.when;
 
@@ -51,9 +48,9 @@ public class RoundPublicControllerUTest {
 
     // Then
     List<RoundPublicView> expectedRoundsView = Lists.newArrayList(
-      new RoundPublicView(PRINCIPALE.getLabel(), PRINCIPALE.getColor(), "Aucun tour", true),
-      new RoundPublicView(SUPER_CONSOLANTE.getLabel(), SUPER_CONSOLANTE.getColor(), "Aucun tour", true),
-      new RoundPublicView(CONSOLANTE.getLabel(), CONSOLANTE.getColor(), "Aucun tour", true)
+      new RoundPublicView("principale", "primary", "Principal - Aucun tour", true),
+      new RoundPublicView("super_consolante", "info", "Super Consolante - Aucun tour", true),
+      new RoundPublicView("consolante", "default", "Consolante - Aucun tour", true)
     );
     assertThat(result.getViewName()).isEqualTo("/public/rounds");
     assertThat(result.getModel()).contains(

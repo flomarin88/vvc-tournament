@@ -12,7 +12,12 @@
   {{#rounds}}
   <div class="col-lg-4 col-xs-12">
     <p>
-      <a href="/rounds/{{branch}}" class="btn btn-{{color}} btn-lg btn-block" {{#disabled}}disabled{{/disabled}}>{{name}}</a>
+      {{^disabled}}
+      <a href="/tournaments/{{tournamentId}}/rounds/{{branch}}" class="btn btn-{{color}} btn-lg btn-block">{{name}}</a>
+      {{/disabled}}
+      {{#disabled}}
+      <button class="btn btn-{{color}} btn-lg btn-block" disabled>{{name}}</button>
+      {{/disabled}}
     </p>
   </div>
   {{/rounds}}
