@@ -30,6 +30,7 @@ public class LayoutController {
     Tournament menTournament = tournamentRepository.findByYearAndGender(TimeMachine.now().getYear(), Gender.MEN);
     model.put("subscriptions_opened", menTournament.areSubscriptionsOpened());
     model.put("tournaments_full", womenTournament.isFull() && menTournament.isFull());
+    model.put("event_started", getFeatures().isEventStarted());
     return model;
   }
 

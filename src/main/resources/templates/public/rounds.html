@@ -1,0 +1,27 @@
+{{#layout}}
+
+<ol class="breadcrumb">
+  <li><a href="/tournaments/{{tournamentId}}" class="active">{{tournamentName}}</a></li>
+</ol>
+
+<div class="page-header">
+  <h1>{{tournamentName}}</h1>
+</div>
+
+<div class="row">
+  {{#rounds}}
+  <div class="col-lg-4 col-xs-12">
+    <p>
+      {{^disabled}}
+      <a href="/tournaments/{{tournamentId}}/rounds/{{branch}}" class="btn btn-{{color}} btn-lg btn-block">{{name}}</a>
+      {{/disabled}}
+      {{#disabled}}
+      <button class="btn btn-{{color}} btn-lg btn-block" disabled>{{name}}</button>
+      {{/disabled}}
+    </p>
+  </div>
+  {{/rounds}}
+</div>
+
+{{/layout}}
+{{>layout}}

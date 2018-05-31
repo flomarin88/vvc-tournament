@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface RoundRepository extends CrudRepository<Round, Long> {
 
-    List<Round> findAllByTournament(Tournament tournament);
+  List<Round> findAllByTournament(Tournament tournament);
+
+  List<Round> findAllByTournamentAndStatus(Tournament tournament, RoundStatus status);
 }
