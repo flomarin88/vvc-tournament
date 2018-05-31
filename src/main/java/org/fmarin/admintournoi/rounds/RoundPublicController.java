@@ -52,7 +52,7 @@ public class RoundPublicController {
       .map(branch -> getRound(startedRounds, branch).map(round -> new RoundPublicView(branch.name().toLowerCase(), branch.getColor(), round.getFullName(), false))
         .orElseGet(() -> new RoundPublicView(branch.name().toLowerCase(), branch.getColor(), branch.getLabel() + " - Aucun tour", true))).collect(Collectors.toList());
     model.put("rounds", roundViews);
-    return new ModelAndView("/public/rounds", model);
+    return new ModelAndView("public/rounds", model);
   }
 
   private Optional<Round> getRound(List<Round> startedRounds, TournamentBranch branch) {

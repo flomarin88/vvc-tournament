@@ -52,7 +52,7 @@ public class RoundPublicControllerUTest {
       new RoundPublicView("super_consolante", "info", "Super Consolante - Aucun tour", true),
       new RoundPublicView("consolante", "default", "Consolante - Aucun tour", true)
     );
-    assertThat(result.getViewName()).isEqualTo("/public/rounds");
+    assertThat(result.getViewName()).isEqualTo("public/rounds");
     assertThat(result.getModel()).contains(
       entry("tournamentId", 1L),
       entry("tournamentName", "3x3 Masculin"),
