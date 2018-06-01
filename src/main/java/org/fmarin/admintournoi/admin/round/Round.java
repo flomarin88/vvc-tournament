@@ -23,8 +23,6 @@ import java.util.stream.IntStream;
 @Table(name = "ROUND")
 public class Round {
 
-  public static Integer TEAMS_COUNT_BY_POOL = 3;
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -53,7 +51,7 @@ public class Round {
   @Enumerated(value = EnumType.STRING)
   private RoundType type;
 
-  @OneToMany(mappedBy = "round", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "round", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @Fetch(value = FetchMode.SELECT)
   private List<Pool> pools = Lists.newArrayList();
 
@@ -64,7 +62,7 @@ public class Round {
   private List<Integer> fields;
 
   public void createPools() {
-    Integer poolsCount = teams.size() / TEAMS_COUNT_BY_POOL;
+    Integer poolsCount = teams.size() / type.getTeamsCount();
     this.pools = IntStream.range(0, poolsCount).mapToObj(index ->
       PoolBuilder.aPool()
         .withField(getField(index + 1))

@@ -162,15 +162,18 @@ public class RoundController {
   }
 
   private PoolView convert(Pool pool) {
+    List<TeamOverviewView> teams = Lists.newArrayList(
+      getTeamOverview(pool.getTeam1(), "A", pool),
+      getTeamOverview(pool.getTeam2(), "B", pool)
+    );
+    if (RoundType.POOL.equals(pool.getRound().getType())) {
+      teams.add(getTeamOverview(pool.getTeam3(), "C", pool));
+    }
     PoolViewBuilder poolViewBuilder = aPoolView()
       .withId(pool.getId())
       .withName("Poule " + pool.getPosition())
       .withField(pool.getField())
-      .withTeams(Lists.newArrayList(
-        getTeamOverview(pool.getTeam1(), "A", pool),
-        getTeamOverview(pool.getTeam2(), "B", pool),
-        getTeamOverview(pool.getTeam3(), "C", pool)
-      ));
+      .withTeams(teams);
     if (pool.isFinished()) {
       poolViewBuilder.isFinished();
     }
@@ -216,7 +219,9 @@ public class RoundController {
       }
       teams.add(pool.getTeam1());
       teams.add(pool.getTeam2());
-      teams.add(pool.getTeam3());
+      if (RoundType.POOL.equals(pool.getRound().getType())) {
+        teams.add(pool.getTeam3());
+      }
     }
     return false;
   }

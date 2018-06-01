@@ -49,16 +49,34 @@ public class RoundUTest {
   }
 
   @Test
-  public void createPools() {
+  public void createPools_for_pool_type() {
     // Given
     List<Team> teams = IntStream.range(0, 13).mapToObj(index -> TeamBuilder.aTeam().build()).collect(Collectors.toList());
     round.setTeams(teams);
+    round.setType(RoundType.POOL);
 
     // When
     round.createPools();
 
     // Then
     assertThat(round.getPools()).hasSize(4);
+    assertThat(round.getPools().get(0))
+      .extracting("field", "position", "round")
+      .contains(4, 1, round);
+  }
+
+  @Test
+  public void createPools_for_direct_elimination_type() {
+    // Given
+    List<Team> teams = IntStream.range(0, 16).mapToObj(index -> TeamBuilder.aTeam().build()).collect(Collectors.toList());
+    round.setTeams(teams);
+    round.setType(RoundType.DIRECT_ELIMINATION);
+
+    // When
+    round.createPools();
+
+    // Then
+    assertThat(round.getPools()).hasSize(8);
     assertThat(round.getPools().get(0))
       .extracting("field", "position", "round")
       .contains(4, 1, round);

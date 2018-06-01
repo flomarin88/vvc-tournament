@@ -3,10 +3,7 @@ package org.fmarin.admintournoi.admin.pool;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
-import org.fmarin.admintournoi.admin.round.PreviousRound;
-import org.fmarin.admintournoi.admin.round.Round;
-import org.fmarin.admintournoi.admin.round.RoundRepository;
-import org.fmarin.admintournoi.admin.round.RoundStatus;
+import org.fmarin.admintournoi.admin.round.*;
 import org.fmarin.admintournoi.subscription.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,19 +21,32 @@ public class PoolGenerationService {
 
   private static Integer TEAMS_COUNT_BY_POOL = 3;
 
-  private final PoolRepository poolRepository;
   private final RoundRepository roundRepository;
 
   @Autowired
-  public PoolGenerationService(PoolRepository poolRepository, RoundRepository roundRepository) {
-    this.poolRepository = poolRepository;
+  public PoolGenerationService(RoundRepository roundRepository) {
     this.roundRepository = roundRepository;
   }
 
   @Async
   public void generatePools(Round round) {
     round.createPools();
-    affectTeams(round, groupTeams(round));
+    if (RoundType.POOL.equals(round.getType())) {
+      affectTeams(round, groupTeams(round));
+    }
+    else {
+      List<Ranking> rankings = round.getPreviousRounds().parallelStream()
+        .map(previousRound -> previousRound.getPreviousRound().getRankings())
+        .flatMap(List::stream)
+        .filter(ranking -> round.getTeams().contains(ranking.getTeam()))
+        .collect(Collectors.toList());
+      for (Pool pool : round.getPools()) {
+        pool.addTeam(rankings.remove(0).getTeam());
+        pool.addTeam(rankings.remove(rankings.size() - 1).getTeam());
+      }
+    }
+    round.setStatus(RoundStatus.COMPOSED);
+    roundRepository.save(round);
   }
 
   private void affectTeams(Round round, Map<Integer, List<Team>> teamsMap) {
@@ -57,11 +67,6 @@ public class PoolGenerationService {
     }
     if (retry) {
       generatePools(round);
-    }
-    else {
-      round.getPools().parallelStream().forEach(poolRepository::save);
-      round.setStatus(RoundStatus.COMPOSED);
-      roundRepository.save(round);
     }
   }
 
@@ -139,7 +144,7 @@ public class PoolGenerationService {
   }
 
   private List<Ranking> getPreviousRoundRankings(PreviousRound previousRound) {
-    int malus = previousRound.getPreviousRound().getBranch().getOrder() * Round.TEAMS_COUNT_BY_POOL;
+    int malus = previousRound.getPreviousRound().getBranch().getOrder() * TEAMS_COUNT_BY_POOL;
     List<Ranking> rankings = previousRound.getPreviousRound().getPools().stream()
       .map(Pool::getRankings)
       .flatMap(List::stream)
