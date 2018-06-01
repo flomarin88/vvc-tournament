@@ -2,16 +2,22 @@ package org.fmarin.admintournoi.admin.round;
 
 public enum RoundType {
 
-    POOL("Poules"),
-    DIRECT_ELIMINATION("Élimination directe");
+  POOL("Poules", 3),
+  DIRECT_ELIMINATION("Élimination directe", 2);
 
-    private String label;
+  private String label;
+  private Integer teamsCount;
 
-    RoundType(String label) {
-        this.label = label;
-    }
+  RoundType(String label, Integer teamsCount) {
+    this.label = label;
+    this.teamsCount = teamsCount;
+  }
 
-    public String getLabel() {
-        return label;
-    }
+  public String getLabel() {
+    return label;
+  }
+
+  public Integer getTeamsCount() {
+    return teamsCount;
+  }
 }
