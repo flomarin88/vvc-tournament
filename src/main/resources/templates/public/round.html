@@ -1,0 +1,40 @@
+{{#layout}}
+
+<ol class="breadcrumb">
+  <li><a href="/tournaments/{{ tournamentId }}/rounds">{{ tournamentName }}</a></li>
+  <li>{{ name }}</li>
+</ol>
+
+<div class="page-header">
+  <h1>{{ name }}</h1>
+  <p class="lead">{{ tournamentName }}</p>
+</div>
+
+<div class="row">
+  {{#pools}}
+  <div class="col-lg-4 col-xs-12">
+    <div class="card theme-pending">
+      <!--<div class="card__face__colored-side"></div>-->
+      <div class="card-header">
+        <h3>{{ field }}</h3>
+        <span class="subtitle">En cours</span>
+      </div>
+      <div class="card-content">
+        <table class="table table-striped table-readable table-centered">
+          <tbody>
+          {{#teams}}
+          <tr>
+            <th scope="row">{{ letter }}</th>
+            <td>{{ name }}</td>
+          </tr>
+          {{/teams}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {{/pools}}
+</div>
+
+{{/layout}}
+{{>layout}}

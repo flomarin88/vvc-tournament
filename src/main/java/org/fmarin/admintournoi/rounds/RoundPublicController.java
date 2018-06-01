@@ -55,8 +55,21 @@ public class RoundPublicController {
     return new ModelAndView("public/rounds", model);
   }
 
-  private Optional<Round> getRound(List<Round> startedRounds, TournamentBranch branch) {
-    return startedRounds.parallelStream().filter(round -> round.getBranch().equals(branch)).findFirst();
+  @GetMapping("/tournaments/{tournamentId}/rounds/{roundBranch}")
+  public ModelAndView getRound(@PathVariable(name = "tournamentId") Long tournamentId, @PathVariable(name = "roundBranch") String roundBranch) {
+    Tournament tournament = tournamentRepository.findOne(tournamentId);
+    Map<String, Object> model = Maps.newHashMap();
+    model.put("tournamentId", tournament.getId());
+    model.put("tournamentName", tournament.getFullName());
+    List<Round> startedRounds = roundRepository.findAllByTournamentAndStatus(tournament, RoundStatus.STARTED);
+    Optional<Round> round = getRound(startedRounds, TournamentBranch.valueOf(roundBranch.toUpperCase()));
+    if (round.isPresent()) {
+      model.put("name", round.get().getFullName());
+      List<PoolView> pools = poolRepository.findAllByRoundOrderByPosition(round.get()).stream()
+        .map(this::convert).collect(Collectors.toList());
+      model.put("pools", pools);
+    }
+    return new ModelAndView("public/round", model);
   }
 
   @GetMapping("/rounds/{roundId}")
@@ -71,6 +84,10 @@ public class RoundPublicController {
     model.put("round", roundMap);
     model.put("pools", pools);
     return new ModelAndView("round_detail_public", model);
+  }
+
+  private Optional<Round> getRound(List<Round> startedRounds, TournamentBranch branch) {
+    return startedRounds.parallelStream().filter(round -> round.getBranch().equals(branch)).findFirst();
   }
 
   private PoolView convert(Pool pool) {
