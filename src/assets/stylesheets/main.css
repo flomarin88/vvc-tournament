@@ -85,3 +85,38 @@ body {
     font-weight: normal;
     color: #626262;
 }
+
+.card {
+    border: 2px #1c3f6f solid;
+    border-radius: 12px;
+    height: 160px;
+    margin-bottom: 15px;
+}
+
+.card-header {
+    color: #FFFFFF;
+    width: 80px;
+    height:90%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    position: absolute;
+}
+
+.card-header h3 {
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.card-header .subtitle {
+    font-style: italic;
+    vertical-align: bottom;
+}
+
+.card.theme-pending .card-header {
+    background: #1c3f6f;
+}
+
+.card.theme-finished .card-header {
+    background: green;
+}
