@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.admin.round;
 
+import org.fmarin.admintournoi.admin.pool.DirectEliminationGenerationService;
 import org.fmarin.admintournoi.admin.pool.PoolGenerationService;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.subscription.Team;
@@ -19,19 +20,27 @@ public class RoundService {
   private final TournamentRepository tournamentRepository;
   private final RoundRepository roundRepository;
   private final PoolGenerationService poolGenerationService;
+  private final DirectEliminationGenerationService directEliminationGenerationService;
 
   @Autowired
   public RoundService(TournamentRepository tournamentRepository,
-                      RoundRepository roundRepository, PoolGenerationService poolGenerationService) {
+                      RoundRepository roundRepository, PoolGenerationService poolGenerationService,
+                      DirectEliminationGenerationService directEliminationGenerationService) {
     this.tournamentRepository = tournamentRepository;
     this.roundRepository = roundRepository;
     this.poolGenerationService = poolGenerationService;
+    this.directEliminationGenerationService = directEliminationGenerationService;
   }
 
   public void create(Long tournamentId, RoundToCreateView roundToCreate) {
     Round round = convert(roundToCreate, tournamentId);
     roundRepository.save(round);
-    poolGenerationService.generatePools(round);
+    if (round.getType().equals(RoundType.POOL)) {
+      poolGenerationService.generatePools(round);
+    }
+    else {
+      directEliminationGenerationService.generatePools(round);
+    }
   }
 
   private Round convert(RoundToCreateView roundToCreate, Long tournamentId) {
