@@ -91,7 +91,7 @@ body {
 }
 
 .card {
-    border: 2px #1c3f6f solid;
+    border: 2px #17335b solid;
     border-radius: 12px;
     height: 160px;
     margin-bottom: 15px;
@@ -102,7 +102,7 @@ body {
 }
 
 .card.theme-finished {
-    border-color: green;
+    border-color: #335b17;
 }
 
 .card-header {
@@ -128,7 +128,7 @@ body {
     border-bottom: 1px solid #cccccc;
     margin: 0px 20px;
     padding: 16px 0;
-    color: #777777;
+    color: #6f6f6f;
 }
 
 .card-content > div:last-child {
@@ -160,5 +160,5 @@ body {
 }
 
 .card.theme-finished .card-header {
-    background: green;
+    background: #3f6f1c;
 }
