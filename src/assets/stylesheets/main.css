@@ -2,6 +2,10 @@ body {
     padding-top: 70px;
 }
 
+.breadcrumb {
+    font-size: 14px;
+}
+
 .form-category {
     padding-top: 8px;
     padding-bottom: 8px;
