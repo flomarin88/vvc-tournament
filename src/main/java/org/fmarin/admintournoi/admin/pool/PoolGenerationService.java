@@ -31,20 +31,7 @@ public class PoolGenerationService {
   @Async
   public void generatePools(Round round) {
     round.createPools();
-    if (RoundType.POOL.equals(round.getType())) {
-      affectTeams(round, groupTeams(round));
-    }
-    else {
-      List<Ranking> rankings = round.getPreviousRounds().parallelStream()
-        .map(previousRound -> previousRound.getPreviousRound().getRankings())
-        .flatMap(List::stream)
-        .filter(ranking -> round.getTeams().contains(ranking.getTeam()))
-        .collect(Collectors.toList());
-      for (Pool pool : round.getPools()) {
-        pool.addTeam(rankings.remove(0).getTeam());
-        pool.addTeam(rankings.remove(rankings.size() - 1).getTeam());
-      }
-    }
+    affectTeams(round, groupTeams(round));
     round.setStatus(RoundStatus.COMPOSED);
     roundRepository.save(round);
   }

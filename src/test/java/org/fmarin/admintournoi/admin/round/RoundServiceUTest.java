@@ -47,7 +47,7 @@ public class RoundServiceUTest {
 
   @Before
   public void setUp() {
-    service = new RoundService(mockedTournamentRepository, mockedRoundRepository, mockedPoolGenerationService);
+    service = new RoundService(mockedTournamentRepository, mockedRoundRepository, mockedPoolGenerationService, null);
 
     view = new RoundToCreateView();
     view.setName("Tour 1");
