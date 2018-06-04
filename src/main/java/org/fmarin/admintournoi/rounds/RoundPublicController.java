@@ -10,6 +10,7 @@ import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.fmarin.admintournoi.admin.round.RoundStatus;
 import org.fmarin.admintournoi.admin.round.TournamentBranch;
+import org.fmarin.admintournoi.admin.team.TeamOverviewView;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.fmarin.admintournoi.subscription.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,30 +73,24 @@ public class RoundPublicController {
     return new ModelAndView("public/round", model);
   }
 
-  @GetMapping("/rounds/{roundId}")
-  public ModelAndView getRound(@PathVariable(name = "roundId") Long roundId) {
-    Round round = roundRepository.findOne(roundId);
-    List<PoolView> pools = poolRepository.findAllByRoundOrderByPosition(round).stream()
-      .map(this::convert).collect(Collectors.toList());
-    Map<String, Object> model = Maps.newHashMap();
-    Map<String, Object> roundMap = Maps.newHashMap();
-    roundMap.put("name", round.getBranch().getLabel() + " / " + round.getName());
-    roundMap.put("tournamentName", round.getTournament().getFullName());
-    model.put("round", roundMap);
-    model.put("pools", pools);
-    return new ModelAndView("round_detail_public", model);
-  }
-
   private Optional<Round> getRound(List<Round> startedRounds, TournamentBranch branch) {
     return startedRounds.parallelStream().filter(round -> round.getBranch().equals(branch)).findFirst();
   }
 
   private PoolView convert(Pool pool) {
-    return PoolViewBuilder.aPoolView()
-      .withId(pool.getId())
-      .withName("Poule " + pool.getPosition())
-      .withField(pool.getField())
-      .withTeams(Lists.newArrayList(
+    PoolViewBuilder builder = PoolViewBuilder.aPoolView()
+      .withField(pool.getField());
+    if (pool.isFinished()) {
+      List<TeamOverviewView> teams = pool.getRankings().stream().map(ranking ->
+        aTeamOverviewView()
+          .withName(ranking.getTeam().getName())
+          .withLetter(ranking.getPosition().toString())
+          .build()).collect(Collectors.toList());
+      builder.isFinished()
+        .withTeams(teams)
+        .build();
+    } else {
+      builder.withTeams(Lists.newArrayList(
         aTeamOverviewView()
           .withName(pool.getTeam1().getName())
           .withLetter("A")
@@ -108,7 +103,8 @@ public class RoundPublicController {
           .withName(pool.getTeam3().getName())
           .withLetter("C")
           .build()
-      ))
-      .build();
+      ));
+    }
+    return builder.build();
   }
 }
