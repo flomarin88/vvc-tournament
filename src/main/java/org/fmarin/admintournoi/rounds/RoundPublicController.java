@@ -6,10 +6,7 @@ import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolRepository;
 import org.fmarin.admintournoi.admin.pool.PoolView;
 import org.fmarin.admintournoi.admin.pool.PoolViewBuilder;
-import org.fmarin.admintournoi.admin.round.Round;
-import org.fmarin.admintournoi.admin.round.RoundRepository;
-import org.fmarin.admintournoi.admin.round.RoundStatus;
-import org.fmarin.admintournoi.admin.round.TournamentBranch;
+import org.fmarin.admintournoi.admin.round.*;
 import org.fmarin.admintournoi.admin.team.TeamOverviewView;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.fmarin.admintournoi.subscription.TournamentRepository;
@@ -19,10 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.fmarin.admintournoi.admin.team.TeamOverviewViewBuilder.aTeamOverviewView;
@@ -80,17 +74,16 @@ public class RoundPublicController {
   private PoolView convert(Pool pool) {
     PoolViewBuilder builder = PoolViewBuilder.aPoolView()
       .withField(pool.getField());
+    List<TeamOverviewView> teams;
     if (pool.isFinished()) {
-      List<TeamOverviewView> teams = pool.getRankings().stream().map(ranking ->
+      teams = pool.getRankings().stream().map(ranking ->
         aTeamOverviewView()
           .withName(ranking.getTeam().getName())
           .withLetter(ranking.getPosition().toString())
           .build()).collect(Collectors.toList());
-      builder.isFinished()
-        .withTeams(teams)
-        .build();
+      builder.isFinished();
     } else {
-      builder.withTeams(Lists.newArrayList(
+      teams = Lists.newArrayList(
         aTeamOverviewView()
           .withName(pool.getTeam1().getName())
           .withLetter("A")
@@ -98,13 +91,15 @@ public class RoundPublicController {
         aTeamOverviewView()
           .withName(pool.getTeam2().getName())
           .withLetter("B")
-          .build(),
-        aTeamOverviewView()
+          .build());
+      if (RoundType.POOL.equals(pool.getRound().getType())) {
+        teams.add(aTeamOverviewView()
           .withName(pool.getTeam3().getName())
           .withLetter("C")
-          .build()
-      ));
+          .build());
+      }
     }
+    builder.withTeams(teams);
     return builder.build();
   }
 }

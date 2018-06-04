@@ -87,7 +87,11 @@ public class Round {
       .map(Pool::getRankings)
       .flatMap(List::stream)
       .collect(Collectors.toList());
-    rankingsByPool.sort(rankingComparator());
+    if (RoundType.POOL.equals(type)) {
+      rankingsByPool.sort(poolRankingComparator());
+    } else {
+      rankingsByPool.sort(directEliminationRankingComparator());
+    }
     updatePosition(rankingsByPool);
     return rankingsByPool;
   }
@@ -165,6 +169,7 @@ public class Round {
   }
 
   public List<Pool> getPools() {
+    pools.sort(Comparator.comparing(Pool::getPosition));
     return pools;
   }
 
@@ -214,14 +219,26 @@ public class Round {
     return Objects.hash(id);
   }
 
-  private Comparator<Ranking> rankingComparator() {
+  private Comparator<Ranking> poolRankingComparator() {
     return Comparator.comparing(Ranking::getPosition)
       .thenComparing(Pool.rankingComparator());
+  }
+
+  private Comparator<Ranking> directEliminationRankingComparator() {
+    return Comparator.comparing(Ranking::getPosition)
+      .thenComparing(o -> getPool(o.getTeam()).getPosition());
   }
 
   private void updatePosition(List<Ranking> rankingsOrdered) {
     for (int i = 0; i < rankingsOrdered.size(); i++) {
       rankingsOrdered.get(i).setPosition(i + 1);
     }
+  }
+
+  private Pool getPool(Team team) {
+    return pools.parallelStream()
+      .filter(pool -> pool.getTeam1().equals(team) || pool.getTeam2().equals(team))
+      .findAny()
+      .get();
   }
 }

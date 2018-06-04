@@ -6,6 +6,7 @@ import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.admin.round.Round;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.fmarin.admintournoi.admin.round.RoundStatus;
+import org.fmarin.admintournoi.admin.round.RoundType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -38,10 +39,18 @@ public class DirectEliminationGenerationService {
   }
 
   void affectTeams(Round round, List<Ranking> rankings) {
-    for (int i = 0; i < round.getPools().size(); i++) {
-      Pool pool = get(round, i);
-      pool.addTeam(rankings.remove(0).getTeam());
-      pool.addTeam(rankings.remove(rankings.size() - 1).getTeam());
+    if (isPreviousDirectElim(round)) {
+      round.getPools().forEach(pool -> {
+        pool.addTeam(rankings.remove(0).getTeam());
+        pool.addTeam(rankings.remove(0).getTeam());
+      });
+    }
+    else {
+      for (int i = 0; i < round.getPools().size(); i++) {
+        Pool pool = get(round, i);
+        pool.addTeam(rankings.remove(0).getTeam());
+        pool.addTeam(rankings.remove(rankings.size() - 1).getTeam());
+      }
     }
   }
 
@@ -65,5 +74,10 @@ public class DirectEliminationGenerationService {
     repartition.put(4, QUARTER);
     repartition.put(8, EIGHTH);
     return repartition;
+  }
+
+  private boolean isPreviousDirectElim(Round round) {
+    return round.getPreviousRounds().parallelStream()
+      .allMatch(previousRound -> RoundType.DIRECT_ELIMINATION.equals(previousRound.getPreviousRound().getType()));
   }
 }

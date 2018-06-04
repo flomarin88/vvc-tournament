@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.assertj.core.groups.Tuple;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.round.Round;
+import org.fmarin.admintournoi.admin.round.RoundType;
 import org.fmarin.admintournoi.subscription.TeamBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,7 @@ public class MatchGenerationServiceUTest {
   @Test
   public void generatePoolMatches_should_generate_3_matches_AB_AC_BC() {
     // Given
-    Pool pool = aPool()
+    Pool pool = aPool().withRound(aRound().withType(RoundType.POOL).build())
       .withTeam1(TeamBuilder.aTeam().withName("A").build())
       .withTeam2(TeamBuilder.aTeam().withName("B").build())
       .withTeam3(TeamBuilder.aTeam().withName("C").build())
@@ -45,14 +46,17 @@ public class MatchGenerationServiceUTest {
   public void generate_should_return_matches_for_each_pool() {
     // Given
     Round round = aRound()
+      .withType(RoundType.POOL)
       .withFieldRanges("1-2")
       .withPools(Lists.newArrayList(
         aPool()
+          .withPosition(1)
           .withTeam1(TeamBuilder.aTeam().withName("A1").build())
           .withTeam2(TeamBuilder.aTeam().withName("B1").build())
           .withTeam3(TeamBuilder.aTeam().withName("C1").build())
           .build(),
         aPool()
+          .withPosition(2)
           .withTeam1(TeamBuilder.aTeam().withName("A2").build())
           .withTeam2(TeamBuilder.aTeam().withName("B2").build())
           .withTeam3(TeamBuilder.aTeam().withName("C2").build())
