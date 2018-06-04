@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.admin.pool;
 
+import org.assertj.core.util.Lists;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.admin.ranking.RankingBuilder;
 import org.fmarin.admintournoi.admin.round.Round;
@@ -17,6 +18,7 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
+import static org.fmarin.admintournoi.admin.round.PreviousRoundBuilder.aPreviousRound;
 import static org.fmarin.admintournoi.admin.round.RoundBuilder.aRound;
 import static org.fmarin.admintournoi.subscription.TeamBuilder.aTeam;
 
@@ -101,6 +103,8 @@ public class DirectEliminationGenerationServiceUTest {
   private Round createRound(List<Pool> pools) {
     return aRound()
       .withType(RoundType.DIRECT_ELIMINATION)
+      .withPreviousRounds(Lists.newArrayList(
+        aPreviousRound().withPreviousRound(aRound().withType(RoundType.POOL).build()).build()))
       .withPools(pools)
       .build();
   }

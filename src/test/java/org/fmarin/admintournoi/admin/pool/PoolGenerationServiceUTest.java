@@ -157,7 +157,7 @@ public class PoolGenerationServiceUTest {
   @Test
   public void getPool() {
     // Given
-    List<Pool> pools = LongStream.range(0, 16).mapToObj(index -> PoolBuilder.aPool().withId(index).build()).collect(Collectors.toList());
+    List<Pool> pools = LongStream.range(0, 16).mapToObj(index -> PoolBuilder.aPool().withId(index).withPosition((int) index).build()).collect(Collectors.toList());
     Round round = RoundBuilder.aRound().withFieldRanges("1-4").withPools(pools).build();
 
     // When

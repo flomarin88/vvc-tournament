@@ -88,6 +88,7 @@ public final class RoundBuilder {
     round.setStatus(status);
     round.setFieldRanges(fieldRanges);
     round.setPreviousRounds(previousRounds);
+    pools.forEach(pool -> pool.setRound(round));
     previousRounds.forEach(previousRound -> previousRound.setRound(round));
     return round;
   }

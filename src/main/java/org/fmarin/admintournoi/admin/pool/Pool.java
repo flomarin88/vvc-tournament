@@ -188,5 +188,4 @@ public class Pool {
   private Ranking get(Map<Team, Ranking> rankings, Team team) {
     return rankings.computeIfAbsent(team, Ranking::new);
   }
-
 }
