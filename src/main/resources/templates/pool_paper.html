@@ -32,7 +32,7 @@
       </div>
       <div class="row">
         <div class="col-lg-6 pool-field">
-          <span>MATCH <strong>{{ pool }}</strong></span>
+          <span>POULE <strong>{{ pool }}</strong></span>
         </div>
         <div class="col-lg-6 pool-field">
           <span>TERRAIN <strong>{{ field }}</strong></span>
@@ -41,18 +41,35 @@
       <div class="row">
         <p class="lead">1 Set de 25 points (2 points d'écarts)</p>
       </div>
+      <div class="row team-list">
+        <p>Équipe A : <strong>{{ teamA }}</strong></p>
+        <p>Équipe B : <strong>{{ teamB }}</strong></p>
+        <p>Équipe C : <strong>{{ teamC }}</strong></p>
+      </div>
       <div class="row">
         <table class="table table-bordered">
           <thead>
           <tr>
-            <th>{{ teamA }}</th>
-            <th>{{ teamB }}</th>
+            <th>EQUIPE 1</th>
+            <th>EQUIPE 2</th>
+            <th>ARBITRE</th>
           </tr>
           </thead>
           <tbody>
           <tr>
-            <td></td>
-            <td></td>
+            <td>A</td>
+            <td>C</td>
+            <td>B<br/><strong>Score final</strong></td>
+          </tr>
+          <tr>
+            <td>B</td>
+            <td>C</td>
+            <td>A<br/><strong>Score final</strong></td>
+          </tr>
+          <tr>
+            <td>A</td>
+            <td>B</td>
+            <td>C<br/><strong>Score final</strong></td>
           </tr>
           </tbody>
         </table>
