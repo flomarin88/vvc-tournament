@@ -4,8 +4,8 @@
   <h1>Dashboard</h1>
 </div>
 
-{{#checkin_enabled}}
 <div class="row">
+{{#women_full}}
   <div class="col-lg-3 col-xs-12">
     <div class="tile-stats">
       <div class="icon"><i class="fa fa-female"></i></div>
@@ -14,18 +14,8 @@
       <p>Tournoi féminin</p>
     </div>
   </div>
-  <div class="col-lg-3 col-xs-12">
-    <div class="tile-stats">
-      <div class="icon"><i class="fa fa-male"></i></div>
-      <div class="count">{{ men_teams_checked }} <span class="subcount">/ {{ men_teams_limit }}</span></div>
-      <h3><a href="/admin/tournaments/{{men_tournament_id}}/checkin">Présences</a></h3>
-      <p>Tournoi masculin</p>
-    </div>
-  </div>
-</div>
-{{/checkin_enabled}}
-
-<div class="row">
+{{/women_full}}
+{{^women_full}}
   <div class="col-lg-3 col-xs-12">
     <div class="tile-stats">
       <div class="icon"><i class="fa fa-female"></i></div>
@@ -34,6 +24,18 @@
       <p>Tournoi féminin</p>
     </div>
   </div>
+{{/women_full}}
+{{#men_full}}
+  <div class="col-lg-3 col-xs-12">
+    <div class="tile-stats">
+      <div class="icon"><i class="fa fa-male"></i></div>
+      <div class="count">{{ men_teams_checked }} <span class="subcount">/ {{ men_teams_limit }}</span></div>
+      <h3><a href="/admin/tournaments/{{men_tournament_id}}/checkin">Présences</a></h3>
+      <p>Tournoi masculin</p>
+    </div>
+  </div>
+{{/men_full}}
+{{^men_full}}
   <div class="col-lg-3 col-xs-12">
     <div class="tile-stats">
       <div class="icon"><i class="fa fa-male"></i></div>
@@ -42,6 +44,8 @@
       <p>Tournoi masculin</p>
     </div>
   </div>
+{{/men_full}}
+{{#show_paypal}}
   <div class="col-lg-6 col-xs-12">
     <div class="tile-stats">
       <div class="icon"><i class="fa fa-paypal"></i></div>
@@ -50,6 +54,7 @@
       <p>Total des ventes</p>
     </div>
   </div>
+{{/show_paypal}}
 </div>
 
 {{/admin_layout}}

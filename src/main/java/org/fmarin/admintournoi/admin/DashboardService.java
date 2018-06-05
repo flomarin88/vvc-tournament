@@ -35,6 +35,7 @@ public class DashboardService {
     Map<String, Object> result = Maps.newHashMap();
     result.putAll(getCurrentStats(menTournament));
     result.putAll(getCurrentStats(womenTournament));
+    result.put("show_paypal", !menTournament.isFull() || !womenTournament.isFull());
     result.put("paypal_sales_total", getPaypalSalesTotal(menTournament, womenTournament));
     result.put("checkin_enabled", featureManager.isCheckinEnabled());
     return result;
@@ -47,6 +48,7 @@ public class DashboardService {
     result.put(prefix + "_teams_limit", tournament.getTeamLimit());
     result.put(prefix + "_teams_subscribed", tournament.getSubscribedTeams().size());
     result.put(prefix + "_teams_checked", tournament.getPresentTeamsCount());
+    result.put(prefix + "_full", tournament.isFull());
     return result;
   }
 

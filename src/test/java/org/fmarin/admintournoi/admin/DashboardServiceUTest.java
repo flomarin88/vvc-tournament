@@ -74,7 +74,10 @@ public class DashboardServiceUTest {
       entry("paypal_sales_total", "158,15 €"),
       entry("men_tournament_id", 1L),
       entry("women_tournament_id", 2L),
-      entry("checkin_enabled", false)
+      entry("checkin_enabled", false),
+      entry("women_full", false),
+      entry("men_full", false),
+      entry("show_paypal", true)
     );
   }
 
