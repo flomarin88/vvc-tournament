@@ -5,6 +5,7 @@ import org.fmarin.admintournoi.admin.match.Match;
 import org.fmarin.admintournoi.admin.match.MatchStatus;
 import org.fmarin.admintournoi.admin.ranking.Ranking;
 import org.fmarin.admintournoi.admin.round.Round;
+import org.fmarin.admintournoi.admin.round.RoundType;
 import org.fmarin.admintournoi.subscription.Team;
 
 import javax.persistence.*;
@@ -40,6 +41,15 @@ public class Pool {
 
   @OneToMany(mappedBy = "pool", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<Match> matches = new ArrayList<>();
+
+  public String getFullName() {
+    if (RoundType.POOL.equals(round.getType())) {
+      return "Poule " + position;
+    }
+    else {
+      return "Match " + position;
+    }
+  }
 
   public void addTeam(Team team) {
     if (team1 == null) {

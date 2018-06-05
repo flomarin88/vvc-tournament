@@ -150,7 +150,7 @@ public class RoundController {
     String previousRoundLabel = String.join(" / ", round.getPreviousRounds().stream().map(PreviousRound::getLabel).collect(Collectors.toList()));
     return RoundListViewBuilder.aRoundListView()
       .withId(round.getId())
-      .withName(round.getBranch().getLabel() + " - " + round.getName())
+      .withName(round.getFullName())
       .withType(round.getType().getLabel())
       .withPreviousRoundName(previousRoundLabel)
       .withTeamsCount(round.getTeams().size())
@@ -171,7 +171,7 @@ public class RoundController {
     }
     PoolViewBuilder poolViewBuilder = aPoolView()
       .withId(pool.getId())
-      .withName("Poule " + pool.getPosition())
+      .withName(pool.getFullName())
       .withField(pool.getField())
       .withTeams(teams);
     if (pool.isFinished()) {

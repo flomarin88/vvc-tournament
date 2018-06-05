@@ -37,12 +37,12 @@ public class PoolController {
 
     PoolDetailViewBuilder poolDetailViewBuilder = aPoolDetailView()
       .withId(pool.getId())
-      .withName("Poule " + pool.getPosition())
+      .withName(pool.getFullName())
       .withField(pool.getField())
       .withTournamentId(tournament.getId())
       .withTournamentName(tournament.getFullName())
       .withRoundId(round.getId())
-      .withRoundName(round.getBranch().getLabel() + " - " + round.getName());
+      .withRoundName(round.getFullName());
     if (pool.isFinished()) {
       poolDetailViewBuilder.isFinished();
     }
