@@ -1,5 +1,6 @@
 package org.fmarin.admintournoi.admin.round;
 
+import com.google.common.collect.Lists;
 import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamBuilder;
 import org.junit.Test;
@@ -11,11 +12,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.fmarin.admintournoi.admin.round.PreviousRoundBuilder.aPreviousRound;
+import static org.fmarin.admintournoi.admin.round.RoundBuilder.aRound;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoundUTest {
 
-  private Round round = RoundBuilder.aRound().withFieldRanges("4-11;20-22").build();
+  private Round round = aRound().withFieldRanges("4-11;20-22").build();
 
   @Test
   public void getFields() {
@@ -80,5 +83,47 @@ public class RoundUTest {
     assertThat(round.getPools().get(0))
       .extracting("field", "position", "round")
       .contains(4, 1, round);
+  }
+
+  @Test
+  public void getLevel_returns_0_without_previous_round() {
+    // Given
+    Round round = aRound().build();
+
+    // When
+    Integer result = round.getLevel();
+
+    // Then
+    assertThat(result).isEqualTo(0);
+  }
+
+  @Test
+  public void getLevel_returns_1_with_one_previous_round() {
+    // Given
+    Round round = aRound().withPreviousRounds(Lists.newArrayList(
+      aPreviousRound().withPreviousRound(aRound().build()).build()
+    )).build();
+
+    // When
+    Integer result = round.getLevel();
+
+    // Then
+    assertThat(result).isEqualTo(1);
+  }
+
+  @Test
+  public void getLevel_returns_2_with_2_previous_round() {
+    // Given
+    Round round = aRound().withPreviousRounds(Lists.newArrayList(
+      aPreviousRound().withPreviousRound(aRound().withPreviousRounds(Lists.newArrayList(
+        aPreviousRound().withPreviousRound(aRound().build()).build()
+      )).build()).build()
+    )).build();
+
+    // When
+    Integer result = round.getLevel();
+
+    // Then
+    assertThat(result).isEqualTo(2);
   }
 }

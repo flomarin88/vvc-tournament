@@ -24,10 +24,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static org.fmarin.admintournoi.admin.pool.PoolViewBuilder.aPoolView;
 import static org.fmarin.admintournoi.admin.team.TeamOverviewViewBuilder.aTeamOverviewView;
 
@@ -66,11 +69,13 @@ public class RoundController {
   @GetMapping("/tournaments/{tournamentId}/rounds")
   public ModelAndView index(@PathVariable(name = "tournamentId") Long tournamentId) {
     Tournament tournament = tournamentRepository.findOne(tournamentId);
-    List<RoundListView> rounds = roundRepository.findAllByTournament(tournament).stream()
-      .map(this::convertListItem).collect(Collectors.toList());
+    LinkedHashMap<Integer, List<RoundListView>> rounds = roundRepository.findAllByTournament(tournament)
+      .parallelStream()
+      .sorted(Comparator.comparing(Round::getLevel).reversed().thenComparing(round -> round.getBranch().getOrder()))
+      .collect(Collectors.groupingBy(Round::getLevel, LinkedHashMap::new, Collectors.mapping(this::convertListItem, toList())));
     Map<String, Object> model = Maps.newHashMap();
     model.put("tournament", tournament);
-    model.put("rounds", rounds);
+    model.put("rounds", rounds.entrySet());
     return new ModelAndView("round_index", model);
   }
 
@@ -96,7 +101,7 @@ public class RoundController {
     Round round = roundRepository.findOne(roundId);
     RoundListView roundDetail = convertListItem(round);
     List<PoolView> pools = poolRepository.findAllByRoundOrderByPosition(round).stream()
-      .map(this::convert).collect(Collectors.toList());
+      .map(this::convert).collect(toList());
     Map<String, Object> model = Maps.newHashMap();
     model.put("round", roundDetail);
     model.put("pools", pools);
@@ -147,10 +152,10 @@ public class RoundController {
   }
 
   RoundListView convertListItem(Round round) {
-    String previousRoundLabel = String.join(" / ", round.getPreviousRounds().stream().map(PreviousRound::getLabel).collect(Collectors.toList()));
+    String previousRoundLabel = String.join(" / ", round.getPreviousRounds().stream().map(PreviousRound::getLabel).collect(toList()));
     return RoundListViewBuilder.aRoundListView()
       .withId(round.getId())
-      .withName(round.getFullName())
+      .withName(round.getName())
       .withType(round.getType().getLabel())
       .withPreviousRoundName(previousRoundLabel)
       .withTeamsCount(round.getTeams().size())
