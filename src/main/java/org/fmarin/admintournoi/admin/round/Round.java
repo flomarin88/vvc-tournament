@@ -12,10 +12,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -94,6 +91,11 @@ public class Round {
     }
     updatePosition(rankingsByPool);
     return rankingsByPool;
+  }
+
+  public Integer getLevel() {
+    OptionalInt level = previousRounds.parallelStream().mapToInt(value -> 1 + value.getPreviousRound().getLevel()).max();
+    return level.orElse(0);
   }
 
   public String getFullName() {

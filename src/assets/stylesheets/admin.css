@@ -153,3 +153,62 @@ body {
     background-color: #e7e7e7;
     border-color: #cccccc;
 }
+
+.round-card {
+    border: 2px #1c3f6f solid;
+    border-radius: 5px;
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.round-card-sidebar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1c3f6f;
+    color: #FFFFFF;
+    overflow: hidden;
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+.round-card-sidebar > span {
+    transform: rotate(-90deg);
+    white-space: nowrap;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.round-card-content {
+    flex-grow: 8;
+    display: flex;
+    flex-direction: column;
+}
+
+.round-card-header {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #1C3F6F;
+    padding: 5px 0;
+    margin: 0 20px;
+    align-items: center;
+}
+
+.round-card-header .title {
+    color: #1C3F6F;
+    font-size: 20px;
+    font-weight: bold;
+    flex: 1 100%;
+    text-align: center;
+}
+
+.round-card-header .status {
+    color: #CCCCCC;
+    font-size: 12px;
+    font-style: italic;
+    align-self: flex-end;
+}
+
+.stats {
+    flex-grow: 4;
+}
