@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import org.fmarin.admintournoi.admin.pool.Pool;
 import org.fmarin.admintournoi.admin.pool.PoolRepository;
 import org.fmarin.admintournoi.admin.round.Round;
-import org.fmarin.admintournoi.admin.round.RoundListView;
 import org.fmarin.admintournoi.admin.round.RoundRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
-
-import static org.fmarin.admintournoi.admin.round.RoundListViewBuilder.aRoundListView;
 
 @RestController
 @RequestMapping("/admin")
@@ -41,13 +38,7 @@ public class RankingController {
   public ModelAndView getRoundRankings(@PathVariable(name = "id") Long roundId) {
     Round round = roundRepository.findOne(roundId);
     Map<String, Object> model = Maps.newHashMap();
-    RoundListView roundView = aRoundListView()
-      .withId(roundId)
-      .withName(round.getBranch().getLabel() + " - " + round.getName())
-      .withTournamentId(round.getTournament().getId())
-      .withTournamentName(round.getTournament().getFullName())
-      .build();
-    model.put("round", roundView);
+    model.put("tournament", round.getTournament());
     model.put("rankings", round.getRankings());
     return new ModelAndView("rankings", model);
   }

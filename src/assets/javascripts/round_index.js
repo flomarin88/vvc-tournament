@@ -1,4 +1,4 @@
-$(".clickable-row").on('click', function (event) {
-    var roundId = $(event.target).parents('tr').data('id');
+$('.round-card').on('click', function (event) {
+    var roundId = $(event.target).closest('.round-card').data('id');
     window.location = '/admin/rounds/' + roundId;
 });

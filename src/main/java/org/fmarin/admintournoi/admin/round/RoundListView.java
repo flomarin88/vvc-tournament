@@ -2,89 +2,103 @@ package org.fmarin.admintournoi.admin.round;
 
 public class RoundListView {
 
-    private Long id;
-    private String name;
-    private String type;
-    private String previousRoundName;
-    private String tournamentName;
-    private Long tournamentId;
-    private int teamsCount;
-    private String status;
-    private boolean validated;
+  private Long id;
+  private String branch;
+  private String branchColor;
+  private String name;
+  private String status;
+  private String typeLabel;
+  private String typeValue;
+  private String fields;
+  private String typeLast;
+  private String fieldsLast;
+  private String teams;
 
-    public RoundListView() {
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public String getBranch() {
+    return branch;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setBranch(String branch) {
+    this.branch = branch;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getBranchColor() {
+    return branchColor;
+  }
 
-    public String getType() {
-        return type;
-    }
+  public void setBranchColor(String branchColor) {
+    this.branchColor = branchColor;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getPreviousRoundName() {
-        return previousRoundName;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setPreviousRoundName(String previousRoundName) {
-        this.previousRoundName = previousRoundName;
-    }
+  public String getStatus() {
+    return status;
+  }
 
-    public int getTeamsCount() {
-        return teamsCount;
-    }
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
-    public void setTeamsCount(int teamsCount) {
-        this.teamsCount = teamsCount;
-    }
+  public String getTypeLabel() {
+    return typeLabel;
+  }
 
-    public String getStatus() {
-        return status;
-    }
+  public void setTypeLabel(String typeLabel) {
+    this.typeLabel = typeLabel;
+  }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+  public String getTypeValue() {
+    return typeValue;
+  }
 
-    public String getTournamentName() {
-        return tournamentName;
-    }
+  public void setTypeValue(String typeValue) {
+    this.typeValue = typeValue;
+  }
 
-    public void setTournamentName(String tournamentName) {
-        this.tournamentName = tournamentName;
-    }
+  public String getFields() {
+    return fields;
+  }
 
-    public boolean isValidated() {
-        return validated;
-    }
+  public void setFields(String fields) {
+    this.fields = fields;
+  }
 
-    public void setValidated(boolean validated) {
-        this.validated = validated;
-    }
+  public String getTypeLast() {
+    return typeLast;
+  }
 
-    public Long getTournamentId() {
-        return tournamentId;
-    }
+  public void setTypeLast(String typeLast) {
+    this.typeLast = typeLast;
+  }
 
-    public void setTournamentId(Long tournamentId) {
-        this.tournamentId = tournamentId;
-    }
+  public String getFieldsLast() {
+    return fieldsLast;
+  }
 
+  public void setFieldsLast(String fieldsLast) {
+    this.fieldsLast = fieldsLast;
+  }
+
+  public String getTeams() {
+    return teams;
+  }
+
+  public void setTeams(String teams) {
+    this.teams = teams;
+  }
 }

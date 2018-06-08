@@ -3,7 +3,7 @@ package org.fmarin.admintournoi.admin.round;
 public enum RoundType {
 
   POOL("Poules", 3),
-  DIRECT_ELIMINATION("Élimination directe", 2);
+  DIRECT_ELIMINATION("Élim.", 2);
 
   private String label;
   private Integer teamsCount;

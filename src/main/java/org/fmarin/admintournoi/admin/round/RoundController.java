@@ -103,6 +103,7 @@ public class RoundController {
     List<PoolView> pools = poolRepository.findAllByRoundOrderByPosition(round).stream()
       .map(this::convert).collect(toList());
     Map<String, Object> model = Maps.newHashMap();
+    model.put("tournament", round.getTournament());
     model.put("round", roundDetail);
     model.put("pools", pools);
     model.put("isProd", mainProperties.isProd());
@@ -152,17 +153,18 @@ public class RoundController {
   }
 
   RoundListView convertListItem(Round round) {
-    String previousRoundLabel = String.join(" / ", round.getPreviousRounds().stream().map(PreviousRound::getLabel).collect(toList()));
     return RoundListViewBuilder.aRoundListView()
       .withId(round.getId())
+      .withBranch(round.getBranch().getLabel())
+      .withBranchColor(round.getBranch().getColor())
       .withName(round.getName())
-      .withType(round.getType().getLabel())
-      .withPreviousRoundName(previousRoundLabel)
-      .withTeamsCount(round.getTeams().size())
       .withStatus(round.getStatus().getLabel())
-      .withTournamentId(round.getTournament().getId())
-      .withTournamentName(round.getTournament().getFullName())
-      .withValidated(round.getStatus().equals(RoundStatus.STARTED))
+      .withTypeLabel(round.getType().getLabel())
+      .withTypeValue(String.valueOf(round.getPools().size()))
+      .withFields(round.getFieldRanges())
+      .withTypeLast(String.valueOf(round.getPools().parallelStream().filter(pool -> !pool.isFinished()).count()))
+      .withTeams("1-23")
+      .withFieldsLast("1 / 2 / 3 / 4")
       .build();
   }
 
