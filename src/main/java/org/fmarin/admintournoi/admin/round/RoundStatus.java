@@ -2,18 +2,18 @@ package org.fmarin.admintournoi.admin.round;
 
 public enum RoundStatus {
 
-    CREATED("Créé"),
-    COMPOSED("Composition à valider"),
-    STARTED("Matchs en cours"),
-    FINISHED("Terminé");
+  CREATED("Créé"),
+  COMPOSED("À valider"),
+  STARTED("En cours"),
+  FINISHED("Terminé");
 
-    private String label;
+  private String label;
 
-    RoundStatus(String label) {
-        this.label = label;
-    }
+  RoundStatus(String label) {
+    this.label = label;
+  }
 
-    public String getLabel() {
-        return label;
-    }
+  public String getLabel() {
+    return label;
+  }
 }

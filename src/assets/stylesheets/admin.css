@@ -159,6 +159,13 @@ body {
     border-radius: 5px;
     display: flex;
     margin-bottom: 15px;
+    height: 160px;
+    cursor: pointer;
+}
+
+.round-card:hover {
+    border-width: 3px;
+    background-color: #F9F9F9;
 }
 
 .round-card-sidebar {
@@ -172,17 +179,26 @@ body {
     flex-grow: 1;
 }
 
+.round-card:hover .round-card-sidebar {
+    font-weight: bold;
+}
+
 .round-card-sidebar > span {
     transform: rotate(-90deg);
     white-space: nowrap;
     font-size: 12px;
     font-style: italic;
+    text-transform: uppercase;
 }
 
 .round-card-content {
-    flex-grow: 8;
+    flex-grow: 7;
     display: flex;
     flex-direction: column;
+}
+
+.round-card:hover .title {
+    font-weight: normal;
 }
 
 .round-card-header {
@@ -198,17 +214,40 @@ body {
     color: #1C3F6F;
     font-size: 20px;
     font-weight: bold;
-    flex: 1 100%;
+    flex: 1 70%;
     text-align: center;
+    text-transform: uppercase;
 }
 
 .round-card-header .status {
-    color: #CCCCCC;
+    color: #ADADAD;
     font-size: 12px;
     font-style: italic;
     align-self: flex-end;
+    text-transform: lowercase;
 }
 
-.stats {
+.stats-row {
     flex-grow: 4;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-header {
+    color: #B5B5B5;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.stat-content {
+    font-size: 15px;
+    color: #ADADAD;
+    font-weight: bold;
 }

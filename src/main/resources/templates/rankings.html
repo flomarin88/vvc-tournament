@@ -1,19 +1,17 @@
 {{#admin_layout}}
 
-{{#round}}
 <ol class="breadcrumb">
   <li><a href="/admin">Dashboard</a></li>
-  <li><a href="/admin/tournaments/{{tournamentId}}">{{tournamentName}}</a></li>
-  <li><a href="/admin/tournaments/{{tournamentId}}/rounds">Tours</a></li>
+  <li><a href="/admin/tournaments/{{tournament.id}}">{{tournament.fullName}}</a></li>
+  <li><a href="/admin/tournaments/{{tournament.id}}/rounds">Tours</a></li>
   <li><a href="/admin/rounds/{{id}}">{{name}}</a></li>
   <li class="active">Classement</li>
 </ol>
 
 <div class="page-header">
   <h1>{{name}} / <strong>Classement</strong></h1>
-  <p class="lead">{{ tournamentName }}</p>
+  <p class="lead">{{ tournament.fullName }}</p>
 </div>
-{{/round}}
 
 <div class="row">
   <div class="col-lg-12">

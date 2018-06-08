@@ -2,8 +2,8 @@
 
 <ol class="breadcrumb">
   <li><a href="/admin">Dashboard</a></li>
-  <li><a href="/admin/tournaments/{{round.tournamentId}}/checkin">{{round.tournamentName}}</a></li>
-  <li><a href="/admin/tournaments/{{round.tournamentId}}/rounds">Tours</a></li>
+  <li><a href="/admin/tournaments/{{tournament.id}}/checkin">{{tournament.fullName}}</a></li>
+  <li><a href="/admin/tournaments/{{tournament.id}}/rounds">Tours</a></li>
   <li class="active">{{ round.name }}</li>
 </ol>
 
@@ -22,7 +22,7 @@
   <a href="/admin/rounds/{{id}}/matches/generate" class="btn btn-danger pull-right">Générer résultats</a>
   {{/isProd}}
   {{/isValidated}}
-  <p class="lead">{{ tournamentName }}</p>
+  <p class="lead">{{ tournament.fullName }}</p>
 </div>
 {{/round}}
 
