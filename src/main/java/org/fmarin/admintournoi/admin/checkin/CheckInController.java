@@ -38,8 +38,8 @@ public class CheckInController {
     Tournament tournament = tournamentRepository.findOne(id);
     List<TeamToCheckInView> teamsToCheckin = tournament.getSubscribedTeams().stream()
       .map(this::convert)
+      .sorted(Comparator.comparing(teamToCheckInView -> teamToCheckInView.getName().toLowerCase()))
       .collect(Collectors.toList());
-    teamsToCheckin.sort(Comparator.comparing(TeamToCheckInView::getName));
     long absenceCount = teamsToCheckin.parallelStream().filter(team -> !team.isPresent()).count();
     Map<String, Object> model = new ImmutableMap.Builder<String, Object>()
       .put("tournament", tournament)
