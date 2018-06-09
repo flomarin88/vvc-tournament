@@ -108,6 +108,7 @@ public class RoundController {
     model.put("pools", pools);
     model.put("isProd", mainProperties.isProd());
     model.put("duplicatedTeams", hasSameTeams(round));
+    model.put("started", round.isStarted());
     return new ModelAndView("round_detail", model);
   }
 

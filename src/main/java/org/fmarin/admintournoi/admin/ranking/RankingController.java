@@ -39,6 +39,7 @@ public class RankingController {
     Round round = roundRepository.findOne(roundId);
     Map<String, Object> model = Maps.newHashMap();
     model.put("tournament", round.getTournament());
+    model.put("round", round);
     model.put("rankings", round.getRankings());
     return new ModelAndView("rankings", model);
   }

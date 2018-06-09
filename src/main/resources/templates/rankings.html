@@ -4,12 +4,12 @@
   <li><a href="/admin">Dashboard</a></li>
   <li><a href="/admin/tournaments/{{tournament.id}}">{{tournament.fullName}}</a></li>
   <li><a href="/admin/tournaments/{{tournament.id}}/rounds">Tours</a></li>
-  <li><a href="/admin/rounds/{{id}}">{{name}}</a></li>
+  <li><a href="/admin/rounds/{{round.id}}">{{round.fullName}}</a></li>
   <li class="active">Classement</li>
 </ol>
 
 <div class="page-header">
-  <h1>{{name}} / <strong>Classement</strong></h1>
+  <h1>{{ round.fullName }} / <strong>Classement</strong></h1>
   <p class="lead">{{ tournament.fullName }}</p>
 </div>
 

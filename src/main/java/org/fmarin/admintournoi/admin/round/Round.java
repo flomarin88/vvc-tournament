@@ -103,7 +103,7 @@ public class Round {
   }
 
   public boolean isStarted() {
-    return RoundStatus.STARTED.equals(status);
+    return RoundStatus.STARTED.equals(status) || RoundStatus.FINISHED.equals(status);
   }
 
   public Long getId() {
