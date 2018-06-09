@@ -7,24 +7,21 @@
   <li class="active">{{ round.name }}</li>
 </ol>
 
-
-{{#round}}
 <div class="page-header">
-  <h1>{{ name }}</h1>
-  {{^isValidated}}
-  <a href="/admin/rounds/{{id}}/matches" class="btn btn-success pull-right">Valider les poules</a>
+  <h1>{{ round.name }}</h1>
+  {{^started}}
+  <a href="/admin/rounds/{{ round.id }}/matches" class="btn btn-success pull-right">Valider les poules</a>
   <button class="btn btn-primary pull-right switch-team-js">Échanger les équipes</button>
-  {{/isValidated}}
-  {{#isValidated}}
-  <a href="/admin/rounds/{{id}}/finish" class="btn btn-success pull-right">Terminer</a>
-  <a href="/admin/rounds/{{id}}/rankings" class="btn btn-default pull-right"><i class="fa fa-table" aria-hidden="true"></i> Classement</a>
+  {{/started}}
+  {{#started}}
+  <a href="/admin/rounds/{{ round.id }}/finish" class="btn btn-success pull-right">Terminer</a>
+  <a href="/admin/rounds/{{round.id}}/rankings" class="btn btn-default pull-right"><i class="fa fa-table" aria-hidden="true"></i> Classement</a>
   {{^isProd}}
-  <a href="/admin/rounds/{{id}}/matches/generate" class="btn btn-danger pull-right">Générer résultats</a>
+  <a href="/admin/rounds/{{round.id}}/matches/generate" class="btn btn-danger pull-right">Générer résultats</a>
   {{/isProd}}
-  {{/isValidated}}
+  {{/started}}
   <p class="lead">{{ tournament.fullName }}</p>
 </div>
-{{/round}}
 
 {{#duplicatedTeams}}
 <div class="row">

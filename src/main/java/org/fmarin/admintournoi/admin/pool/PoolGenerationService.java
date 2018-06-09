@@ -53,6 +53,7 @@ public class PoolGenerationService {
       }
     }
     if (retry) {
+      round.setPools(Lists.newArrayList());
       generatePools(round);
     }
   }
