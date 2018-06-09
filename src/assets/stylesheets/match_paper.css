@@ -1,26 +1,40 @@
-@media print {
-    @page {
-        size: A4 landscape;
+@page { margin: 0 }
+body { margin: 0 }
+.sheet {
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    page-break-after: always;
+}
+
+/** Paper sizes **/
+body.A4.landscape     .sheet { width: 297mm; height: 209mm }
+
+/** Padding area **/
+.sheet.padding-10mm { padding: 10mm }
+
+/** For screen preview **/
+@media screen {
+    .sheet {
+        background: white;
+        box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
+        margin: 5mm auto;
     }
 }
 
+/** Fix for Chrome issue #273306 **/
+@media print {
+    body.A4.landscape { width: 297mm }
+}
+
 body {
-    padding-top: 25px;
     font-size :15pt;
     text-align: center;
 }
 
-.container {
-    width: 90%;
-}
-
-.row {
-    padding-bottom: 30px;
-}
-
 .pool-field {
-    font-size: 20pt;
-    font-weight: 300;
+    font-weight: 200;
 }
 
 .lead {
