@@ -16,6 +16,7 @@ import org.fmarin.admintournoi.subscription.Team;
 import org.fmarin.admintournoi.subscription.TeamRepository;
 import org.fmarin.admintournoi.subscription.Tournament;
 import org.fmarin.admintournoi.subscription.TournamentRepository;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,13 +164,22 @@ public class RoundController {
       .withTypeLabel(round.getType().getLabel())
       .withTypeValue(String.valueOf(round.getPools().size()))
       .withFields(round.getFieldRanges())
-      .withTypeLast(String.valueOf(round.getPools().parallelStream().filter(pool -> !pool.isFinished()).count()))
+      .withTypeLast(getTypeLast(round))
       .withTeams(getTeams(round))
-      .withFieldsLast("1 / 2 / 3 / 4");
+      .withFieldsLast(getFieldsLast(round));
     if (full) {
       builder.withName(round.getFullName());
     }
     return builder.build();
+  }
+
+  @NotNull
+  private String getTypeLast(Round round) {
+    long count = round.getPools().parallelStream().filter(pool -> !pool.isFinished()).count();
+    if (count == 0L) {
+      return "Aucun";
+    }
+    return String.valueOf(count);
   }
 
   private String getTeams(Round round) {
@@ -178,6 +188,10 @@ public class RoundController {
       return "Toutes";
     }
     return String.join(";", teams);
+  }
+
+  private String getFieldsLast(Round round) {
+    return "";
   }
 
   private PoolView convert(Pool pool) {
