@@ -72,7 +72,7 @@ public class RoundController {
     LinkedHashMap<Integer, List<RoundListView>> rounds = roundRepository.findAllByTournament(tournament)
       .parallelStream()
       .sorted(Comparator.comparing(Round::getLevel).reversed().thenComparing(round -> round.getBranch().getOrder()))
-      .collect(Collectors.groupingBy(Round::getLevel, LinkedHashMap::new, Collectors.mapping(this::convertListItem, toList())));
+      .collect(Collectors.groupingBy(Round::getLevel, LinkedHashMap::new, Collectors.mapping(o -> convertListItem(o, false), toList())));
     Map<String, Object> model = Maps.newHashMap();
     model.put("tournament", tournament);
     model.put("rounds", rounds.entrySet());
@@ -99,7 +99,7 @@ public class RoundController {
   @GetMapping("/rounds/{roundId}")
   public ModelAndView getRound(@PathVariable(name = "roundId") Long roundId) {
     Round round = roundRepository.findOne(roundId);
-    RoundListView roundDetail = convertListItem(round);
+    RoundListView roundDetail = convertListItem(round, true);
     List<PoolView> pools = poolRepository.findAllByRoundOrderByPosition(round).stream()
       .map(this::convert).collect(toList());
     Map<String, Object> model = Maps.newHashMap();
@@ -153,8 +153,8 @@ public class RoundController {
     return ResponseEntity.ok(result);
   }
 
-  RoundListView convertListItem(Round round) {
-    return RoundListViewBuilder.aRoundListView()
+  RoundListView convertListItem(Round round, boolean full) {
+    RoundListViewBuilder builder = RoundListViewBuilder.aRoundListView()
       .withId(round.getId())
       .withBranch(round.getBranch().getLabel())
       .withBranchColor(round.getBranch().getColor())
@@ -165,8 +165,11 @@ public class RoundController {
       .withFields(round.getFieldRanges())
       .withTypeLast(String.valueOf(round.getPools().parallelStream().filter(pool -> !pool.isFinished()).count()))
       .withTeams("1-23")
-      .withFieldsLast("1 / 2 / 3 / 4")
-      .build();
+      .withFieldsLast("1 / 2 / 3 / 4");
+    if (full) {
+      builder.withName(round.getFullName());
+    }
+    return builder.build();
   }
 
   private PoolView convert(Pool pool) {
