@@ -164,12 +164,20 @@ public class RoundController {
       .withTypeValue(String.valueOf(round.getPools().size()))
       .withFields(round.getFieldRanges())
       .withTypeLast(String.valueOf(round.getPools().parallelStream().filter(pool -> !pool.isFinished()).count()))
-      .withTeams("1-23")
+      .withTeams(getTeams(round))
       .withFieldsLast("1 / 2 / 3 / 4");
     if (full) {
       builder.withName(round.getFullName());
     }
     return builder.build();
+  }
+
+  private String getTeams(Round round) {
+    List<String> teams = round.getPreviousRounds().stream().map(previousRound -> previousRound.getTeamsFrom() + "-" + previousRound.getTeamsTo()).collect(Collectors.toList());
+    if (teams.isEmpty()) {
+      return "Toutes";
+    }
+    return String.join(";", teams);
   }
 
   private PoolView convert(Pool pool) {
