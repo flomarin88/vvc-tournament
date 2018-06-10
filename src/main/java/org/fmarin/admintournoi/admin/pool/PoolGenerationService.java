@@ -53,8 +53,8 @@ public class PoolGenerationService {
       }
     }
     if (retry) {
-      round.setPools(Lists.newArrayList());
-      generatePools(round);
+      round.createPools();
+      affectTeams(round, groupTeams(round));
     }
   }
 

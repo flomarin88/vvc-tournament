@@ -42,9 +42,9 @@
           <tbody>
           {{#teams}}
           <tr>
-            {{^round.isValidated}}
+            {{^started}}
             <td><input type="checkbox" class="switch-team-js" data-team-id="{{ id }}"></td>
-            {{/round.isValidated}}
+            {{/started}}
             <th scope="row">{{ letter }}</th>
             <td>{{ name }}</td>
             <td align="center"><span class="label label-{{ levelColor }}">{{ levelName }}</span></td>
