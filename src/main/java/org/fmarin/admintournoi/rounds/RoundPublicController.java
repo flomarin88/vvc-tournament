@@ -83,6 +83,7 @@ public class RoundPublicController {
           .build()).collect(Collectors.toList());
       builder.isFinished();
     } else {
+      builder.withColor(pool.getRound().getBranch().getColor());
       teams = Lists.newArrayList(
         aTeamOverviewView()
           .withName(pool.getTeam1().getName())

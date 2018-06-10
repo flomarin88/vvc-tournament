@@ -13,7 +13,7 @@
 <div class="row">
   {{#pools}}
   <div class="col-lg-4 col-xs-12">
-    <div class="card theme-{{#isFinished}}finished{{/isFinished}}{{^isFinished}}pending{{/isFinished}}">
+    <div class="card theme-{{#isFinished}}finished{{/isFinished}}{{^isFinished}}pending{{/isFinished}} {{color}}">
       <div class="card-header">
         <h3>{{ field }}</h3>
         <span class="subtitle">{{#isFinished}}Terminé{{/isFinished}}{{^isFinished}}En cours{{/isFinished}}</span>
