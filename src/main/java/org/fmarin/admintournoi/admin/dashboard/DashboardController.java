@@ -58,6 +58,7 @@ public class DashboardController {
   private PoolView convert(Pool pool) {
     PoolViewBuilder builder = PoolViewBuilder.aPoolView()
       .withField(pool.getField());
+    builder.withColor(pool.getRound().getBranch().getColor());
     List<TeamOverviewView> teams;
     if (pool.isFinished()) {
       teams = pool.getRankings().stream().map(ranking ->
@@ -67,7 +68,6 @@ public class DashboardController {
           .build()).collect(Collectors.toList());
       builder.isFinished();
     } else {
-      builder.withColor(pool.getRound().getBranch().getColor());
       teams = Lists.newArrayList(
         aTeamOverviewView()
           .withName(pool.getTeam1().getName())
