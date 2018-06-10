@@ -10,13 +10,15 @@ public class PoolView {
   private final String name;
   private final Integer field;
   private final boolean finished;
+  private final String color;
   private final List<TeamOverviewView> teams;
 
-  public PoolView(Long id, String name, Integer field, boolean finished, List<TeamOverviewView> teams) {
+  public PoolView(Long id, String name, Integer field, boolean finished, String color, List<TeamOverviewView> teams) {
     this.id = id;
     this.name = name;
     this.field = field;
     this.finished = finished;
+    this.color = color;
     this.teams = teams;
   }
 
@@ -38,5 +40,9 @@ public class PoolView {
 
   public List<TeamOverviewView> getTeams() {
     return teams;
+  }
+
+  public String getColor() {
+    return color;
   }
 }

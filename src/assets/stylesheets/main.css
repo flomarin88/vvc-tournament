@@ -156,8 +156,16 @@ body {
     padding-bottom: 10px;
 }
 
-.card.theme-pending .card-header {
+.card.theme-pending.primary .card-header {
     background: #1c3f6f;
+}
+
+.card.theme-pending.info .card-header {
+    background: #2c96cc;
+}
+
+.card.theme-pending.default .card-header {
+    background: #e7e7e7;
 }
 
 .card.theme-finished .card-header {
